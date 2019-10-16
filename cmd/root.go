@@ -35,7 +35,7 @@ var rootCmd = &cobra.Command{
   Short: "CLI to easily create cluster on Azure AKS",
   Long: `aksctl can create a cluster with single command aksctl create cluster
 
-  It's written in Go and uses Terraform for the Azure resource creation`,
+  It's written in Go and uses azure cli for the Azure resource creation`,
   // Uncomment the following line if your bare application
   // has an action associated with it:
   //	Run: func(cmd *cobra.Command, args []string) { },
