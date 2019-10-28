@@ -15,8 +15,8 @@ limitations under the License.
 */
 package main
 
-import "github.com/adfolks/aksctl/cmd"
+import "github.com/RithvickAR/aksctl/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

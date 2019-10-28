@@ -17,25 +17,30 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"os/exec"
 
+	"github.com/github.com/RithvickAR/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 )
 
-// clusterCmd represents the cluster command
-var clusterCmd = &cobra.Command{
-	Use:   "cluster",
-	Short: "Create an AKS cluster",
-	Long: `Create an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+var rgroupName, rgroupRegion string
+
+var resourcegroupCmd = &cobra.Command{
+	Use:   "resourcegroup",
+	Short: "Create an AKS resource group",
+	Long: `Create an AKS resource group, it would use a Random Name for resource group.
+	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
+		rgroupName, _ = cmd.Flags().GetString("name")
+		rgroupRegion, _ = cmd.Flags().GetString("region")
+		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+		fmt.Println("Resource group created")
 	},
 }
 
 func init() {
-	createCmd.AddCommand(clusterCmd)
+	createCmd.AddCommand(resourcegroupCmd)
+	resourcegroupCmd.PersistentFlags().StringP("name", "n", "temp", "resource group name")
+	resourcegroupCmd.PersistentFlags().StringP("region", "r", "westus", "resource group location")
 
 	// Here you will define your flags and configuration settings.
 
@@ -46,19 +51,4 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// clusterCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-func createCluster(clusterName string, resourceGroupName string) {
-	fmt.Println("Starting to set up your k8s Cluster")
-	fmt.Println("This would take a few minutes...")
-	fmt.Println("---------------------------------")
-	//Create AKS Cluster
-	cmd := exec.Command("az", "aks", "create", "--name", clusterName,
-		"--resource-group", resourceGroupName, "--node-count",
-		"6", "--kubernetes-version", "1.11.3")
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
-	}
-	fmt.Printf("Output:\n%s\n", string(out))
 }
