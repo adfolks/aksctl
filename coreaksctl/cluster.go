@@ -19,5 +19,4 @@ func CreateCluster(clusterName string, resourceGroupName string) {
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
 	fmt.Printf("Output:\n%s\n", string(out))
-	return 0
 }

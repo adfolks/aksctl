@@ -28,7 +28,7 @@ var clusterCmd = &cobra.Command{
 	Long: `Create an AKS cluster, it would use a Random Name for cluster.
 	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		coreaksctl.CreateCluster("opsbrew", "opsbrew")
+		coreaksctl.CreateCluster("opsbrew","opsbrew")
 		fmt.Println("cluster called")
 	},
 }
