@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func createCluster(clusterName string, resourceGroupName string) {
+func CreateCluster(clusterName string, resourceGroupName string) {
 	fmt.Println("Starting to set up your k8s Cluster")
 	fmt.Println("This would take a few minutes...")
 	fmt.Println("---------------------------------")
@@ -19,4 +19,5 @@ func createCluster(clusterName string, resourceGroupName string) {
 		log.Fatalf("cmd.Run() failed with %s\n", err)
 	}
 	fmt.Printf("Output:\n%s\n", string(out))
+	return 0
 }
