@@ -17,7 +17,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Roshni1313/aksctl/coreaksctl"
+	"log"
+	"os/exec"
+
 	"github.com/spf13/cobra"
 )
 
@@ -28,21 +30,26 @@ var clusterCmd = &cobra.Command{
 	Long: `Create an AKS cluster, it would use a Random Name for cluster.
 	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		coreaksctl.CreateCluster("opsbrew","opsbrew")
-		fmt.Println("cluster called")
+		fmt.Println(args)
 	},
 }
 
 func init() {
 	createCmd.AddCommand(clusterCmd)
 
-	// Here you will define your flags and configuration settings.
+}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// clusterCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// clusterCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+func createCluster(clusterName string, resourceGroupName string) {
+	fmt.Println("Starting to set up your k8s Cluster")
+	fmt.Println("This would take a few minutes...")
+	fmt.Println("---------------------------------")
+	//Create AKS Cluster
+	cmd := exec.Command("az", "aks", "create", "--name", clusterName,
+		"--resource-group", resourceGroupName, "--node-count",
+		"6", "--kubernetes-version", "1.11.3")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Fatalf("cmd.Run() failed with %s\n", err)
+	}
+	fmt.Printf("Output:\n%s\n", string(out))
 }
