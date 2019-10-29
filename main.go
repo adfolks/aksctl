@@ -18,5 +18,5 @@ package main
 import "github.com/Roshni1313/aksctl/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }
