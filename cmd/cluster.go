@@ -17,8 +17,8 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/Roshni1313/aksctl/coreaksctl"
 )
 
 // clusterCmd represents the cluster command
@@ -28,20 +28,17 @@ var clusterCmd = &cobra.Command{
 	Long: `Create an AKS cluster, it would use a Random Name for cluster.
 	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("cluster called")
+		fmt.Println(args)
+		rgroupName:="opsbrew"
+		rgroupRegion:="eastus"
+		clusterName:="opsbrew"
+		resourceGroupName:="opsbrew"
+		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+		coreaksctl.CreateCluster(clusterName , resourceGroupName )
 	},
 }
 
 func init() {
 	createCmd.AddCommand(clusterCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// clusterCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// clusterCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
