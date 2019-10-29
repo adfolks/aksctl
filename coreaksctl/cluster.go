@@ -1,8 +1,8 @@
 package coreaksctl
 
 import (
+	"bytes"
 	"fmt"
-	"log"
 	"os/exec"
 )
 
@@ -13,10 +13,15 @@ func CreateCluster(clusterName string, resourceGroupName string) {
 	//Create AKS Cluster
 	cmd := exec.Command("az", "aks", "create", "--name", clusterName,
 		"--resource-group", resourceGroupName, "--node-count",
-		"6", "--kubernetes-version", "1.11.3")
-	out, err := cmd.CombinedOutput()
+		"2", "--generate-ssh-keys")
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		return
 	}
-	fmt.Printf("Output:\n%s\n", string(out))
+	fmt.Println("Result: " + out.String())
 }
