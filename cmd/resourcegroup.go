@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/RithvickAR/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 )
 
@@ -26,8 +26,21 @@ var rgroupName, rgroupRegion string
 
 var resourcegroupCmd = &cobra.Command{
 	Use:   "resourcegroup",
-	Short: "Create an AKS resource group",
-	Long: `Create an AKS resource group, it would use a Random Name for resource group.
+	Short: "Create and manage an AKS resource group",
+	Long: `Create and manage an AKS resource group, it would use a random name and default location for resource group.
+	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
+	Run: func(cmd *cobra.Command, args []string) {
+		rgroupName, _ = cmd.Flags().GetString("name")
+		rgroupRegion, _ = cmd.Flags().GetString("region")
+		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+		fmt.Println("Resource group created")
+	},
+}
+
+var resourcegroupDeleteCmd = &cobra.Command{
+	Use:   "resourcegroup",
+	Short: "Create and manage an AKS resource group",
+	Long: `Create and manage an AKS resource group, it would use a random name and default location for resource group.
 	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		rgroupName, _ = cmd.Flags().GetString("name")
@@ -39,8 +52,10 @@ var resourcegroupCmd = &cobra.Command{
 
 func init() {
 	createCmd.AddCommand(resourcegroupCmd)
+	deleteCmd.AddCommand(resourcegroupDeleteCmd)
 	resourcegroupCmd.PersistentFlags().StringP("name", "n", "temp", "resource group name")
 	resourcegroupCmd.PersistentFlags().StringP("region", "r", "westus", "resource group location")
+	resourcegroupDeleteCmd.PersistentFlags().StringP("name", "n", "temp", "resource group name")
 
 	// Here you will define your flags and configuration settings.
 
