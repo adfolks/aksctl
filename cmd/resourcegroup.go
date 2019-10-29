@@ -19,7 +19,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/RithvickAR/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 )
 

@@ -6,9 +6,9 @@ import (
 	"os/exec"
 )
 
-func CreateDisk(diskName string, diskRegion string, diskLocation string, diskSize string) {
+func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, diskSize string) {
 
-	cmd := exec.Command("az", "disk", "create", "-g", diskRegion, "-n",
+	cmd := exec.Command("az", "disk", "create", "-g", diskResourcegroup, "-n",
 		diskName, "-l", diskLocation, "-z", diskSize)
 	out, err := cmd.CombinedOutput()
 	if err != nil {

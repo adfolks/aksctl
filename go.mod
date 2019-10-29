@@ -1,4 +1,4 @@
-module github.com/RithvickAR/aksctl
+module github.com/adfolks/aksctl
 
 go 1.13
 
