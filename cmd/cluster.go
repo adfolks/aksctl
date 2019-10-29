@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/Roshni1313/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/coreaksctl"
 )
 
 // clusterCmd represents the cluster command
