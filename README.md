@@ -40,7 +40,7 @@ Example:
 
 Running the code 
 ```bash
-aksctl create resourcegroup -n myresourcegroup -r eastus
+aksctl create resourcegroup --name myresourcegroup --region eastus
 ```
 creates a resource group with the name `myresourcegroup` and region set to `eastus`.
 
