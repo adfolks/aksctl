@@ -1,4 +1,5 @@
 # aksctl
+
  `aksctl` is an easy to use CLI(Command Line Utility) for creating and managing Kubernetes Cluster on Azure AKS ( Azure Kubernetes Service). It is written in Go.
 
 ## Getting Started
@@ -12,7 +13,21 @@ You will need to have Azure credentials configured. What works for AZ CLI should
 
 ### Installation
 
-
+#### Install from source
+To install aksctl, clone the repository using:
+```bash
+git clone https://github.com/adfolks/aksctl
+```
+Then, initiate module with:
+```bash
+go mod init https://github.com/adfolks/aksctl
+```
+This will create a module config file `go.mod`.
+Finally, use
+```bash
+go build
+```
+to fetch the latest dependencies.
 
 ## Basic usage
 A default cluster can be created by running:
