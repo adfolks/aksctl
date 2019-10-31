@@ -34,7 +34,7 @@ A default cluster can be created by running:
 ```bash
 aksctl create cluster
 ```
-A cluster with with default parameters will be created.
+A cluster with default parameters will be created.
 
 Example:
 
