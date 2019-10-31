@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 ### Prerequisites
 
@@ -34,7 +34,7 @@ A default cluster can be created by running:
 ```bash
 aksctl create cluster
 ```
-The cluster will be created with default parameters.
+A cluster with with default parameters will be created.
 
 Example:
 
@@ -49,14 +49,14 @@ For this, create a `.yaml` file like `cluster.yaml`.
 
 Next, run the command:
 ```bash
-eksctl create cluster -f cluster.yaml
+aksctl create cluster -f cluster.yaml
 ```
 to apply the `cluster.yaml` file.
-This will create a cluster as described.
+This will create a cluster as described in the file.
 
-Install `aksctl` following the installation instructions.
+`aksctl` can be installed by following the above instructions.
 
-To learn more abut what aksctl can do check [aksctl.io](https://www.aksctl.com). The full list of features can be found here.
+Check [aksctl.io](https://www.aksctl.com) to learn more abut what aksctl can do and its features.
 
 ## Built With
 * Go
