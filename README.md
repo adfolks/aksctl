@@ -34,8 +34,8 @@ For this, create a `.yaml` file like cluster.yaml
 Next, run the command:
 ```bash
 eksctl create cluster -f cluster.yaml
-to apply the cluster.yaml file
 ```
+to apply the cluster.yaml file
 This will create a cluster as described.
 
 Install `aksctl` following the installation instructions.
