@@ -45,22 +45,18 @@ aksctl create resourcegroup -n myresourcegroup -r eastus
 creates a resource group with the name `myresourcegroup` and region set to `eastus`.
 
 You can also customize your cluster by using a config file. 
-For this, create a `.yaml` file like cluster.yaml
+For this, create a `.yaml` file like `cluster.yaml`.
+
 Next, run the command:
 ```bash
 eksctl create cluster -f cluster.yaml
 ```
-to apply the cluster.yaml file
+to apply the `cluster.yaml` file.
 This will create a cluster as described.
 
 Install `aksctl` following the installation instructions.
 
-To learn more abut what aksctl can do check [aksctl.io](https://www.aksctl.com). A good place to start is Getting Started. The full list of features can be found here.
-
-
-## Deployment
-
-
+To learn more abut what aksctl can do check [aksctl.io](https://www.aksctl.com). The full list of features can be found here.
 
 ## Built With
 * Go
