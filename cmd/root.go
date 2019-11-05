@@ -17,11 +17,11 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/spf13/cobra"
-
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
@@ -55,7 +55,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aksctl.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aksctl/config/resourcegroup.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -64,6 +64,12 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	//	cfgFile = ".config/resourcegroup.yaml"
+	viper.SetConfigType("yaml")
+	viper.SetConfigFile(cfgFile)
+
+	//	viper.SetEnvPrefix("resourcegroup")
+
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -75,9 +81,11 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name "resourcegroup.yaml" (without extension).
-		// viper.AddConfigPath(/home/rithvick/Desktop/aksctl-test/aksctl/resourcegroup.yaml)
-		// viper.SetConfigName("resourcegroup.yaml")
+		// 	// Search config in home directory with name "resourcegroup" (without extension).
+		viper.AddConfigPath("./configs")
+		viper.AddConfigPath("$HOME/configs")
+		viper.AddConfigPath("/home/rithvick/Desktop/aksctl-test/aksctl/config/")
+		viper.SetConfigName("resourcegroup")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -86,4 +94,22 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+	port := viper.Get("name") // returns string
+	//port := viper.GetInt("prod.port") // returns integer
+	fmt.Println(port)
+	prod := viper.Sub("prod")
+
+	// Unmarshal into struct
+	type config struct {
+		Name   string
+		Region string
+	}
+
+	var C config
+
+	err := prod.Unmarshal(&C)
+	if err != nil {
+		log.Fatalf("unable to decode into struct, %v", err)
+	}
+	fmt.Println(C.Name)
 }
