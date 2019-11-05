@@ -26,6 +26,13 @@ import (
 
 var rgroupName, rgroupRegion, rgConfig string
 
+type configurations struct {
+	Name   string "name"
+	Region string "region"
+}
+
+var configuration configurations
+
 var createresourcegroupCmd = &cobra.Command{
 	Use:   "resourcegroup",
 	Short: "Create and manage an AKS resource group",

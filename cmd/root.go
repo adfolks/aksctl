@@ -19,9 +19,8 @@ import (
 	"fmt"
 	"os"
 
+	c "github.com/RithvickAR/aksctl/cmd/config"
 	"github.com/spf13/cobra"
-	
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
@@ -63,7 +62,7 @@ func init() {
 	// will be global for your application.
 
 	//rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.aksctl.yaml)")
-//	rootCmd.PersistentFlags().StringVar(&configuration, "config", "", "config file (default is $HOME/.aksctl/config/resourcegroup.yaml)")
+	//	rootCmd.PersistentFlags().StringVar(&configuration, "config", "", "config file (default is $HOME/.aksctl/config/resourcegroup.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -84,7 +83,7 @@ func initConfig() {
 	err := viper.Unmarshal(&configuration)
 	if err != nil {
 		fmt.Printf("Unable to decode into struct, %v", err)
-		
+
 	}
 	// if configuration != "" {
 	// 	// Use config file from the flag.
@@ -97,20 +96,18 @@ func initConfig() {
 	// 		os.Exit(1)
 	// 	}
 
-		// Search config in home directory with name "resourcegroup" (without extension).
-		// viper.AddConfigPath(/home/rithvick/Desktop/aksctl-test/aksctl/resourcegroup.yaml)
-		// viper.AddConfigPath("./configs")
-		// viper.AddConfigPath("$HOME/configs")
-		// viper.AddConfigPath("/home/rithvick/Desktop/aksctl-test/aksctl/")
-		// viper.SetConfigName("resourcegroup")
-	}
-
-	
+	// Search config in home directory with name "resourcegroup" (without extension).
+	// viper.AddConfigPath(/home/rithvick/Desktop/aksctl-test/aksctl/resourcegroup.yaml)
+	// viper.AddConfigPath("./configs")
+	// viper.AddConfigPath("$HOME/configs")
+	// viper.AddConfigPath("/home/rithvick/Desktop/aksctl-test/aksctl/")
+	// viper.SetConfigName("resourcegroup")
+	// }
 
 	// If a config file is found, read it in.
 	// if err := viper.ReadInConfig(); err == nil {
 	// 	fmt.Println("Using config file:", viper.ConfigFileUsed())
-		
+
 	// }
 
 	// err := viper.Unmarshal(&configuration)
@@ -121,5 +118,5 @@ func initConfig() {
 	fmt.Println(viper.GetString("name"))
 	fmt.Println("Name\t-", viper.GetString("name"))
 	fmt.Println("Region\t\t-", viper.GetString("region"))
-	
+
 }
