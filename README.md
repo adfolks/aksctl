@@ -20,7 +20,7 @@ git clone https://github.com/adfolks/aksctl
 ```
 Then, initiate module with:
 ```bash
-go mod init https://github.com/adfolks/aksctl
+go mod init github.com/adfolks/aksctl
 ```
 This will create a module config file `go.mod`.
 Finally, use
