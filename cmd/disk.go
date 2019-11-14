@@ -16,7 +16,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 )
@@ -33,14 +32,13 @@ var creatediskCmd = &cobra.Command{
 		diskLocation, _ = cmd.Flags().GetString("location")
 		diskSize, _ = cmd.Flags().GetString("size")
 		coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
-		fmt.Println("Disk created")
 	},
 }
 
 func init() {
 	createCmd.AddCommand(creatediskCmd)
 	creatediskCmd.PersistentFlags().StringP("name", "n", "temp", "disk name")
-	creatediskCmd.PersistentFlags().StringP("resourcegroup", "g", "temp", "disk resource group")
+	creatediskCmd.PersistentFlags().StringP("resourcegroup", "g", "opsbrew", "disk resource group")
 	creatediskCmd.PersistentFlags().StringP("location", "l", "westus", "disk location")
 	creatediskCmd.PersistentFlags().StringP("size", "z", "10", "disk size")
 

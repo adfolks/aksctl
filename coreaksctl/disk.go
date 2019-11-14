@@ -1,17 +1,22 @@
 package coreaksctl
 
 import (
+	"bytes"
 	"fmt"
-	"log"
 	"os/exec"
 )
 
 func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, diskSize string) {
 	cmd := exec.Command("az", "disk", "create", "-g", diskResourcegroup, "-n",
 		diskName, "-l", diskLocation, "-z", diskSize)
-	out, err := cmd.CombinedOutput()
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		return
 	}
-	fmt.Printf("Output:\n%s\n", string(out))
+	fmt.Println("Result: " + out.String())
 }
