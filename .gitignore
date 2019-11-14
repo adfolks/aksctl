@@ -1,4 +1,4 @@
 *.mod
 *.sum
 .DS_Store
-ad-aksctl.code-workspace
+*.code-workspace
