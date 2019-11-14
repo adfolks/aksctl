@@ -18,7 +18,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -59,8 +58,8 @@ var clusterCmd = &cobra.Command{
 
 		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", rgroupRegion, ", ", "clusterName : ", clusterName)
 
-		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
-		coreaksctl.CreateCluster(clusterName, rgroupName)
+		// coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+		// coreaksctl.CreateCluster(clusterName, rgroupName)
 	},
 }
 
