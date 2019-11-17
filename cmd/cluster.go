@@ -71,5 +71,4 @@ func init() {
 	clusterCmd.PersistentFlags().StringP("rgroupRegion", "r", "westus", "disk location")
 
 	viper.BindPFlags(clusterCmd.PersistentFlags())
-
 }
