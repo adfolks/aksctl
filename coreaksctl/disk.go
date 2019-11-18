@@ -40,10 +40,10 @@ func DeleteDisk(diskName string, diskResourceGroup string) {
 	fmt.Println("Result: " + out.String())
 }
 
-func UpdateDisk(diskName string, diskResourceGroup string, diskSize stringv) {
+func UpdateDisk(diskName string, diskResourceGroup string, diskSize string) {
 
 	//Update AKS Disk
-	cmd := exec.Command("az", "disk", "update", "--name", clusterName,
+	cmd := exec.Command("az", "disk", "update", "--name", diskName,
 		"--resource-group", diskResourceGroup, "--size-gb", diskSize)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -72,6 +72,4 @@ func GetDisk(diskResourceGroup string) {
 		return
 	}
 	fmt.Println("Result: " + out.String())
-}
-
 }
