@@ -56,7 +56,7 @@ This will create a cluster as described in the file.
 
 `aksctl` can be installed by following the above instructions.
 
-Check [aksctl.io](https://www.aksctl.com) to learn more abut what aksctl can do and its features.
+Check [aksctl.io](https://www.aksctl.io) to learn more abut what aksctl can do and its features.
 
 ## Built With
 * Go
