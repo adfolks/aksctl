@@ -75,7 +75,7 @@ var deleteDiskCmd = &cobra.Command{
 
 		// viper.Set("rgroupName", "opsOverrided")   //setting overide for any value
 
-		viper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
+		// viper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
 
 		diskName := viper.GetString("diskName") // getting values through viper
 		diskResourceGroup := viper.GetString("diskResourceGroup")
@@ -87,7 +87,7 @@ var deleteDiskCmd = &cobra.Command{
 }
 
 // updatediskCmd represents the update operation on disk command
-var updatediskCmd = &cobra.Command{
+var updateDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Update an AKS disk",
 	Long: `Update an AKS disk, it would use a Random Name for disk.
@@ -110,14 +110,14 @@ var updatediskCmd = &cobra.Command{
 		diskResourceGroup := viper.GetString("diskResourceGroup")
 		diskSize := viper.GetString("diskSize")
 
-		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation)
+		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskSize : ", diskSize)
 
-		coreaksctl.UpdateDisk(diskName, diskResourceGroup, diskLocation)
+		coreaksctl.UpdateDisk(diskName, diskResourceGroup, diskSize)
 	},
 }
 
 // getdiskCmd represents the get list of disk innresource group
-var getClusterCmd = &cobra.Command{
+var getDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Get list of AKS disks",
 	Long:  `Get list of AKS disks from a resource group.`,
@@ -157,16 +157,17 @@ func init() {
 	//for delete
 
 	deleteCmd.AddCommand(deleteDiskCmd)
-	deleteDiskCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
+	deleteDiskCmd.PersistentFlags().StringP("diskName", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
 	deleteDiskCmd.PersistentFlags().StringP("resourcegroup", "g", "opsFlagDefault", "disk resource group")
 
-	viper.BindPDiskFlags(deleteCmd.PersistentFlags())
+	viper.BindPFlags(deleteDiskCmd.PersistentFlags())
 
 	//for update
 
 	updateCmd.AddCommand(updateDiskCmd)
 	updateDiskCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
 	updateDiskCmd.PersistentFlags().StringP("resourcegroup", "g", "opsFlagDefault", "disk resource group")
+	updateDiskCmd.PersistentFlags().StringP("diskLocation", "l", "westus", "disk location")
 	updateDiskCmd.PersistentFlags().StringP("location", "r", "westus", "disk location")
 
 	viper.BindPFlags(updateCmd.PersistentFlags())
@@ -184,3 +185,4 @@ func init() {
 	// clusterCmd.PersistentFlags().String("foo", "", "A help for foo")
 	// is called directly, e.g.
 	// Cobra supports local flags which will only run when this command
+}
