@@ -23,6 +23,11 @@ import (
 	"github.com/spf13/viper"
 )
 
+var createDiskViper = viper.New()
+var deleteDiskViper = viper.New()
+var updateDiskViper = viper.New()
+var getDiskViper = viper.New()
+
 var createDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Create and manage Azure Managed Disks.",
@@ -33,10 +38,10 @@ var createDiskCmd = &cobra.Command{
 
 		// Setting config file with viper
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		createDiskViper.SetConfigName("default") // name of config file (without extension)
+		createDiskViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := createDiskViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                          // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
@@ -44,14 +49,14 @@ var createDiskCmd = &cobra.Command{
 
 		// viper.SetDefault("rgroupName", "opsDefault") // for setting a default value
 
-		diskName := viper.GetString("diskName") // getting values through viper
-		diskResourceGroup := viper.GetString("diskResourceGroup")
-		diskLocation := viper.GetString("diskLocation")
-		diskSize := viper.GetString("diskSize")
+		diskName := createDiskViper.GetString("managedDisk.name") // getting values through viper
+		diskResourceGroup := createDiskViper.GetString("managedDisk.resource-group")
+		diskLocation := createDiskViper.GetString("managedDisk.location")
+		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
 		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
 
-		// coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+		coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
 	},
 }
 
@@ -66,10 +71,10 @@ var deleteDiskCmd = &cobra.Command{
 
 		// Setting config file with viper
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		deleteDiskViper.SetConfigName("default") // name of config file (without extension)
+		deleteDiskViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := deleteDiskViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                          // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
@@ -77,8 +82,8 @@ var deleteDiskCmd = &cobra.Command{
 
 		// viper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
 
-		diskName := viper.GetString("diskName") // getting values through viper
-		diskResourceGroup := viper.GetString("diskResourceGroup")
+		diskName := deleteDiskViper.GetString("managedDisk.name") // getting values through viper
+		diskResourceGroup := deleteDiskViper.GetString("managedDisk.resource-group")
 
 		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup)
 
@@ -97,18 +102,18 @@ var updateDiskCmd = &cobra.Command{
 
 		// Setting config file with viper
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		updateDiskViper.SetConfigName("default") // name of config file (without extension)
+		updateDiskViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := updateDiskViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                          // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		viper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
+		updateDiskViper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
 
-		diskName := viper.GetString("diskName") // getting values through viper
-		diskResourceGroup := viper.GetString("diskResourceGroup")
-		diskSize := viper.GetString("diskSize")
+		diskName := updateDiskViper.GetString("managedDisk.name") // getting values through viper
+		diskResourceGroup := updateDiskViper.GetString("managedDisk.resource-group")
+		diskSize := updateDiskViper.GetString("managedDisk.size-gb")
 
 		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskSize : ", diskSize)
 
@@ -126,16 +131,16 @@ var getDiskCmd = &cobra.Command{
 
 		// Setting config file with viper
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		getDiskViper.SetConfigName("default") // name of config file (without extension)
+		getDiskViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := getDiskViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                       // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		viper.SetDefault("diskResourceGroup", "DiskRGDefault") // for setting a default value
+		//getDiskViper.SetDefault("diskResourceGroup", "DiskRGDefault") // for setting a default value
 
-		diskResourceGroup := viper.GetString("diskResourceGroup")
+		diskResourceGroup := getDiskViper.GetString("managedDisk.resource-group")
 
 		fmt.Println("diskResourceGroup : ", diskResourceGroup)
 
@@ -148,36 +153,42 @@ func init() {
 	//for create
 
 	createCmd.AddCommand(createDiskCmd)
-	createDiskCmd.PersistentFlags().StringP("diskName", "n", "temp", "disk name")
-	createDiskCmd.PersistentFlags().StringP("diskResourceGroup", "g", "opsbrew", "disk resource group")
-	createDiskCmd.PersistentFlags().StringP("diskLocation", "l", "westus", "disk location")
-	createDiskCmd.PersistentFlags().StringP("diskSize", "z", "10", "disk size")
-	viper.BindPFlags(createCmd.PersistentFlags())
+	createDiskCmd.PersistentFlags().StringP("name", "n", "temp", "disk name")
+	createDiskCmd.PersistentFlags().StringP("rgroupname", "g", "opsbrew", "disk resource group")
+	createDiskCmd.PersistentFlags().StringP("rgroupRegion", "l", "westus", "disk location")
+	createDiskCmd.PersistentFlags().StringP("size", "z", "10", "disk size")
+
+	createDiskViper.BindPFlag("managedDisk.name", createDiskCmd.PersistentFlags().Lookup("name"))
+	createDiskViper.BindPFlag("managedDisk.resource-group", createDiskCmd.PersistentFlags().Lookup("rgroupname"))
+	createDiskViper.BindPFlag("managedDisk.location", createDiskCmd.PersistentFlags().Lookup("rgroupRegion"))
+	createDiskViper.BindPFlag("managedDisk.size-gb", createDiskCmd.PersistentFlags().Lookup("size"))
 
 	//for delete
 
 	deleteCmd.AddCommand(deleteDiskCmd)
-	deleteDiskCmd.PersistentFlags().StringP("diskName", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
-	deleteDiskCmd.PersistentFlags().StringP("resourcegroup", "g", "opsFlagDefault", "disk resource group")
+	deleteDiskCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
+	deleteDiskCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
 
-	viper.BindPFlags(deleteDiskCmd.PersistentFlags())
+	deleteDiskViper.BindPFlag("managedDisk.name", deleteDiskCmd.PersistentFlags().Lookup("name"))
+	deleteDiskViper.BindPFlag("managedDisk.resource-group", deleteDiskCmd.PersistentFlags().Lookup("rgroupname"))
 
 	//for update
 
 	updateCmd.AddCommand(updateDiskCmd)
-	updateDiskCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
-	updateDiskCmd.PersistentFlags().StringP("resourcegroup", "g", "opsFlagDefault", "disk resource group")
-	updateDiskCmd.PersistentFlags().StringP("diskLocation", "l", "westus", "disk location")
-	updateDiskCmd.PersistentFlags().StringP("location", "r", "westus", "disk location")
+	updateDiskCmd.PersistentFlags().StringP("name", "n", "opsFlagDefaultU", "disk name") //  fullyQualifiedName,shorthand,defalt,description
+	updateDiskCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefaultU", "disk resource group")
+	updateDiskCmd.PersistentFlags().StringP("size", "r", "westus", "disk location")
 
-	viper.BindPFlags(updateCmd.PersistentFlags())
+	updateDiskViper.BindPFlag("managedDisk.name", updateDiskCmd.PersistentFlags().Lookup("name"))
+	updateDiskViper.BindPFlag("managedDisk.resource-group", updateDiskCmd.PersistentFlags().Lookup("rgroupname"))
+	updateDiskViper.BindPFlag("managedDisk.size-gb", updateDiskCmd.PersistentFlags().Lookup("size"))
 
 	//for get List
 
 	getCmd.AddCommand(getDiskCmd)
-	getDiskCmd.PersistentFlags().StringP("resourcegroup", "g", "opsFlagDefault", "disk resource group")
+	getDiskCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefaultG", "disk resource group")
 
-	viper.BindPFlags(getDiskCmd.PersistentFlags())
+	getDiskViper.BindPFlag("managedDisk.resource-group", getDiskCmd.PersistentFlags().Lookup("rgroupname"))
 
 	// Here you will define your flags and configuration settings
 	// Cobra supports Persistent Flags which will work for this command
