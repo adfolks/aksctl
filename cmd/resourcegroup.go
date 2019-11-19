@@ -21,27 +21,159 @@ import (
 
 	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var rgroupName, rgroupRegion string
+var createRGViper = viper.New()
+var deleteRGViper = viper.New()
+var updateRGViper = viper.New()
+var getRGViper = viper.New()
 
-var createresourcegroupCmd = &cobra.Command{
+var createResourceGroupCmd = &cobra.Command{
 	Use:   "resourcegroup",
 	Short: "Create and manage an AKS resource group",
-	Long: `Create and manage an AKS resource group, it would use a random name and default location for resource group.
+	Long: `Create and manage an AKS resource group, it would use a random name and default region for resource group.
 	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		rgroupName, _ = cmd.Flags().GetString("name")
-		rgroupRegion, _ = cmd.Flags().GetString("region")
+		fmt.Println(args)
+
+		// Setting config file with viper
+
+		createRGViper.SetConfigName("default") // name of config file (without extension)
+		createRGViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := createRGViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                        // Handle errors reading the config file
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		}
+
+		// createRGViper.Set("rgroupName", "opsOverrided")   //setting overide for any value
+
+		//createRGViper.SetDefault("rgroupName", "rgDefault") // for setting a default value
+
+		rgroupName := createRGViper.GetString("metadata.resource-group") // getting values through viper
+		rgroupRegion := createRGViper.GetString("metadata.location")
+
+		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion: ", rgroupRegion)
+
 		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
 		fmt.Println("Resource group created")
 	},
 }
 
+// deleteResourceGroupCmd represents the delete operation on disk command
+var deleteResourceGroupCmd = &cobra.Command{
+	Use:   "resourcegroup",
+	Short: "Delete an AKS resource group",
+	Long: `Delete an AKS resource group with the specified resource group name.
+	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(args)
+
+		// Setting config file with viper
+
+		deleteRGViper.SetConfigName("default") // name of config file (without extension)
+		deleteRGViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := deleteRGViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                        // Handle errors reading the config file
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		}
+
+		// deleteViper.Set("rgroupName", "opsOverrided")   //setting overide for any value
+
+		//deleteViper.SetDefault("rgroupName", "rgroupDefault") // for setting a default value
+
+		rgroupName := deleteRGViper.GetString("metadata.resource-group") // getting values through viper
+
+		fmt.Println("rgroupName : ", rgroupName)
+
+		coreaksctl.DeleteResourceGroup(rgroupName)
+		fmt.Println("Resource group deleted")
+	},
+}
+
+// updateResourceGroupCmd represents the update operation on ResourceGroup command
+var updateResourceGroupCmd = &cobra.Command{
+	Use:   "resourcegroup",
+	Short: "Update an AKS ResourceGroup",
+	Long: `Update an AKS ResourceGroup with the specified resource group name.
+	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(args)
+
+		// Setting config file with viper
+
+		updateRGViper.SetConfigName("default") // name of config file (without extension)
+		updateRGViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := updateRGViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                        // Handle errors reading the config file
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		}
+
+		//updateViper.SetDefault("rgroupName", "rgNameDefault") // for setting a default value
+
+		rgroupName := updateRGViper.GetString("metadata.resource-group") // getting values through viper
+
+		fmt.Println("rgroupName : ", rgroupName)
+
+		coreaksctl.UpdateResourceGroup(rgroupName)
+	},
+}
+
+// getResourceGroupCmd represents the list operation resource group command
+var getResourceGroupCmd = &cobra.Command{
+	Use:   "resourcegroup",
+	Short: "Get list of AKS resource groups",
+	Long:  `Get list of AKS resource groups that are available.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(args)
+
+		// Setting config file with viper
+
+		getRGViper.SetConfigName("default") // name of config file (without extension)
+		getRGViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := getRGViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                     // Handle errors reading the config file
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		}
+
+		coreaksctl.GetResourceGroup()
+	},
+}
+
 func init() {
-	createCmd.AddCommand(createresourcegroupCmd)
-	createresourcegroupCmd.PersistentFlags().StringP("name", "n", "temp", "resource group name")
-	createresourcegroupCmd.PersistentFlags().StringP("region", "r", "westus", "resource group location")
+
+	//for create
+
+	createCmd.AddCommand(createResourceGroupCmd)
+	createResourceGroupCmd.PersistentFlags().StringP("rgroupname", "n", "rgnameflagdefault", "resource group name")
+	createResourceGroupCmd.PersistentFlags().StringP("rgroupregion", "r", "westus", "resource group region")
+
+	createRGViper.BindPFlag("metadata.resource-group", createResourceGroupCmd.PersistentFlags().Lookup("rgroupname"))
+	createRGViper.BindPFlag("metadata.location", createResourceGroupCmd.PersistentFlags().Lookup("rgroupregion"))
+	//viper.BindPFlags(createCmd.PersistentFlags())
+
+	//for delete
+
+	deleteCmd.AddCommand(deleteResourceGroupCmd)
+	deleteResourceGroupCmd.PersistentFlags().StringP("rgroupname", "n", "rgnameflagdefault", "resource group name") //  fullyQualifiedName,shorthand,default,description
+
+	deleteRGViper.BindPFlag("metadata.resource-group", deleteResourceGroupCmd.PersistentFlags().Lookup("rgroupname"))
+	//viper.BindPFlags(deleteCmd.PersistentFlags())
+
+	//for update
+
+	updateCmd.AddCommand(updateResourceGroupCmd)
+	updateResourceGroupCmd.PersistentFlags().StringP("rgroupname", "n", "rgnameflagdefault", "resource group name") //  fullyQualifiedName,shorthand,default,description
+
+	updateRGViper.BindPFlag("metadata.resource-group", deleteResourceGroupCmd.PersistentFlags().Lookup("rgroupname"))
+
+	//viper.BindPFlags(updateCmd.PersistentFlags())
+
+	//for get List
+
+	getCmd.AddCommand(getResourceGroupCmd)
+
+	getRGViper.BindPFlags(getCmd.PersistentFlags())
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
