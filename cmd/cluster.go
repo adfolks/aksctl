@@ -17,7 +17,10 @@ package cmd
 
 import (
 	"fmt"
+<<<<<<< HEAD
+=======
 
+>>>>>>> 8093a6af86a4c465096a34a0332c16dd85b49caf
 	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -36,6 +39,10 @@ var clusterCmd = &cobra.Command{
 	Long: `Create an AKS cluster, it would use a Random Name for cluster.
 	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
+<<<<<<< HEAD
+		createCluster("Ops_Brew", "Ops_Brew")
+		fmt.Println("cluster called")
+=======
 		fmt.Println(args)
 
 		// Setting config file with viper
@@ -144,6 +151,7 @@ var getClusterCmd = &cobra.Command{
 		fmt.Println("rgroupName : ", rgroupName)
 
 		coreaksctl.GetCluster(rgroupName)
+>>>>>>> 8093a6af86a4c465096a34a0332c16dd85b49caf
 	},
 }
 
