@@ -24,6 +24,12 @@ import (
 )
 
 // clusterCmd represents the cluster command
+
+var createViper = viper.New()
+var deleteViper = viper.New()
+var updateViper = viper.New()
+var getViper = viper.New()
+
 var clusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Create an AKS cluster",
@@ -34,10 +40,10 @@ var clusterCmd = &cobra.Command{
 
 		// Setting config file with viper
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		createViper.SetConfigName("default") // name of config file (without extension)
+		createViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := createViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                      // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
@@ -51,11 +57,9 @@ var clusterCmd = &cobra.Command{
 		*/
 		// viper.Set("rgroupName", "opsOverrided")   //setting overide for any value
 
-		viper.SetDefault("rgroupName", "opsDefault") // for setting a default value
-
-		rgroupName := viper.GetString("rgroupName") // getting values through viper
-		rgroupRegion := viper.GetString("rgroupRegion")
-		clusterName := viper.GetString("clusterName")
+		clusterName := createViper.GetString("metadata.name")
+		rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
+		rgroupRegion := createViper.GetString("metadata.location")
 
 		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", rgroupRegion, ", ", "clusterName : ", clusterName)
 
@@ -74,17 +78,17 @@ var deleteClusterCmd = &cobra.Command{
 		fmt.Println(args)
 
 		// Setting config file with viper
-		viper.SetDefault("rgroupName", "opsDefault") // for setting a default value
+		// deleteViper.SetDefault("rgroupName", "opsDefault") // for setting a default value
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		deleteViper.SetConfigName("default") // name of config file (without extension)
+		deleteViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := deleteViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                      // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		rgroupName := viper.GetString("rgroupName") // getting values through viper
-		clusterName := viper.GetString("clusterName")
+		clusterName := deleteViper.GetString("metadata.name")
+		rgroupName := deleteViper.GetString("metadata.resource-group") // getting values through viper
 
 		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", "clusterName : ", clusterName)
 
@@ -101,18 +105,15 @@ var updateClusterCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
-		// Setting config file with viper
-		viper.SetDefault("rgroupName", "opsDefault") // for setting a default value
-
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		updateViper.SetConfigName("default") // name of config file (without extension)
+		updateViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := updateViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                      // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		rgroupName := viper.GetString("rgroupName") // getting values through viper
-		clusterName := viper.GetString("clusterName")
+		clusterName := updateViper.GetString("metadata.name")
+		rgroupName := updateViper.GetString("metadata.resource-group") // getting values through viper
 
 		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", "clusterName : ", clusterName)
 
@@ -129,16 +130,16 @@ var getClusterCmd = &cobra.Command{
 		fmt.Println(args)
 
 		// Setting config file with viper
-		viper.SetDefault("rgroupName", "opsDefault") // for setting a default value
+		// getViper.SetDefault("rgroupName", "opsDefault") // for setting a default value
 
-		viper.SetConfigName("default") // name of config file (without extension)
-		viper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := viper.ReadInConfig()    // Find and read the config file
-		if err != nil {                // Handle errors reading the config file
+		getViper.SetConfigName("default") // name of config file (without extension)
+		getViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := getViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                   // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		rgroupName := viper.GetString("rgroupName") // getting values through viper
+		rgroupName := viper.GetString("metadata.resource-group") // getting values through viper
 
 		fmt.Println("rgroupName : ", rgroupName)
 
@@ -151,33 +152,38 @@ func init() {
 	//for create
 
 	createCmd.AddCommand(clusterCmd)
-	clusterCmd.PersistentFlags().StringP("clusterName", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
-	clusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
+	clusterCmd.PersistentFlags().StringP("name", "n", "opsFlagDefaultCreate", "disk name") //  fullyQualifiedName,shorthand,defalt,description
+	clusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefaultC", "disk resource group")
 	clusterCmd.PersistentFlags().StringP("rgroupRegion", "r", "westus", "disk location")
 
-	viper.BindPFlags(clusterCmd.PersistentFlags())
+	createViper.BindPFlag("metadata.name", clusterCmd.PersistentFlags().Lookup("name"))
+	createViper.BindPFlag("metadata.resource-group", clusterCmd.PersistentFlags().Lookup("rgroupname"))
+	createViper.BindPFlag("metadata.location", clusterCmd.PersistentFlags().Lookup("rgroupRegion"))
 
 	//for delete
 
 	deleteCmd.AddCommand(deleteClusterCmd)
-	deleteClusterCmd.PersistentFlags().StringP("clusterName", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
+	deleteClusterCmd.PersistentFlags().StringP("name", "n", "opsFlagDefaultDelete", "disk name") //  fullyQualifiedName,shorthand,defalt,description
 	deleteClusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
 
-	viper.BindPFlags(deleteCmd.PersistentFlags())
+	deleteViper.BindPFlag("metadata.name", deleteClusterCmd.PersistentFlags().Lookup("name"))
+	deleteViper.BindPFlag("metadata.resource-group", deleteClusterCmd.PersistentFlags().Lookup("rgroupname"))
 
 	//for update
 
 	updateCmd.AddCommand(updateClusterCmd)
-	updateClusterCmd.PersistentFlags().StringP("clusterName", "n", "opsFlagDefault", "disk name") //  fullyQualifiedName,shorthand,defalt,description
+	updateClusterCmd.PersistentFlags().StringP("name", "n", "opsFlagDefaultUpdate", "disk name") //  fullyQualifiedName,shorthand,defalt,description
 	updateClusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
 	updateClusterCmd.PersistentFlags().StringP("rgroupRegion", "r", "westus", "disk location")
 
-	viper.BindPFlags(updateCmd.PersistentFlags())
+	updateViper.BindPFlag("metadata.name", updateClusterCmd.PersistentFlags().Lookup("name"))
+	updateViper.BindPFlag("metadata.resource-group", updateClusterCmd.PersistentFlags().Lookup("rgroupname"))
+	updateViper.BindPFlag("metadata.location", updateClusterCmd.PersistentFlags().Lookup("rgroupRegion"))
 
 	//for get List
 
 	getCmd.AddCommand(getClusterCmd)
 	getClusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
 
-	viper.BindPFlags(getClusterCmd.PersistentFlags())
+	getViper.BindPFlag("metadata.resource-group", getClusterCmd.PersistentFlags().Lookup("rgroupname"))
 }
