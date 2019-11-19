@@ -25,8 +25,9 @@ import (
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "To Create an AKS cluster",
-	Long: `You can create a cluster with aksctl create cluster`,
+	Long:  `You can create a cluster with aksctl create cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		fmt.Println("create called")
 	},
 }
