@@ -17,22 +17,22 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
 // createCmd represents the create command
-var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "To Create an AKS cluster",
-	Long:  `You can create a cluster with aksctl create cluster`,
+var getCmd = &cobra.Command{
+	Use:   "get",
+	Short: "To get an AKS cluster",
+	Long:  `You can get a cluster with aksctl get cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		fmt.Println("create called")
+		fmt.Println("delete called")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(createCmd)
+	rootCmd.AddCommand(getCmd)
 
 	// Here you will define your flags and configuration settings.
 
