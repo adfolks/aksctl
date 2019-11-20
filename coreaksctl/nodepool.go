@@ -6,43 +6,10 @@ import (
 	"os/exec"
 )
 
-func CreateResourceGroup(rgroupName string, rgroupRegion string) {
+func CreateNodePool(clusterName string, nodePoolName string, rgroupName string) {
 
-	cmd := exec.Command("az", "group", "create", "-l", rgroupRegion, "-n", rgroupName)
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-	}
-	fmt.Println("Result: " + out.String())
-}
-
-func CheckResourceGroup(rgroupName string) bool {
-	cmd := exec.Command("az", "group", "exists", "-n", rgroupName)
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-	}
-	fmt.Println("Result:" + out.String() + "a")
-	if out.String() == "true\n" {
-		return true
-	} else {
-		return false
-	}
-
-}
-
-func DeleteResourceGroup(rgroupName string) {
-
-	//Delete AKS ResourceGroup
-	cmd := exec.Command("az", "group", "delete", "--name", rgroupName, "--yes")
+	cmd := exec.Command("az", "aks", "nodepool", "add", "--cluster-name", clusterName, "--name",
+		nodePoolName, "--resource-group", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -55,10 +22,10 @@ func DeleteResourceGroup(rgroupName string) {
 	fmt.Println("Result: " + out.String())
 }
 
-func UpdateResourceGroup(rgroupName string) {
+func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) {
 
-	//Update AKS ResourceGroup
-	cmd := exec.Command("az", "group", "update", "--name", rgroupName)
+	cmd := exec.Command("az", "aks", "nodepool", "delete", "--cluster-name", clusterName, "--name",
+		nodePoolName, "--resource-group", rgroupName, "--yes")
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -71,10 +38,41 @@ func UpdateResourceGroup(rgroupName string) {
 	fmt.Println("Result: " + out.String())
 }
 
-func GetResourceGroup() {
+func ScaleNodePool(clusterName string, nodePoolName string, rgroupName string) {
 
-	//List AKS ResourceGroup
-	cmd := exec.Command("az", "group", "list")
+	cmd := exec.Command("az", "aks", "nodepool", "scale", "--cluster-name", clusterName, "--name",
+		nodePoolName, "--resource-group", rgroupName)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		return
+	}
+	fmt.Println("Result: " + out.String())
+}
+
+func UpdateNodePool(clusterName string, nodePoolName string, rgroupName string) {
+
+	cmd := exec.Command("az", "aks", "nodepool", "update", "--cluster-name", clusterName, "--name",
+		nodePoolName, "--resource-group", rgroupName)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		return
+	}
+	fmt.Println("Result: " + out.String())
+}
+
+func GetNodePool(clusterName string, rgroupName string) {
+
+	cmd := exec.Command("az", "aks", "nodepool", "list", "--cluster-name", clusterName, "--resource-group", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out

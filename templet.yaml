@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  # name: value
+  name: value
   resource-group: value
   aad-client-app-id: value
   aad-server-app-id: value
@@ -25,7 +25,7 @@ metadata:
   load-balancer-outbound-ip-prefixes: value
   load-balancer-outbound-ips: value
   load-balancer-sku: value
-  location: value
+  location: eastus
   max-count: value
   max-pods: value
   min-count: value
@@ -62,7 +62,7 @@ vpc:
       eu-north-1c: { id: subnet-0426fb4a607393184 }
 
 nodePools:
-  - name: value
+    name: value
     resource-group: value
     enable-cluster-autoscaler: value
     kubernetes-version: value
@@ -79,7 +79,7 @@ nodePools:
     vnet-subnet-id: value
     zones{1,2,3}: value
 managedDisk:
-  - name: value
+    name: value
     resource-group: value
     disk-iops-read-write: value
     disk-mbps-read-write: value
