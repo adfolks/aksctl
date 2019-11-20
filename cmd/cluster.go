@@ -29,6 +29,7 @@ var createViper = viper.New()
 var deleteViper = viper.New()
 var updateViper = viper.New()
 var getViper = viper.New()
+var cfgFilef string = "default"
 
 var clusterCmd = &cobra.Command{
 	Use:   "cluster",
@@ -40,10 +41,10 @@ var clusterCmd = &cobra.Command{
 
 		// Setting config file with viper
 
-		createViper.SetConfigName("default") // name of config file (without extension)
-		createViper.AddConfigPath(".")       // optionally look for config in the working directory
-		err := createViper.ReadInConfig()    // Find and read the config file
-		if err != nil {                      // Handle errors reading the config file
+		createViper.SetConfigName(cfgFilef) // name of config file (without extension)
+		createViper.AddConfigPath(".")      // optionally look for config in the working directory
+		err := createViper.ReadInConfig()   // Find and read the config file
+		if err != nil {                     // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
@@ -60,11 +61,21 @@ var clusterCmd = &cobra.Command{
 		clusterName := createViper.GetString("metadata.name")
 		rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
 		rgroupRegion := createViper.GetString("metadata.location")
+		aadServerAppId := createViper.GetStringMap("metadata")
 
 		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", rgroupRegion, ", ", "clusterName : ", clusterName)
+		var extraflags []string
+		for k, v := range aadServerAppId {
+			if k != "name" && k != "resource-group" && k != "location" {
+				extraflags = append(extraflags, "--"+k)
+				if fmt.Sprintf("%v", v) != "nil" {
+					extraflags = append(extraflags, fmt.Sprintf("%v", v))
+				}
+			}
+		}
 
 		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
-		coreaksctl.CreateCluster(clusterName, rgroupName)
+		coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
 	},
 }
 
@@ -155,6 +166,7 @@ func init() {
 	clusterCmd.PersistentFlags().StringP("name", "n", "opsFlagDefaultCreate", "disk name") //  fullyQualifiedName,shorthand,defalt,description
 	clusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefaultC", "disk resource group")
 	clusterCmd.PersistentFlags().StringP("rgroupRegion", "r", "westus", "disk location")
+	clusterCmd.PersistentFlags().StringVar(&cfgFilef, "file", "default", "default")
 
 	createViper.BindPFlag("metadata.name", clusterCmd.PersistentFlags().Lookup("name"))
 	createViper.BindPFlag("metadata.resource-group", clusterCmd.PersistentFlags().Lookup("rgroupname"))
