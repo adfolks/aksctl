@@ -20,6 +20,25 @@ func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 	fmt.Println("Result: " + out.String())
 }
 
+func CheckResourceGroup(rgroupName string) bool {
+	cmd := exec.Command("az", "group", "exists", "-n", rgroupName)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+	}
+	fmt.Println("Result:" + out.String() + "a")
+	if out.String() == "true\n" {
+		return true
+	} else {
+		return false
+	}
+
+}
+
 func DeleteResourceGroup(rgroupName string) {
 
 	//Delete AKS ResourceGroup

@@ -55,8 +55,28 @@ var createDiskCmd = &cobra.Command{
 		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
 		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+		status := coreaksctl.CheckResourceGroup(diskResourceGroup)
+		fmt.Println("status =", status)
+		if status == false {
+			fmt.Println("Do you want to create a new resource group? (yes/no)")
+			confirmation := coreaksctl.AskForConfirmation()
+			if confirmation == true {
+				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
+				rgroupRegion := createDiskViper.GetString("managedDisk.location")
 
-		coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+				fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion: ", rgroupRegion)
+
+				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				fmt.Println("Resource group created")
+				fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+				coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+			} else {
+				fmt.Println("The resource group does not exist")
+			}
+		} else {
+			fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+			coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+		}
 	},
 }
 
