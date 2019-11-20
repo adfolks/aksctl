@@ -34,48 +34,50 @@ to fetch the latest dependencies.
   ```bash
      aksctl create cluster
   ```
-   A cluster with default parameters will be created.
+  A cluster with default parameters will be created.
   ```bash
      aksctl create --name
                    --rgroupname
                    --rgroupregion
   ```
   Example:
+
   Running the code            
   ```bash
      aksctl create --rgroupname myresourcegroup 
   ```
-   creates a resource group with the name `myresourcegroup`.
+  creates a resource group with the name `myresourcegroup`.
 
-   You can also customize your cluster by using a config file. 
-   For this, create a `.yaml` file like `cluster.yaml`.
+  You can also customize your cluster by using a config file. 
+  For this, create a `.yaml` file like `cluster.yaml`.
 
-   Next, run the command:
+  Next, run the command:
   ```bash
      aksctl create cluster -f cluster.yaml
-   ```
-   to apply the `cluster.yaml` file.
-   This will create a cluster as described in the file.
+  ```
+  to apply the `cluster.yaml` file.
+  This will create a cluster as described in the file.
   
 2.A cluster can be deleted by running:
-   ```bash
+  ```bash
       aksctl delete cluster
-   ```
-   A cluster with parameters will be deleted.
-   ```bash
+  ```
+  A cluster with parameters will be deleted.
+  ```bash
       aksctl delete --name --rgroupname
-   ```
+  ```
   Example:
+
   Running the code
-   ```bash
+  ```bash
       aksctl delete --name myclustername 
-   ```
-   deletes a cluster with the name `myclustername`.
+  ```
+  deletes a cluster with the name `myclustername`.
   
 3.A cluster can be updated by running:
-   ```bash
+  ```bash
       aksctl update cluster
-   ```
+  ```
   A cluster with parameters will be updated using flag values.
   
   ```bash
@@ -84,6 +86,7 @@ to fetch the latest dependencies.
                    --rgroupregion
   ```
   Example:
+
   Running the code
   ```bash
      aksctl update --name myclustername 
@@ -99,6 +102,7 @@ to fetch the latest dependencies.
      aksctl get --rgroupname 
   ```
   Example:
+
   Running the code
   ```bash
      aksctl get --rgroupname myresourcegroup
@@ -116,6 +120,7 @@ to fetch the latest dependencies.
                    --size
   ```  
   Example:
+
   Running the code
   ```bash
      aksctl create --name mydisk 
@@ -132,6 +137,7 @@ to fetch the latest dependencies.
      aksctl delete --name --rgroupname
   ```
   Example:
+
   Running the code
   ```bash
      aksctl delete --name mydisk 
@@ -149,43 +155,46 @@ to fetch the latest dependencies.
                   --size                            
   ```
   Example:
+
   Running the code
-   ```bash
+  ```bash
      aksctl update --name mydisk 
              
-   ```
-   updates a disk with the name `mydisk`.
+  ```
+  updates a disk with the name `mydisk`.
 
 8.Get the list of disks by running:
-   ```bash
+  ```bash
       aksctl get disk
-   ```
-   This gives the list of available disks.
-   ```bash
-      aksctl get --rgroupname
-   ```
-   Example:
-   Running the code
-   ```bash
+  ```
+  This gives the list of available disks.
+  ```bash
+     aksctl get --rgroupname
+  ```
+  Example:
+
+  Running the code
+  ```bash
      aksctl get --rgroupname myresourcegroup
-   ```
+  ```
 
 9.A nodepool can be created by running:
   ```bash
      aksctl create nodepool
   ```
-   A nodepool with default parameters will be created.
+  A nodepool with default parameters will be created.
   ```bash
      aksctl create --nodepoolname
                    --rgroupname
                    --clustername
   ```
   Example:
+
   Running the code            
   ```bash
      aksctl create --nodepoolname mynode
   ```
-   creates a nodepool with the name `mynode`.
+  creates a nodepool with the name `mynode`.
 
 10.A nodepool can be deleted by running:
    ```bash
@@ -197,8 +206,9 @@ to fetch the latest dependencies.
                     --rgroupname
                     --clustername
    ```
-  Example:
-  Running the code
+   Example:
+
+   Running the code
    ```bash
       aksctl delete --nodepoolname mynode
    ```
@@ -208,19 +218,20 @@ to fetch the latest dependencies.
    ```bash
       aksctl update nodepool
    ```
-  A nodepool with parameters will be updated using flag values.
+   A nodepool with parameters will be updated using flag values.
   
-  ```bash
-     aksctl update --nodepoolname
+   ```bash
+      aksctl update --nodepoolname
                    --rgroupname
                    --clustername
-  ```
-  Example:
-  Running the code
-  ```bash
-     aksctl update --nodepoolname mynode
-  ```
-  updates a nodepool with the name `mynode`.
+   ```
+   Example:
+
+   Running the code
+   ```bash
+      aksctl update --nodepoolname mynode
+   ```
+   updates a nodepool with the name `mynode`.
 
 12.A nodepool can be scaled by running:
    ```bash
@@ -233,50 +244,53 @@ to fetch the latest dependencies.
                    --clustername
    ```
    Example:
+
    Running the code
    ```bash
       aksctl scale --nodepoolname mynode
    ```
 
 13.Get the list of nodepools by running:
-  ```bash
-     aksctl get nodepool
-  ```
-  This gives the list of available nodepools.
-  ```bash
-     aksctl get --rgroupname --clustername
-  ```
-  Example:
-  Running the code
-  ```bash
-     aksctl get --rgroupname myresourcegroup
-  ```
+   ```bash
+      aksctl get nodepool
+   ```
+   This gives the list of available nodepools.
+   ```bash
+      aksctl get --rgroupname --clustername
+   ```
+   Example:
+
+   Running the code
+   ```bash
+      aksctl get --rgroupname myresourcegroup
+   ```
 
 14.A resource group can be created by running:
-  ```bash
-     aksctl create resource group
-  ```
-  A resource group with default parameters will be created.
-  ```bash
-     aksctl create --rgroupname --rgroupregion
-  ```  
-  Example:
-  Running the code
-  ```bash
-     aksctl create --rgroupname myresourcegroup
-  ```
-  creates a resource group with the name `myresourcegroup`.
+   ```bash
+      aksctl create resource group
+   ```
+   A resource group with default parameters will be created.
+   ```bash
+      aksctl create --rgroupname --rgroupregion
+   ```  
+   Example:
+
+   Running the code
+   ```bash
+      aksctl create --rgroupname myresourcegroup
+   ```
+   creates a resource group with the name `myresourcegroup`.
 
 15.A resource group can be deleted by running:
-
-  ```bash
-     aksctl delete resource group
+   ```bash
+      aksctl delete resource group
   ``` 
   A resource group with parameters will be deleted.
   ```bash
      aksctl delete --rgroupname
   ```
   Example:
+
   Running the code
   ```bash
      aksctl delete --rgroupname myresourcegroup
@@ -289,12 +303,13 @@ to fetch the latest dependencies.
   ```
   A resourcegroup with parameters will be updated using flag values.      
   ```bash
-    aksctl update --rgroupname                         
+     aksctl update --rgroupname                         
   ```
   Example:
+
   Running the code
    ```bash
-     aksctl update --rgroupname myresourcegroup
+      aksctl update --rgroupname myresourcegroup
              
    ```
    updates a resourcegroup with the name `myresourcegroup`.
