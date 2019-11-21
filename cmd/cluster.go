@@ -74,9 +74,26 @@ var clusterCmd = &cobra.Command{
 				}
 			}
 		}
+		status := coreaksctl.CheckResourceGroup(rgroupName)
+		if status == false {
+			fmt.Println("Do you want to create a new resource group? (yes/no)")
+			confirmation := coreaksctl.AskForConfirmation()
+			if confirmation == true {
 
-		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
-		coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
+				rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
+				rgroupRegion := createViper.GetString("metadata.location")
+
+				color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion: " + rgroupRegion)
+
+				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				color.Green("Resource group created")
+				coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
+			} else {
+				color.Red("Cannot create cluster as the resource group does not exist")
+			}
+		} else {
+			coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
+		}
 	},
 }
 

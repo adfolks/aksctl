@@ -8,10 +8,12 @@ metadata:
   node-count: 2
 
 nodePools:
-    name: nodePool
-    resource-group: defaultRGroup
-    location: eastus
+  name: nodePool
+  resource-group: defaultRGroup
+  location: eastus
 managedDisk:
-    name: managedDisk
-    resource-group: defaultRGroup
-    location: eastus
+  name: managedDIsk
+  resource-group: defaultRGroup
+  location: eastus
+vnet:
+  name: vnetDefault
