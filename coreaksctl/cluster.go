@@ -64,7 +64,7 @@ func DeleteCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Cluster Deleted")
 }
 
 func UpdateCluster(clusterName string, resourceGroupName string) {
@@ -83,7 +83,7 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Cluster Updated")
 }
 
 func GetCluster(resourceGroupName string) {

@@ -2,97 +2,16 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  # name: value
-  resource-group: value
-  aad-client-app-id: value
-  aad-server-app-id: value
-  aad-server-app-secret: value
-  aad-tenant-id: value
-  admin-username: value
-  api-server-authorized-ip-ranges: value
-  attach-acr: value
-  client-secret: value
-  disable-rbac: value
-  dns-name-prefix: value
-  dns-service-ip: value
-  docker-bridge-address: value
-  enable-addons: value
-  enable-cluster-autoscaler: value
-  enable-rbac: value
-  generate-ssh-keys: value
-  kubernetes-version: value
-  load-balancer-managed-outbound-ip-count: value
-  load-balancer-outbound-ip-prefixes: value
-  load-balancer-outbound-ips: value
-  load-balancer-sku: value
-  location: value
-  max-count: value
-  max-pods: value
-  min-count: value
-  network-plugin: value
-  network-policy: value
-  no-ssh-key: value
-  no-wait: value
-  node-count: value
-  node-osdisk-size: value
-  node-vm-size: value
-  nodepool-name: value
-  pod-cidr: value
-  service-cidr: value
-  service-principal: value
-  skip-subnet-role-assignment: value
-  ssh-key-value: value
-  subscription: value
-  tags: value
-  vm-set-type: value
-  vnet-subnet-id: value
-  workspace-resource-id: value
-  zones: value
-
-
-vpc:
-  subnets:
-    private:
-      eu-north-1a: { id: subnet-0ff156e0c4a6d300c }
-      eu-north-1b: { id: subnet-0549cdab573695c03 }
-      eu-north-1c: { id: subnet-0426fb4a607393184 }
-    public:
-      eu-north-1a: { id: subnet-0ff156e0c4a6d300c }
-      eu-north-1b: { id: subnet-0549cdab573695c03 }
-      eu-north-1c: { id: subnet-0426fb4a607393184 }
+  name: defaultCluster
+  resource-group: defaultRGroup
+  location: eastus
+  node-count: 2
 
 nodePools:
-  - name: value
-    resource-group: value
-    enable-cluster-autoscaler: value
-    kubernetes-version: value
-    max-count: value
-    max-pods: value
-    min-count: value
-    no-wait: value
-    node-count: value
-    node-osdisk-size: value
-    node-taints: value
-    node-vm-size: value
-    os-type: value
-    subscription: value
-    vnet-subnet-id: value
-    zones{1,2,3}: value
+    name: nodePool
+    resource-group: defaultRGroup
+    location: eastus
 managedDisk:
-  - name: value
-    resource-group: value
-    disk-iops-read-write: value
-    disk-mbps-read-write: value
-    for-upload{false,true}: value
-    hyper-v-generation{V1,V2}: value
-    location: value
-    no-wait: value
-    os-type{Linux,Windows}: value
-    size-gb: value
-    sku{Premium_LRS,StandardSSD_LRS,Standard_LRS,UltraSSD_LRS}: value
-    source: value
-    source-storage-account-id: value
-    subscription: value
-    tags: value
-    upload-size-bytes: value
-    zone: value
+    name: managedDisk
+    resource-group: defaultRGroup
+    location: eastus
