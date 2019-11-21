@@ -35,7 +35,6 @@ var createResourceGroupCmd = &cobra.Command{
 	Long: `Create and manage an AKS resource group, it would use a random name and default region for resource group.
 	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
