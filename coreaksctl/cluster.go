@@ -6,24 +6,46 @@ import (
 	"os/exec"
 )
 
-func CreateCluster(clusterName string, resourceGroupName string) {
+func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
 	fmt.Println("Starting to set up your k8s Cluster")
 	fmt.Println("This would take a few minutes...")
 	fmt.Println("---------------------------------")
 	//Create AKS Cluster
-	cmd := exec.Command("az", "aks", "create", "--name", clusterName,
-		"--resource-group", resourceGroupName, "--node-count",
-		"2", "--generate-ssh-keys")
+	var args = []string{"aks", "create", "--name", clusterName, "--resource-group", resourceGroupName}
+	args = append(args, extraflags...)
+	cmd := exec.Command("az", args...)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Result: Cluster Created")
+	fmt.Println("Fetching Credentials ........")
+	GetClusterCredentials(clusterName, resourceGroupName)
+
+}
+
+func GetClusterCredentials(clusterName string, resourceGroupName string) {
+	fmt.Println("Starting to set up your k8s Cluster")
+	fmt.Println("This would take a few minutes...")
+	fmt.Println("---------------------------------")
+	//Create AKS Cluster
+	var args = []string{"aks", "get-credentials", "--name", clusterName, "--resource-group", resourceGroupName}
+	cmd := exec.Command("az", args...)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
+		return
+	}
+	fmt.Println("Credentil is : " + out.String())
 }
 
 func DeleteCluster(clusterName string, resourceGroupName string) {
@@ -42,7 +64,7 @@ func DeleteCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Cluster Deleted")
 }
 
 func UpdateCluster(clusterName string, resourceGroupName string) {
@@ -61,7 +83,7 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Cluster Updated")
 }
 
 func GetCluster(resourceGroupName string) {

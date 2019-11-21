@@ -34,7 +34,6 @@ var createDiskCmd = &cobra.Command{
 	Long: `Create and manage Azure Managed Disks, it will use a random name and default resource group for the disk if not specified.
  	If you need to specify name or other resources use disk.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -55,8 +54,28 @@ var createDiskCmd = &cobra.Command{
 		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
 		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+		status := coreaksctl.CheckResourceGroup(diskResourceGroup)
 
-		coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+		if status == false {
+			fmt.Println("Do you want to create a new resource group? (yes/no)")
+			confirmation := coreaksctl.AskForConfirmation()
+			if confirmation == true {
+				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
+				rgroupRegion := createDiskViper.GetString("managedDisk.location")
+
+				fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion: ", rgroupRegion)
+
+				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				fmt.Println("Resource group created")
+				fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+				coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+			} else {
+				fmt.Println("The resource group does not exist")
+			}
+		} else {
+			fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+			coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+		}
 	},
 }
 

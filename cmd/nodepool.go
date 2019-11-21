@@ -34,7 +34,6 @@ var createNodePoolCmd = &cobra.Command{
 	Long: `Create and manage Nodepools, it will use a random name, a default resource group and cluster for the nodepool if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -65,7 +64,6 @@ var deleteNodePoolCmd = &cobra.Command{
 	Long: `Delete and manage Nodepools, it will use a random name, a default resource group for the nodepool if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -96,7 +94,6 @@ var updateNodePoolCmd = &cobra.Command{
 	Long: `Update and manage Nodepools, it will use a random name, a default resource group for the nodepool if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -127,7 +124,6 @@ var scaleNodePoolCmd = &cobra.Command{
 	Long: `Scale and manage Nodepools, it will use a random name, a default resource group and cluster for the nodepool if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -158,7 +154,6 @@ var getNodePoolCmd = &cobra.Command{
 	Long: `Get and manage Nodepools, it will use a random name, a default resource group and cluster for the nodepool if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 

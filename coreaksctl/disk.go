@@ -20,7 +20,7 @@ func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, 
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String() + "Createed END")
+	fmt.Println("Result: " + out.String() + "Created")
 }
 
 func DeleteDisk(diskName string, diskResourceGroup string) {
