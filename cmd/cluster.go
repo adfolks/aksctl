@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -63,7 +64,7 @@ var clusterCmd = &cobra.Command{
 		rgroupRegion := createViper.GetString("metadata.location")
 		aadServerAppId := createViper.GetStringMap("metadata")
 
-		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", rgroupRegion, ", ", "clusterName : ", clusterName)
+		color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion : " + rgroupRegion + ", clusterName : " + clusterName)
 		var extraflags []string
 		for k, v := range aadServerAppId {
 			if k != "name" && k != "resource-group" && k != "location" {
@@ -101,7 +102,7 @@ var deleteClusterCmd = &cobra.Command{
 		clusterName := deleteViper.GetString("metadata.name")
 		rgroupName := deleteViper.GetString("metadata.resource-group") // getting values through viper
 
-		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", "clusterName : ", clusterName)
+		color.Cyan("rgroupName : " + rgroupName + ", clusterName : " + clusterName)
 
 		coreaksctl.DeleteCluster(clusterName, rgroupName)
 	},
@@ -126,7 +127,7 @@ var updateClusterCmd = &cobra.Command{
 		clusterName := updateViper.GetString("metadata.name")
 		rgroupName := updateViper.GetString("metadata.resource-group") // getting values through viper
 
-		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", "clusterName : ", clusterName)
+		color.Cyan("rgroupName : " + rgroupName + ", clusterName : " + clusterName)
 
 		coreaksctl.UpdateCluster(clusterName, rgroupName)
 	},
@@ -138,7 +139,6 @@ var getClusterCmd = &cobra.Command{
 	Short: "Get list of AKS cluster",
 	Long:  `Get list of AKS cluster from a resource group.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 		// getViper.SetDefault("rgroupName", "opsDefault") // for setting a default value
@@ -152,7 +152,7 @@ var getClusterCmd = &cobra.Command{
 
 		rgroupName := viper.GetString("metadata.resource-group") // getting values through viper
 
-		fmt.Println("rgroupName : ", rgroupName)
+		color.Cyan("rgroupName : " + rgroupName)
 
 		coreaksctl.GetCluster(rgroupName)
 	},

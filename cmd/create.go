@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +26,7 @@ var createCmd = &cobra.Command{
 	Short: "To Create an AKS cluster",
 	Long:  `You can create a cluster with aksctl create cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create is not in aksctl command group. See 'akstl create --help' ")
+		color.Red("create is not in aksctl command group. See 'akstl create --help' ")
 	},
 }
 
