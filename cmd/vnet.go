@@ -36,7 +36,6 @@ var createVNetCmd = &cobra.Command{
 	Long: `Create and manage Virtual Networks, it will use a random name, a default resource group and cluster for the nodepool if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 

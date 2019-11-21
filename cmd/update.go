@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +26,7 @@ var updateCmd = &cobra.Command{
 	Short: "To update an AKS cluster",
 	Long:  `You can get a cluster with aksctl update cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("update is not in aksctl command group. See 'akstl update --help' ")
+		color.Red("update is not in aksctl command group. See 'akstl update --help' ")
 	},
 }
 
