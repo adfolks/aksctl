@@ -29,7 +29,7 @@ func DeleteDisk(diskName string, diskResourceGroup string) {
 
 	//Delete AKS Disk
 	cmd := exec.Command("az", "disk", "delete", "--name", diskName,
-		"--resource-group", diskResourceGroup)
+		"--resource-group", diskResourceGroup, "--yes")
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out

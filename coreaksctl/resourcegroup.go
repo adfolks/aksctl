@@ -37,7 +37,7 @@ func CheckResourceGroup(rgroupName string) bool {
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 	}
-	fmt.Println("Result:" + out.String() + "a")
+	fmt.Println("Result:" + out.String())
 	if out.String() == "true\n" {
 		return true
 	} else {
