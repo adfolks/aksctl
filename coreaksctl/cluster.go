@@ -34,7 +34,7 @@ func GetClusterCredentials(clusterName string, resourceGroupName string) {
 	fmt.Println("This would take a few minutes...")
 	fmt.Println("---------------------------------")
 	//Create AKS Cluster
-	var args = []string{"aks", "--get-credentials", "--resource-group", resourceGroupName, "--cluster", clusterName}
+	var args = []string{"aks", "get-credentials", "--name", clusterName, "--resource-group", resourceGroupName}
 	cmd := exec.Command("az", args...)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -64,7 +64,7 @@ func DeleteCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Cluster Deleted")
 }
 
 func UpdateCluster(clusterName string, resourceGroupName string) {
@@ -83,7 +83,7 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Cluster Updated")
 }
 
 func GetCluster(resourceGroupName string) {

@@ -27,7 +27,7 @@ var getCmd = &cobra.Command{
 	Short: "To get an AKS cluster",
 	Long:  `You can get a cluster with aksctl get cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+		fmt.Println("get is not in aksctl command group. See 'akstl get --help' ")
 	},
 }
 

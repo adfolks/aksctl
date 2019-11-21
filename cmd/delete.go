@@ -27,7 +27,7 @@ var deleteCmd = &cobra.Command{
 	Short: "To Delete an AKS cluster",
 	Long:  `You can delete a cluster with aksctl delete cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+		fmt.Println("delete is not in aksctl command group. See 'akstl delete --help' ")
 	},
 }
 

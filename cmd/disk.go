@@ -34,7 +34,6 @@ var createDiskCmd = &cobra.Command{
 	Long: `Create and manage Azure Managed Disks, it will use a random name and default resource group for the disk if not specified.
  	If you need to specify name or other resources use disk.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -56,7 +55,7 @@ var createDiskCmd = &cobra.Command{
 
 		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
 		status := coreaksctl.CheckResourceGroup(diskResourceGroup)
-		fmt.Println("status =", status)
+
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
 			confirmation := coreaksctl.AskForConfirmation()
