@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+
+	"github.com/fatih/color"
 )
 
 func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
@@ -23,14 +25,13 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: Cluster Created")
-	fmt.Println("Fetching Credentials ........")
+	color.Green("Result: Cluster Created")
+	color.Cyan("Fetching Credentials ........")
 	GetClusterCredentials(clusterName, resourceGroupName)
 
 }
 
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
-	fmt.Println("Starting to set up your k8s Cluster")
 	fmt.Println("This would take a few minutes...")
 	fmt.Println("---------------------------------")
 	//Create AKS Cluster
@@ -45,7 +46,7 @@ func GetClusterCredentials(clusterName string, resourceGroupName string) {
 		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Credentil is : " + out.String())
+	color.Cyan(out.String())
 }
 
 func DeleteCluster(clusterName string, resourceGroupName string) {
@@ -83,7 +84,7 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Cluster Updated")
+	color.Green("Cluster Updated")
 }
 
 func GetCluster(resourceGroupName string) {

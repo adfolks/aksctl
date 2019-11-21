@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -53,7 +54,7 @@ var createDiskCmd = &cobra.Command{
 		diskLocation := createDiskViper.GetString("managedDisk.location")
 		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
-		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+		color.Cyan("diskName : "+diskName+", diskResourceGroup : "+diskResourceGroup+", diskLocation : "+diskLocation+", diskSize : ", diskSize)
 		status := coreaksctl.CheckResourceGroup(diskResourceGroup)
 
 		if status == false {
@@ -63,17 +64,15 @@ var createDiskCmd = &cobra.Command{
 				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
 				rgroupRegion := createDiskViper.GetString("managedDisk.location")
 
-				fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion: ", rgroupRegion)
+				color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion: " + rgroupRegion)
 
 				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
-				fmt.Println("Resource group created")
-				fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
+				color.Green("Resource group created")
 				coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
 			} else {
-				fmt.Println("The resource group does not exist")
+				color.Red("The resource group does not exist")
 			}
 		} else {
-			fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskLocation : ", diskLocation, ", ", "diskSize : ", diskSize)
 			coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
 		}
 	},
@@ -86,7 +85,6 @@ var deleteDiskCmd = &cobra.Command{
 	Long: `Delete an AKS disk, it would use a Random Name for disk.
 	If you need to specify name or other resources use disk.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -104,7 +102,7 @@ var deleteDiskCmd = &cobra.Command{
 		diskName := deleteDiskViper.GetString("managedDisk.name") // getting values through viper
 		diskResourceGroup := deleteDiskViper.GetString("managedDisk.resource-group")
 
-		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup)
+		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup)
 
 		coreaksctl.DeleteDisk(diskName, diskResourceGroup)
 	},
@@ -117,7 +115,6 @@ var updateDiskCmd = &cobra.Command{
 	Long: `Update an AKS disk, it would use a Random Name for disk.
 	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -134,7 +131,7 @@ var updateDiskCmd = &cobra.Command{
 		diskResourceGroup := updateDiskViper.GetString("managedDisk.resource-group")
 		diskSize := updateDiskViper.GetString("managedDisk.size-gb")
 
-		fmt.Println("diskName : ", diskName, ", ", "diskResourceGroup : ", diskResourceGroup, ", ", "diskSize : ", diskSize)
+		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup + ", diskSize : " + diskSize)
 
 		coreaksctl.UpdateDisk(diskName, diskResourceGroup, diskSize)
 	},
@@ -161,7 +158,7 @@ var getDiskCmd = &cobra.Command{
 
 		diskResourceGroup := getDiskViper.GetString("managedDisk.resource-group")
 
-		fmt.Println("diskResourceGroup : ", diskResourceGroup)
+		color.Cyan("diskResourceGroup : " + diskResourceGroup)
 
 		coreaksctl.GetDisk(diskResourceGroup)
 	},

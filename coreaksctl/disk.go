@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+
+	"github.com/fatih/color"
 )
 
 func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, diskSize string) {
@@ -20,7 +22,7 @@ func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, 
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String() + "Created")
+	color.Green("Disk Created")
 }
 
 func DeleteDisk(diskName string, diskResourceGroup string) {
@@ -37,7 +39,7 @@ func DeleteDisk(diskName string, diskResourceGroup string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Disk Deleted")
 }
 
 func UpdateDisk(diskName string, diskResourceGroup string, diskSize string) {
@@ -54,7 +56,7 @@ func UpdateDisk(diskName string, diskResourceGroup string, diskSize string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Disk Updated")
 }
 
 func GetDisk(diskResourceGroup string) {
