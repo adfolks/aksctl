@@ -13,7 +13,6 @@ You will need to have Azure credentials configured. What works for AZ CLI should
 
 ### Installation
 
-#### Install from source
 To install aksctl, clone the repository using:
 ```bash
 git clone https://github.com/adfolks/aksctl
@@ -30,33 +29,58 @@ go build
 to fetch the latest dependencies.
 
 ## Basic usage
-A default cluster can be created by running:
-```bash
-aksctl create cluster
-```
-A cluster with default parameters will be created.
+ A default cluster can be created by running:
+  ```bash
+     aksctl create cluster
+  ```
+  
+  This command will be using values from `default.yaml` located at the root directory,
+  edit `default.yaml` with reference to keys from `template.yaml` for specifying more parameters
+  
+  A cluster's mandatory parameters can be overridden using flags while running the command.
+  ```bash
+     aksctl create cluster --name
+                           --rgroupname
+                           --rgroupregion
+  ```
+  Example:
 
-Example:
+  Running the code            
+  ```bash
+     aksctl create cluster --rgroupname myresourcegroup 
+  ```
+  
+  Flags can be used with shorthand name as well         
+  ```bash
+     aksctl create cluster -r myresourcegroup 
+  ```
+  
+  above code will create a resource group with the name `myresourcegroup`.
 
-Running the code 
-```bash
-aksctl create resourcegroup --name myresourcegroup --region eastus
-```
-creates a resource group with the name `myresourcegroup` and region set to `eastus`.
+  You can also customize your cluster by using a config file. 
+  For this, create a `.yaml` a file like `config.yaml` with reference to keys from `template.yaml`.
 
-You can also customize your cluster by using a config file. 
-For this, create a `.yaml` file like `cluster.yaml`.
-
-Next, run the command:
-```bash
-aksctl create cluster -f cluster.yaml
-```
-to apply the `cluster.yaml` file.
-This will create a cluster as described in the file.
+  Next, run the command:
+  ```bash
+     aksctl create cluster --file config
+  ```
+  to apply the `config.yaml` file.
+  This will create a cluster as described in the file.
+  
+A cluster can be deleted by running:
+  ```bash
+      aksctl delete cluster
+  ```
+  
+Get the list of clusters by running:
+  ```bash
+     aksctl get cluster
+  ```
 
 `aksctl` can be installed by following the above instructions.
 
-Check [aksctl.io](https://www.aksctl.io) to learn more abut what aksctl can do and its features.
+Check [aksctl.io](https://www.aksctl.io) to learn more about what aksctl can do and its features.
+
 
 ## Built With
 * Go
