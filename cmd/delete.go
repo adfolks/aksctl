@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +26,7 @@ var deleteCmd = &cobra.Command{
 	Short: "To Delete an AKS cluster",
 	Long:  `You can delete a cluster with aksctl delete cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete is not in aksctl command group. See 'akstl delete --help' ")
+		color.Red("delete is not in aksctl command group. See 'akstl delete --help' ")
 	},
 }
 

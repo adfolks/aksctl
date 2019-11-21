@@ -3,6 +3,8 @@ package coreaksctl
 import (
 	"fmt"
 	"log"
+
+	"github.com/fatih/color"
 )
 
 // askForConfirmation uses Scanln to parse user input. A user must type in "yes" or "no" and
@@ -23,7 +25,7 @@ func AskForConfirmation() bool {
 	} else if containsString(nokayResponses, response) {
 		return false
 	} else {
-		fmt.Println("Please type yes or no and then press enter:")
+		color.Blue("Please type yes or no and then press enter:")
 		return AskForConfirmation()
 	}
 }
