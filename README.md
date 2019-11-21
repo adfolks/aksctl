@@ -34,7 +34,7 @@ to fetch the latest dependencies.
      aksctl create cluster
   ```
   
-  This command will be using values from `default.yaml` situated in the root directory,
+  This command will be using values from `default.yaml` located at the root directory,
   edit `default.yaml` with reference to keys from `template.yaml` for specifying more parameters
   
   A cluster's mandatory parameters can be overridden using flags while running the command.
