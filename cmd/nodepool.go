@@ -61,7 +61,7 @@ var createNodePoolCmd = &cobra.Command{
 var deleteNodePoolCmd = &cobra.Command{
 	Use:   "nodepool",
 	Short: "Delete and manage Nodepools.",
-	Long: `Delete and manage Nodepools, it will use a random name, a default resource group for the nodepool if not specified.
+	Long: `Delete a node pool with the specified disk name and resource group.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -91,7 +91,7 @@ var deleteNodePoolCmd = &cobra.Command{
 var updateNodePoolCmd = &cobra.Command{
 	Use:   "nodepool",
 	Short: "Update and manage Nodepools.",
-	Long: `Update and manage Nodepools, it will use a random name, a default resource group for the nodepool if not specified.
+	Long: `Update a node pool with the specified disk name and resource group.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -121,7 +121,7 @@ var updateNodePoolCmd = &cobra.Command{
 var scaleNodePoolCmd = &cobra.Command{
 	Use:   "nodepool",
 	Short: "Scale and manage Nodepools.",
-	Long: `Scale and manage Nodepools, it will use a random name, a default resource group and cluster for the nodepool if not specified.
+	Long: `Scale a node pool with the specified disk name and resource group.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -151,7 +151,7 @@ var scaleNodePoolCmd = &cobra.Command{
 var getNodePoolCmd = &cobra.Command{
 	Use:   "nodepool",
 	Short: "Get and manage Nodepools.",
-	Long: `Get and manage Nodepools, it will use a random name, a default resource group and cluster for the nodepool if not specified.
+	Long: `Get a node pool with the specified disk name and resource group.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 

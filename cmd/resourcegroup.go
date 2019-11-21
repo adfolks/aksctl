@@ -34,7 +34,7 @@ var createResourceGroupCmd = &cobra.Command{
 	Use:   "resourcegroup",
 	Short: "Create and manage an AKS resource group",
 	Long: `Create and manage an AKS resource group, it would use a random name and default region for resource group.
-	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
+	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -64,7 +64,7 @@ var deleteResourceGroupCmd = &cobra.Command{
 	Use:   "resourcegroup",
 	Short: "Delete an AKS resource group",
 	Long: `Delete an AKS resource group with the specified resource group name.
-	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
+	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -93,7 +93,7 @@ var updateResourceGroupCmd = &cobra.Command{
 	Use:   "resourcegroup",
 	Short: "Update an AKS ResourceGroup",
 	Long: `Update an AKS ResourceGroup with the specified resource group name.
-	If you need to specify name or other resources use resourcegroup.yaml file for more custom configuration`,
+	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
