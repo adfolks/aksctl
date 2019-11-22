@@ -14,6 +14,12 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	fmt.Println("---------------------------------")
 	//Create AKS Cluster
 	var args = []string{"aks", "create", "--name", clusterName, "--resource-group", resourceGroupName}
+	//handle the SSH keys generation in case of basic usage or the key value is not present on the config file
+	fmt.Println(extraflags)
+	_, found := Find(extraflags, "ssh-key-value")
+	if !found {
+		extraflags = append(extraflags, "--generate-ssh-keys")
+	}
 	args = append(args, extraflags...)
 	cmd := exec.Command("az", args...)
 	var out bytes.Buffer
@@ -104,4 +110,15 @@ func GetCluster(resourceGroupName string) {
 		return
 	}
 	fmt.Println("Result: " + out.String())
+}
+
+// Find takes a slice and looks for an element in it. If found it will
+// return it's key, otherwise it will return -1 and a bool of false.
+func Find(slice []string, val string) (int, bool) {
+	for i, item := range slice {
+		if item == val {
+			return i, true
+		}
+	}
+	return -1, false
 }
