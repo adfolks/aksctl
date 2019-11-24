@@ -32,8 +32,8 @@ var deleteVNetViper = viper.New()
 
 var createVNetCmd = &cobra.Command{
 	Use:   "vnet",
-	Short: "Create and manage Virtual Networks.",
-	Long: `Create and manage Virtual Networks, it will use a random name, a default resource group and cluster for the nodepool if not specified.
+	Short: "Create a Virtual Network.",
+	Long: `Create and manage Virtual Networks, it will use a random name, a default resource group for the Virtual Network if not specified.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -80,8 +80,8 @@ var createVNetCmd = &cobra.Command{
 
 var deleteVNetCmd = &cobra.Command{
 	Use:   "vnet",
-	Short: "Delete and manage Virtual Networks.",
-	Long: `Delete and manage Virtual Networks, it will use a random name, a default resource group for the Virtual Network if not specified.
+	Short: "Delete a Virtual Networks.",
+	Long: `Delete Virtual Network with the specified name and resource group.
  	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)

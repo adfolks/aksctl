@@ -26,7 +26,7 @@ var scaleCmd = &cobra.Command{
 	Short: "To scale a node pool in AKS cluster",
 	Long:  `You can scale the node pool in a managed Kubernetes cluster with aksctl scale cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Red("scale is not in aksctl command group. See 'akstl scale --help' ")
+		color.Red("scale is not in aksctl command group. See 'aksctl scale --help' ")
 	},
 }
 

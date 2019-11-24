@@ -26,20 +26,11 @@ var getCmd = &cobra.Command{
 	Short: "To get an AKS cluster",
 	Long:  `You can get a cluster with aksctl get cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Red("get is not in aksctl command group. See 'akstl get --help' ")
+		color.Red("get is not in aksctl command group. See 'aksctl get --help' ")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(getCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// createCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// createCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
