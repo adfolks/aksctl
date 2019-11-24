@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"time"
+	"github.com/kyokomi/emoji"
 )
 
 func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
@@ -38,7 +39,8 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	a.PersistWith(spin.Spinner{}, "....")
 	color.Green("Cluster Created")
 	GetClusterCredentials(clusterName, resourceGroupName)
-
+	color.Green("Updated Kubeconfig")
+    emoji.Println(":beer: Cheers!!!")
 }
 
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
