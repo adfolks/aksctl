@@ -31,7 +31,7 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	color.Green("Result: Cluster Created")
+	color.Green("Cluster Created")
 	color.Cyan("Fetching Credentials ........")
 	GetClusterCredentials(clusterName, resourceGroupName)
 
