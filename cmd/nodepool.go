@@ -18,6 +18,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -44,17 +45,16 @@ var createNodePoolCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		// createViper.Set("rgroupName", "opsOverrided")   //setting overide for any value
-
 		//createViper.SetDefault("nodePoolName", "nodepoolDefault") // for setting a default value
 
-		nodePoolName := createNPViper.GetString("metadata.nodepool-name") // getting values through viper
-		clusterName := createNPViper.GetString("metadata.name")
-		rgroupName := createNPViper.GetString("metadata.resource-group")
+		nodePoolName := createNPViper.GetString("nodePools.name") // getting values through viper
+		clusterName := createNPViper.GetString("nodePools.cluster-name")
+		rgroupName := createNPViper.GetString("nodePools.resource-group")
+		npNodeCount := createNPViper.GetString("nodePools.node-count")
 
-		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
+		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName, ", ", "npNodeCount : ", npNodeCount)
 
-		//coreaksctl.CreateNodePool(nodePoolName, clusterName, rgroupName)
+		coreaksctl.CreateNodePool(clusterName, nodePoolName, rgroupName, npNodeCount)
 	},
 }
 
@@ -74,17 +74,15 @@ var deleteNodePoolCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		// deleteNPViper.Set("rgroupName", "opsOverrided")   //setting overide for any value
-
 		//deleteNPViper.SetDefault("nodePoolName", "nodepoolDefault") // for setting a default value
 
-		nodePoolName := deleteNPViper.GetString("metadata.nodepool-name") // getting values through viper
-		clusterName := deleteNPViper.GetString("metadata.name")
-		rgroupName := deleteNPViper.GetString("metadata.resource-group")
+		nodePoolName := deleteNPViper.GetString("nodePools.name") // getting values through viper
+		clusterName := deleteNPViper.GetString("nodePools.cluster-name")
+		rgroupName := deleteNPViper.GetString("nodePools.resource-group")
 
 		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		//coreaksctl.DeleteNodePool(nodePoolName, clusterName, rgroupName)
+		coreaksctl.DeleteNodePool(clusterName, nodePoolName, rgroupName)
 	},
 }
 
@@ -108,13 +106,13 @@ var updateNodePoolCmd = &cobra.Command{
 
 		//updateNPViper.SetDefault("nodePoolName", "nodepoolDefault") // for setting a default value
 
-		nodePoolName := updateNPViper.GetString("metadata.nodepool-name") // getting values through viper
-		clusterName := updateNPViper.GetString("metadata.name")
-		rgroupName := updateNPViper.GetString("metadata.resource-group")
+		nodePoolName := updateNPViper.GetString("nodePools.name") // getting values through viper
+		clusterName := updateNPViper.GetString("nodePools.cluster-name")
+		rgroupName := updateNPViper.GetString("nodePools.resource-group")
 
 		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		//coreaksctl.UpdateNodePool(nodePoolName, clusterName, rgroupName)
+		//coreaksctl.UpdateNodePool(clusterName, nodePoolName, rgroupName)
 	},
 }
 
@@ -138,13 +136,13 @@ var scaleNodePoolCmd = &cobra.Command{
 
 		//viper.SetDefault("nodePoolName", "nodepoolDefault") // for setting a default value
 
-		nodePoolName := getNPViper.GetString("metadata.nodepool-name") // getting values through viper
-		clusterName := getNPViper.GetString("metadata.name")
-		rgroupName := getNPViper.GetString("metadata.resource-group")
+		nodePoolName := getNPViper.GetString("nodePools.name") // getting values through viper
+		clusterName := getNPViper.GetString("nodePools.cluster-name")
+		rgroupName := getNPViper.GetString("nodePools.resource-group")
 
 		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		//coreaksctl.ScaleNodePool(nodePoolName, clusterName, rgroupName)
+		//coreaksctl.ScaleNodePool(clusterName, nodePoolName, rgroupName)
 	},
 }
 
@@ -164,17 +162,15 @@ var getNodePoolCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		// getNPViper.Set("rgroupName", "opsOverrided")   //setting overide for any value
-
 		//getNPViper.SetDefault("nodePoolName", "nodepoolDefault") // for setting a default value
 
 		// getting values through viper
-		clusterName := getNPViper.GetString("metadata.name")
-		rgroupName := getNPViper.GetString("metadata.resource-group")
+		clusterName := getNPViper.GetString("nodePools.cluster-name")
+		rgroupName := getNPViper.GetString("nodePools.resource-group")
 
 		fmt.Println("clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		//coreaksctl.GetNodePool(clusterName, rgroupName)
+		coreaksctl.GetNodePool(clusterName, rgroupName)
 	},
 }
 
@@ -186,10 +182,12 @@ func init() {
 	createNodePoolCmd.PersistentFlags().StringP("nodepoolname", "n", "nodepoolFlag", "NodePool name")
 	createNodePoolCmd.PersistentFlags().StringP("rgroupname", "g", "rgFlag", "NodePool resource group")
 	createNodePoolCmd.PersistentFlags().StringP("clustername", "c", "clusterFlag", "NodePool cluster")
+	createNodePoolCmd.PersistentFlags().StringP("nodecount", "x", "1", "NodePool nodecount")
 
-	createNPViper.BindPFlag("metadata.name", createNodePoolCmd.PersistentFlags().Lookup("clustername"))
-	createNPViper.BindPFlag("metadata.resource-group", createNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
-	createNPViper.BindPFlag("metadata.nodepool-name", createNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
+	createNPViper.BindPFlag("nodePools.cluster-name", createNodePoolCmd.PersistentFlags().Lookup("clustername"))
+	createNPViper.BindPFlag("nodePools.resource-group", createNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
+	createNPViper.BindPFlag("nodePools.name", createNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
+	createNPViper.BindPFlag("nodePools.node-count", createNodePoolCmd.PersistentFlags().Lookup("nodecount"))
 
 	//viper.BindPFlags(createCmd.PersistentFlags())
 
@@ -200,9 +198,9 @@ func init() {
 	deleteNodePoolCmd.PersistentFlags().StringP("rgroupname", "g", "rgFlag", "NodePool resource group")
 	deleteNodePoolCmd.PersistentFlags().StringP("clustername", "c", "clusterFlag", "NodePool cluster")
 
-	deleteNPViper.BindPFlag("metadata.name", deleteNodePoolCmd.PersistentFlags().Lookup("clustername"))
-	deleteNPViper.BindPFlag("metadata.resource-group", deleteNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
-	deleteNPViper.BindPFlag("metadata.nodepool-name", deleteNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
+	deleteNPViper.BindPFlag("nodePools.cluster-name", deleteNodePoolCmd.PersistentFlags().Lookup("clustername"))
+	deleteNPViper.BindPFlag("nodePools.resource-group", deleteNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
+	deleteNPViper.BindPFlag("nodePools.name", deleteNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
 
 	//for update
 
@@ -211,9 +209,9 @@ func init() {
 	updateNodePoolCmd.PersistentFlags().StringP("rgroupname", "g", "rgFlag", "NodePool resource group")
 	updateNodePoolCmd.PersistentFlags().StringP("clustername", "c", "clusterFlag", "NodePool cluster")
 
-	updateNPViper.BindPFlag("metadata.name", updateNodePoolCmd.PersistentFlags().Lookup("clustername"))
-	updateNPViper.BindPFlag("metadata.resource-group", updateNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
-	updateNPViper.BindPFlag("metadata.nodepool-name", updateNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
+	updateNPViper.BindPFlag("nodePools.cluster-name", updateNodePoolCmd.PersistentFlags().Lookup("clustername"))
+	updateNPViper.BindPFlag("nodePools.resource-group", updateNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
+	updateNPViper.BindPFlag("nodePools.name", updateNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
 
 	//for scale
 
@@ -222,9 +220,9 @@ func init() {
 	scaleNodePoolCmd.PersistentFlags().StringP("rgroupname", "g", "rgFlag", "NodePool resource group")
 	scaleNodePoolCmd.PersistentFlags().StringP("clustername", "c", "clusterFlag", "NodePool cluster")
 
-	scaleNPViper.BindPFlag("metadata.name", scaleNodePoolCmd.PersistentFlags().Lookup("clustername"))
-	scaleNPViper.BindPFlag("metadata.resource-group", scaleNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
-	scaleNPViper.BindPFlag("metadata.nodepool-name", scaleNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
+	scaleNPViper.BindPFlag("nodePools.cluster-name", scaleNodePoolCmd.PersistentFlags().Lookup("clustername"))
+	scaleNPViper.BindPFlag("nodePools.resource-group", scaleNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
+	scaleNPViper.BindPFlag("nodePools.name", scaleNodePoolCmd.PersistentFlags().Lookup("nodepoolname"))
 
 	//for get List
 
@@ -232,7 +230,7 @@ func init() {
 	getNodePoolCmd.PersistentFlags().StringP("rgroupname", "g", "rgFlag", "NodePool resource group")
 	getNodePoolCmd.PersistentFlags().StringP("clustername", "c", "clusterFlag", "NodePool cluster")
 
-	getNPViper.BindPFlag("metadata.name", getNodePoolCmd.PersistentFlags().Lookup("clustername"))
-	getNPViper.BindPFlag("metadata.resource-group", getNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
+	getNPViper.BindPFlag("nodePools.cluster-name", getNodePoolCmd.PersistentFlags().Lookup("clustername"))
+	getNPViper.BindPFlag("nodePools.resource-group", getNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
 
 }

@@ -6,10 +6,10 @@ import (
 	"os/exec"
 )
 
-func CreateNodePool(clusterName string, nodePoolName string, rgroupName string) {
+func CreateNodePool(clusterName string, nodePoolName string, rgroupName string, npNodeCount string) {
 
 	cmd := exec.Command("az", "aks", "nodepool", "add", "--cluster-name", clusterName, "--name",
-		nodePoolName, "--resource-group", rgroupName)
+		nodePoolName, "--resource-group", rgroupName, "--node-count", npNodeCount)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -25,7 +25,7 @@ func CreateNodePool(clusterName string, nodePoolName string, rgroupName string) 
 func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) {
 
 	cmd := exec.Command("az", "aks", "nodepool", "delete", "--cluster-name", clusterName, "--name",
-		nodePoolName, "--resource-group", rgroupName, "--yes")
+		nodePoolName, "--resource-group", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -35,7 +35,7 @@ func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) 
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	fmt.Println("Nodepool Deleted")
 }
 
 func ScaleNodePool(clusterName string, nodePoolName string, rgroupName string) {
