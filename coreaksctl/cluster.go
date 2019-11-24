@@ -3,15 +3,19 @@ package coreaksctl
 import (
 	"bytes"
 	"fmt"
-	"os/exec"
-
 	"github.com/fatih/color"
+	"github.com/gernest/wow"
+	"github.com/gernest/wow/spin"
+	"os"
+	"os/exec"
+	"time"
 )
 
 func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
-	fmt.Println("Starting to set up your k8s Cluster")
-	fmt.Println("This would take a few minutes...")
-	fmt.Println("---------------------------------")
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Starting to set up your k8s Cluster")
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//Create AKS Cluster
 	var args = []string{"aks", "create", "--name", clusterName, "--resource-group", resourceGroupName}
 	//handle the SSH keys generation in case of basic usage or the key value is not present on the config file
@@ -31,16 +35,18 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	color.Green("Cluster Created")
-	color.Cyan("Fetching Credentials ........")
 	GetClusterCredentials(clusterName, resourceGroupName)
 
 }
 
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
-	fmt.Println("This would take a few minutes...")
-	fmt.Println("---------------------------------")
-	//Create AKS Cluster
+	b := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching credentials")
+	b.Start()
+	time.Sleep(2 * time.Second)
+	b.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
+	//Get AKS Cluster credentials
 	var args = []string{"aks", "get-credentials", "--name", clusterName, "--resource-group", resourceGroupName}
 	cmd := exec.Command("az", args...)
 	var out bytes.Buffer
@@ -52,13 +58,15 @@ func GetClusterCredentials(clusterName string, resourceGroupName string) {
 		fmt.Println("Failed :" + fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	b.PersistWith(spin.Spinner{}, "....")
 	color.Cyan(out.String())
 }
 
 func DeleteCluster(clusterName string, resourceGroupName string) {
-	fmt.Println("Deleting your k8s Cluster " + clusterName)
-	fmt.Println("This would take a few minutes...")
-	fmt.Println("---------------------------------")
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting your k8s Cluster "+clusterName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//Delete AKS Cluster
 	cmd := exec.Command("az", "aks", "delete", "--name", clusterName,
 		"--resource-group", resourceGroupName, "--yes")
@@ -71,13 +79,16 @@ func DeleteCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Cluster Deleted")
+	a.PersistWith(spin.Spinner{}, "....")
+	color.Green("Cluster Deleted")
 }
 
 func UpdateCluster(clusterName string, resourceGroupName string) {
-	fmt.Println("Updating your k8s Cluster")
-	fmt.Println("This would take a few minutes...")
-	fmt.Println("---------------------------------")
+
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating your k8s Cluster")
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//Create AKS Cluster
 	cmd := exec.Command("az", "aks", "update", "--name", clusterName,
 		"--resource-group", resourceGroupName, "--enable-cluster-autoscaler")
@@ -90,13 +101,15 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	color.Green("Cluster Updated")
 }
 
 func GetCluster(resourceGroupName string) {
-	fmt.Println("Collection your k8s Cluster informations")
-	fmt.Println("This would take a few minutes...")
-	fmt.Println("---------------------------------")
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Collecting your k8s Cluster informations")
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//Create AKS Cluster
 	cmd := exec.Command("az", "aks", "list",
 		"--resource-group", resourceGroupName)
@@ -109,6 +122,7 @@ func GetCluster(resourceGroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
 }
 
