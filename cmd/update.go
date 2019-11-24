@@ -26,7 +26,7 @@ var updateCmd = &cobra.Command{
 	Short: "To update an AKS cluster",
 	Long:  `You can get a cluster with aksctl update cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Red("update is not in aksctl command group. See 'akstl update --help' ")
+		color.Red("update is not in aksctl command group. See 'aksctl update --help' ")
 	},
 }
 

@@ -29,6 +29,7 @@ func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 func CheckResourceGroup(rgroupName string) bool {
 
 	cmd := exec.Command("az", "group", "exists", "-n", rgroupName)
+	var check bool
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -37,13 +38,15 @@ func CheckResourceGroup(rgroupName string) bool {
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 	}
-	fmt.Println("Result:" + out.String() + "a")
+	
 	if out.String() == "true\n" {
-		return true
+		check=true
+		fmt.Println("Using existing resource group")
 	} else {
-		return false
+		check=false
+		fmt.Println("The resource group", rgroupName, "does not exist.")
 	}
-
+	return check
 }
 
 func DeleteResourceGroup(rgroupName string) {

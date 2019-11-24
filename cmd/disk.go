@@ -33,7 +33,7 @@ var createDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Create and manage Azure Managed Disks.",
 	Long: `Create and manage Azure Managed Disks, it will use a random name and default resource group for the disk if not specified.
- 	If you need to specify name or other resources use disk.yaml file for more custom configuration`,
+ 	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -45,8 +45,6 @@ var createDiskCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		// viper.Set("rgroupName", "opsOverrided")   //setting overide for any value
-
 		// viper.SetDefault("rgroupName", "opsDefault") // for setting a default value
 
 		diskName := createDiskViper.GetString("managedDisk.name") // getting values through viper
@@ -54,7 +52,7 @@ var createDiskCmd = &cobra.Command{
 		diskLocation := createDiskViper.GetString("managedDisk.location")
 		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
-		color.Cyan("diskName : "+diskName+", diskResourceGroup : "+diskResourceGroup+", diskLocation : "+diskLocation+", diskSize : ", diskSize)
+		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup + ", diskLocation : " + diskLocation + ", diskSize : " + diskSize)
 		status := coreaksctl.CheckResourceGroup(diskResourceGroup)
 
 		if status == false {
@@ -70,7 +68,7 @@ var createDiskCmd = &cobra.Command{
 				color.Green("Resource group created")
 				coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
 			} else {
-				color.Red("The resource group does not exist")
+				color.Red("Cannot create disk as the resource group does not exist")
 			}
 		} else {
 			coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
@@ -82,8 +80,8 @@ var createDiskCmd = &cobra.Command{
 var deleteDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Delete an AKS disk",
-	Long: `Delete an AKS disk, it would use a Random Name for disk.
-	If you need to specify name or other resources use disk.yaml file for more custom configuration`,
+	Long: `Delete an AKS disk with the specified disk name and resource group.
+	If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -112,7 +110,7 @@ var deleteDiskCmd = &cobra.Command{
 var updateDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Update an AKS disk",
-	Long: `Update an AKS disk, it would use a Random Name for disk.
+	Long: `Update an AKS disk with the specified disk name and resource group.
 	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -125,7 +123,7 @@ var updateDiskCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		updateDiskViper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
+		//updateDiskViper.SetDefault("diskName", "opsDiskDefault") // for setting a default value
 
 		diskName := updateDiskViper.GetString("managedDisk.name") // getting values through viper
 		diskResourceGroup := updateDiskViper.GetString("managedDisk.resource-group")

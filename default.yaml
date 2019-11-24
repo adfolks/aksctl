@@ -2,16 +2,20 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: defaultCluster
+  name: cluster
   resource-group: defaultRGroup
   location: eastus
   node-count: 2
 
 nodePools:
-    name: nodePool
-    resource-group: defaultRGroup
-    location: eastus
+  name: mynodepool
+  resource-group: defaultRGroup
+  cluster-name: cluster
+  node-count: 1
+  location: eastus
 managedDisk:
-    name: managedDisk
-    resource-group: defaultRGroup
-    location: eastus
+  name: managedDIsk
+  resource-group: defaultRGroup
+  location: eastus
+vnet:
+  name: vnetDefault
