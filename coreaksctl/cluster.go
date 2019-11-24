@@ -6,6 +6,7 @@ import (
 	"os/exec"
 
 	"github.com/fatih/color"
+	"github.com/kyokomi/emoji"
 )
 
 func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
@@ -34,7 +35,8 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	color.Green("Cluster Created")
 	color.Cyan("Fetching Credentials ........")
 	GetClusterCredentials(clusterName, resourceGroupName)
-
+	color.Green("Updated Kubeconfig")
+        emoji.Println(":beer: Cheers!!!")
 }
 
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
