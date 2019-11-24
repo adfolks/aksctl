@@ -51,7 +51,7 @@ var clusterCmd = &cobra.Command{
 
 		/*
 			viper default value will be prior than Flag default
-			so value selection priority oerder is
+			so value selection priority order is
 				- Flag Value
 				- Config File
 				- Vipro Default
