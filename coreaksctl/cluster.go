@@ -36,7 +36,7 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	color.Cyan("Fetching Credentials ........")
 	GetClusterCredentials(clusterName, resourceGroupName)
 	color.Green("Updated Kubeconfig")
-        emoji.Println(":beer: Cheers!!!")
+    emoji.Println(":beer: Cheers!!!")
 }
 
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
