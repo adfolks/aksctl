@@ -49,7 +49,7 @@ func GetClusterCredentials(clusterName string, resourceGroupName string) {
 	time.Sleep(2 * time.Second)
 	b.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//Get AKS Cluster credentials
-	var args = []string{"aks", "get-credentials", "--name", clusterName, "--resource-group", resourceGroupName}
+	var args = []string{"aks", "get-credentials", "--overwrite-existing", "--name", clusterName, "--resource-group", resourceGroupName}
 	cmd := exec.Command("az", args...)
 	var out bytes.Buffer
 	var stderr bytes.Buffer

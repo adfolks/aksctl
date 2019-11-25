@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/adfolks/aksctl/coreaksctl"
 	"github.com/fatih/color"
@@ -30,6 +31,7 @@ var createViper = viper.New()
 var deleteViper = viper.New()
 var updateViper = viper.New()
 var getViper = viper.New()
+var credViper = viper.New()
 var cfgFilef string = "default"
 
 var clusterCmd = &cobra.Command{
@@ -46,7 +48,31 @@ var clusterCmd = &cobra.Command{
 		createViper.AddConfigPath(".")      // optionally look for config in the working directory
 		err := createViper.ReadInConfig()   // Find and read the config file
 		if err != nil {                     // Handle errors reading the config file
-			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+			
+			color.Red("Config yaml file doesn't exist")
+			fmt.Println("Do you want to create a default yaml file? (yes/no)")
+			confirmation := coreaksctl.AskForConfirmation()
+			if confirmation == true {
+					_,errc := os.Create(cfgFilef+".yaml")
+					if errc != nil {
+						color.Red("Error creating default yaml try creating it mannually");
+						os.Exit(0)
+					}
+					createViper.SetConfigType("yaml")
+					createViper.Set("metadata.name", "defaulCluster")
+					createViper.Set("metadata.resource-group", "defaultRGroup")
+					createViper.Set("metadata.location", "eastus")
+					errb := createViper.WriteConfig()
+					if errb != nil {
+						fmt.Print("Error : ",errb);
+					}
+					color.Green("Default config yaml generated")
+				} else {
+					color.Red("Can't continue without yaml file")
+					os.Exit(0)
+				}
+			
+			
 		}
 
 		/*
@@ -168,11 +194,37 @@ var getClusterCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		rgroupName := viper.GetString("metadata.resource-group") // getting values through viper
+		rgroupName := getViper.GetString("metadata.resource-group") // getting values through viper
 
 		color.Cyan("rgroupName : " + rgroupName)
 
 		coreaksctl.GetCluster(rgroupName)
+	},
+}
+
+
+var getCredentialCmd = &cobra.Command{
+	Use:   "credential",
+	Short: "Get list of AKS cluster",
+	Long:  `Get list of AKS cluster from a resource group.`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+		// Setting config file with viper
+		// getViper.SetDefault("rgroupName", "opsDefault") // for setting a default value
+
+		credViper.SetConfigName("default") // name of config file (without extension)
+		credViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := credViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                   // Handle errors reading the config file
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		}
+
+		name := credViper.GetString("metadata.name") // getting values through viper
+		rgroupName := credViper.GetString("metadata.resource-group") // getting values through viper
+
+		color.Cyan("cluster name : " + name)
+
+		coreaksctl.GetClusterCredentials(name, rgroupName)
 	},
 }
 
@@ -216,4 +268,11 @@ func init() {
 	getClusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
 
 	getViper.BindPFlag("metadata.resource-group", getClusterCmd.PersistentFlags().Lookup("rgroupname"))
+
+
+	getCmd.AddCommand(getCredentialCmd)
+	getCredentialCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "cluster name")
+	getCredentialCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "resource group name")
+	credViper.BindPFlag("metadata.name", getCredentialCmd.PersistentFlags().Lookup("name"))
+	credViper.BindPFlag("metadata.resource-group", getCredentialCmd.PersistentFlags().Lookup("rgroupname"))
 }
