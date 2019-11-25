@@ -1,4 +1,4 @@
-package coreaksctl
+package disk
 
 import (
 	"bytes"

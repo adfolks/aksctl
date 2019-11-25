@@ -19,7 +19,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/cluster"
+	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
+	"github.com/adfolks/aksctl/pkg/ctl/confirm"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -51,7 +53,7 @@ var clusterCmd = &cobra.Command{
 			
 			color.Red("Config yaml file doesn't exist")
 			fmt.Println("Do you want to create a default yaml file? (yes/no)")
-			confirmation := coreaksctl.AskForConfirmation()
+			confirmation := confirm.AskForConfirmation()
 			if confirmation == true {
 					_,errc := os.Create(cfgFilef+".yaml")
 					if errc != nil {
@@ -100,11 +102,11 @@ var clusterCmd = &cobra.Command{
 				}
 			}
 		}
-		status := coreaksctl.CheckResourceGroup(rgroupName)
+		status := resourcegroup.CheckResourceGroup(rgroupName)
 		if status == false {
 			color.Red("Resource group doesn't exist")
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := coreaksctl.AskForConfirmation()
+			confirmation := confirm.AskForConfirmation()
 			if confirmation == true {
 
 				rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
@@ -112,14 +114,14 @@ var clusterCmd = &cobra.Command{
 
 				color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion: " + rgroupRegion)
 
-				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				resourcegroup.CreateResourceGroup(rgroupName, rgroupRegion)
 
-				coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
+				cluster.CreateCluster(clusterName, rgroupName, extraflags)
 			} else {
 				color.Red("Cannot create cluster as the resource group does not exist")
 			}
 		} else {
-			coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
+			cluster.CreateCluster(clusterName, rgroupName, extraflags)
 		}
 	},
 }
@@ -148,7 +150,7 @@ var deleteClusterCmd = &cobra.Command{
 
 		color.Cyan("rgroupName : " + rgroupName + ", clusterName : " + clusterName)
 
-		coreaksctl.DeleteCluster(clusterName, rgroupName)
+		cluster.DeleteCluster(clusterName, rgroupName)
 	},
 }
 
@@ -173,7 +175,7 @@ var updateClusterCmd = &cobra.Command{
 
 		color.Cyan("rgroupName : " + rgroupName + ", clusterName : " + clusterName)
 
-		coreaksctl.UpdateCluster(clusterName, rgroupName)
+		cluster.UpdateCluster(clusterName, rgroupName)
 	},
 }
 
@@ -198,7 +200,7 @@ var getClusterCmd = &cobra.Command{
 
 		color.Cyan("rgroupName : " + rgroupName)
 
-		coreaksctl.GetCluster(rgroupName)
+		cluster.GetCluster(rgroupName)
 	},
 }
 
@@ -224,7 +226,7 @@ var getCredentialCmd = &cobra.Command{
 
 		color.Cyan("cluster name : " + name)
 
-		coreaksctl.GetClusterCredentials(name, rgroupName)
+		cluster.GetClusterCredentials(name, rgroupName)
 	},
 }
 
