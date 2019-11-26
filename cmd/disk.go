@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/pkg/ctl/confirm"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/adfolks/aksctl/pkg/ctl/disk"
 	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
 	"github.com/fatih/color"
@@ -59,7 +59,10 @@ var createDiskCmd = &cobra.Command{
 
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := confirm.AskForConfirmation()
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
 			if confirmation == true {
 				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
 				rgroupRegion := createDiskViper.GetString("managedDisk.location")

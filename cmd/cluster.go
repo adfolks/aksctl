@@ -21,7 +21,7 @@ import (
 
 	"github.com/adfolks/aksctl/pkg/ctl/cluster"
 	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
-	"github.com/adfolks/aksctl/pkg/ctl/confirm"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -53,7 +53,11 @@ var clusterCmd = &cobra.Command{
 			
 			color.Red("Config yaml file doesn't exist")
 			fmt.Println("Do you want to create a default yaml file? (yes/no)")
-			confirmation := confirm.AskForConfirmation()
+
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
 			if confirmation == true {
 					_,errc := os.Create(cfgFilef+".yaml")
 					if errc != nil {
@@ -106,7 +110,10 @@ var clusterCmd = &cobra.Command{
 		if status == false {
 			color.Red("Resource group doesn't exist")
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := confirm.AskForConfirmation()
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
 			if confirmation == true {
 
 				rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
