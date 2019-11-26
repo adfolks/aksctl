@@ -21,7 +21,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 )
 
 // createCmd represents the create command
@@ -35,7 +35,7 @@ var initCmd = &cobra.Command{
 	Long:  `You can create a yaml file for production or development using aksctl init`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Do you want to create a Prod file or Dev file ? (prod/dev)")
-		confirmation := coreaksctl.AskForInitConfirmation()
+		confirmation := utils.AskForInitConfirmation()
 		if confirmation == true {
 			_,errc := os.Create(prodFilef+".yaml")
 			if errc != nil {

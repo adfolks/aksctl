@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/nodepool"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -54,7 +54,7 @@ var createNodePoolCmd = &cobra.Command{
 
 		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName, ", ", "npNodeCount : ", npNodeCount)
 
-		coreaksctl.CreateNodePool(clusterName, nodePoolName, rgroupName, npNodeCount)
+		nodepool.CreateNodePool(clusterName, nodePoolName, rgroupName, npNodeCount)
 	},
 }
 
@@ -82,7 +82,7 @@ var deleteNodePoolCmd = &cobra.Command{
 
 		fmt.Println("nodePoolName : ", nodePoolName, ", ", "clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		coreaksctl.DeleteNodePool(clusterName, nodePoolName, rgroupName)
+		nodepool.DeleteNodePool(clusterName, nodePoolName, rgroupName)
 	},
 }
 
@@ -170,7 +170,7 @@ var getNodePoolCmd = &cobra.Command{
 
 		fmt.Println("clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		coreaksctl.GetNodePool(clusterName, rgroupName)
+		nodepool.GetNodePool(clusterName, rgroupName)
 	},
 }
 

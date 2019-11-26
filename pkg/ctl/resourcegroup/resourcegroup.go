@@ -1,4 +1,4 @@
-package coreaksctl
+package resourcegroup
 
 import (
 	"bytes"

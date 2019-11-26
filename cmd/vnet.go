@@ -18,7 +18,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
+	"github.com/adfolks/aksctl/pkg/ctl/confirm"
+	"github.com/adfolks/aksctl/pkg/ctl/vnet"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -53,27 +55,27 @@ var createVNetCmd = &cobra.Command{
 
 		fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
 
-		status := coreaksctl.CheckResourceGroup(rgroupName)
+		status := resourcegroup.CheckResourceGroup(rgroupName)
 		fmt.Println("status =", status)
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := coreaksctl.AskForConfirmation()
+			confirmation := confirm.AskForConfirmation()
 			if confirmation == true {
 				rgroupName := createVNetViper.GetString("vnet.resource-group") // getting values through viper
 				rgroupRegion := createVNetViper.GetString("metadata.location")
 
 				fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion: ", rgroupRegion)
 
-				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				resourcegroup.CreateResourceGroup(rgroupName, rgroupRegion)
 				fmt.Println("Resource group created")
 				fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
-				coreaksctl.CreateVNet(vNetName, rgroupName)
+				vnet.CreateVNet(vNetName, rgroupName)
 			} else {
 				fmt.Println("The resource group does not exist")
 			}
 		} else {
 			fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
-			coreaksctl.CreateVNet(vNetName, rgroupName)
+			vnet.CreateVNet(vNetName, rgroupName)
 		}
 	},
 }
@@ -102,7 +104,7 @@ var deleteVNetCmd = &cobra.Command{
 
 		fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
 
-		coreaksctl.DeleteVNet(vNetName, rgroupName)
+		vnet.DeleteVNet(vNetName, rgroupName)
 
 	},
 }

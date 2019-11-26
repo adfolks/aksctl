@@ -18,7 +18,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/confirm"
+	"github.com/adfolks/aksctl/pkg/ctl/disk"
+	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -53,25 +55,25 @@ var createDiskCmd = &cobra.Command{
 		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
 		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup + ", diskLocation : " + diskLocation + ", diskSize : " + diskSize)
-		status := coreaksctl.CheckResourceGroup(diskResourceGroup)
+		status :=  resourcegroup.CheckResourceGroup(diskResourceGroup)
 
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := coreaksctl.AskForConfirmation()
+			confirmation := confirm.AskForConfirmation()
 			if confirmation == true {
 				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
 				rgroupRegion := createDiskViper.GetString("managedDisk.location")
 
 				color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion: " + rgroupRegion)
 
-				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				resourcegroup.CreateResourceGroup(rgroupName, rgroupRegion)
 				color.Green("Resource group created")
-				coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+				disk.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
 			} else {
 				color.Red("Cannot create disk as the resource group does not exist")
 			}
 		} else {
-			coreaksctl.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
+			disk.CreateDisk(diskName, diskResourceGroup, diskLocation, diskSize)
 		}
 	},
 }
@@ -102,7 +104,7 @@ var deleteDiskCmd = &cobra.Command{
 
 		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup)
 
-		coreaksctl.DeleteDisk(diskName, diskResourceGroup)
+		disk.DeleteDisk(diskName, diskResourceGroup)
 	},
 }
 
@@ -131,7 +133,7 @@ var updateDiskCmd = &cobra.Command{
 
 		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup + ", diskSize : " + diskSize)
 
-		coreaksctl.UpdateDisk(diskName, diskResourceGroup, diskSize)
+		disk.UpdateDisk(diskName, diskResourceGroup, diskSize)
 	},
 }
 
@@ -158,7 +160,7 @@ var getDiskCmd = &cobra.Command{
 
 		color.Cyan("diskResourceGroup : " + diskResourceGroup)
 
-		coreaksctl.GetDisk(diskResourceGroup)
+		disk.GetDisk(diskResourceGroup)
 	},
 }
 

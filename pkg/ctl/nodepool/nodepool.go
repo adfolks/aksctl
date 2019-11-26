@@ -1,4 +1,4 @@
-package coreaksctl
+package nodepool
 
 import (
 	"bytes"

@@ -19,7 +19,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -55,7 +55,7 @@ var createResourceGroupCmd = &cobra.Command{
 
 		color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion: " + rgroupRegion)
 
-		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+		resourcegroup.CreateResourceGroup(rgroupName, rgroupRegion)
 	},
 }
 
@@ -84,7 +84,7 @@ var deleteResourceGroupCmd = &cobra.Command{
 
 		color.Cyan("rgroupName : " + rgroupName)
 
-		coreaksctl.DeleteResourceGroup(rgroupName)
+		resourcegroup.DeleteResourceGroup(rgroupName)
 	},
 }
 
@@ -111,7 +111,7 @@ var updateResourceGroupCmd = &cobra.Command{
 
 		color.Cyan("rgroupName : " + rgroupName)
 
-		coreaksctl.UpdateResourceGroup(rgroupName)
+		resourcegroup.UpdateResourceGroup(rgroupName)
 	},
 }
 
@@ -130,7 +130,7 @@ var getResourceGroupCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		coreaksctl.GetResourceGroup()
+		resourcegroup.GetResourceGroup()
 	},
 }
 

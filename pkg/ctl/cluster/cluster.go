@@ -1,4 +1,4 @@
-package coreaksctl
+package cluster
 
 import (
 	"bytes"
