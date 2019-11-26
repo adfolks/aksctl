@@ -5,6 +5,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 You will need to have Azure credentials configured. What works for AZ CLI should be sufficient. If you dont have Azure CLI installed, you can refer [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 ### Installation
+#### Install from source
 To install aksctl, clone the repository using:
 ```bash
 git clone https://github.com/adfolks/aksctl
@@ -19,8 +20,33 @@ Finally, use
 go build
 ```
 to fetch the latest dependencies.
+#### Install from binary (on Linux)
+Download the compressed binary file by running:
+```bash
+   curl -LJO https://github.com/adfolks/aksctl/releases/download/v0.1.0/aksctl-linux-amd64.tar.gz
+```
+Then, unzip the downloaded file using:
+```bash
+   tar xzvf aksctl-linux-amd64.tar.gz
+```
+Run the following commands to create an executable file:
+```bash
+   ls aksctl
+   chmod +x ./aksctl
+```
+Finally, run
+```bash
+   sudo mv aksctl/usr/bin
+```
+to start using aksctl.
+#### Install from binary (on Mac)
+Download the compressed binary file by running:
+```bash
+   curl -LJO https://github.com/adfolks/aksctl/releases/download/v0.1.0/aksctl-darwin-amd64.tar.gz
+```
+
 ## Basic usage
- A default cluster can be created by running:
+A default cluster can be created by running:
   ```bash
      aksctl create cluster
   ```
@@ -52,7 +78,7 @@ to fetch the latest dependencies.
   This will create a cluster as described in the file.
 A cluster can be deleted by running:
   ```bash
-      aksctl delete cluster
+     aksctl delete cluster
   ```
 Get the list of clusters by running:
   ```bash

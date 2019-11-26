@@ -2,14 +2,17 @@ package cluster
 
 import (
 	"bytes"
+	"reflect"
 	"fmt"
+	"os"
+	"os/exec"
+	"time"
+
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
 	"github.com/kyokomi/emoji"
-	"os"
-	"os/exec"
-	"time"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 )
 
 func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
@@ -62,6 +65,7 @@ func GetClusterCredentials(clusterName string, resourceGroupName string) {
 	}
 	b.PersistWith(spin.Spinner{}, "....")
 	color.Cyan(out.String())
+
 }
 
 func DeleteCluster(clusterName string, resourceGroupName string) {
@@ -126,6 +130,7 @@ func GetCluster(resourceGroupName string) {
 	}
 	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
+	fmt.Println("Tpye:",reflect.TypeOf(utils.stringToMap(out.String())))
 }
 
 // Find takes a slice and looks for an element in it. If found it will
