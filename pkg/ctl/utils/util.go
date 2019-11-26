@@ -12,36 +12,22 @@ import (
 // confirmations. If the input is not recognized, it will ask again. The function does not return
 // until it gets a valid response from the user. Typically, you should use fmt to print out a question
 // before calling askForConfirmation. E.g. fmt.Println("WARNING: Are you sure? (yes/no)")
-func AskForInitConfirmation() bool {
+func AskForConfirmation(okayResponses []string,nokayResponses []string,message string) bool {
 	var response string
 	_, err := fmt.Scanln(&response)
 	if err != nil {
 		log.Fatal(err)
 	}
-	okayResponses := []string{"p", "P", "prod", "Prod", "PROD"}
-	nokayResponses := []string{"d", "D", "dev", "Dev", "DEV"}
 	if ContainsString(okayResponses, response) {
 		return true
 	} else if ContainsString(nokayResponses, response) {
 		return false
 	} else {
-		color.Blue("Please type prod or dev and then press enter:")
-		return AskForInitConfirmation()
+		color.Blue(message)
+		return AskForConfirmation(okayResponses,nokayResponses,message)
 	}
 }
 
-// You might want to put the following two functions in a separate utility package.
-
-// posString returns the first index of element in slice.
-// If slice does not contain element, returns -1.
-func posInitString(slice []string, element string) int {
-	for index, elem := range slice {
-		if elem == element {
-			return index
-		}
-	}
-	return -1
-}
 
 // You might want to put the following two functions in a separate utility package.
 

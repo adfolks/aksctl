@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
-	"github.com/adfolks/aksctl/pkg/ctl/confirm"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/adfolks/aksctl/pkg/ctl/vnet"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -59,7 +59,10 @@ var createVNetCmd = &cobra.Command{
 		fmt.Println("status =", status)
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := confirm.AskForConfirmation()
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
 			if confirmation == true {
 				rgroupName := createVNetViper.GetString("vnet.resource-group") // getting values through viper
 				rgroupRegion := createVNetViper.GetString("metadata.location")

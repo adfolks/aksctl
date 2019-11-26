@@ -35,7 +35,11 @@ var initCmd = &cobra.Command{
 	Long:  `You can create a yaml file for production or development using aksctl init`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Do you want to create a Prod file or Dev file ? (prod/dev)")
-		confirmation := utils.AskForInitConfirmation()
+
+		okayResponses := []string{"p", "P", "prod", "Prod", "PROD"}
+		nokayResponses := []string{"d", "D", "dev", "Dev", "DEV"}
+		message := "Please type prod or dev and then press enter:"
+		confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
 		if confirmation == true {
 			_,errc := os.Create(prodFilef+".yaml")
 			if errc != nil {
