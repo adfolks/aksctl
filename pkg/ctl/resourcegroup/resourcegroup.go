@@ -6,9 +6,10 @@ import (
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
 	"os"
-	"time"
 	"os/exec"
+	"time"
 )
 
 func CreateResourceGroup(rgroupName string, rgroupRegion string) {
@@ -27,7 +28,7 @@ func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 	}
 	a.PersistWith(spin.Spinner{}, "....")
 	color.Green("Resource group Created")
-
+	emoji.Println(":beer: Cheers!!!")
 }
 
 func CheckResourceGroup(rgroupName string) bool {
@@ -48,7 +49,7 @@ func CheckResourceGroup(rgroupName string) bool {
 		fmt.Println("Using existing resource group")
 	} else {
 		check = false
-		color.Red("The resource group "+ rgroupName +" does not exist.")
+		color.Red("The resource group " + rgroupName + " does not exist.")
 	}
 	return check
 }

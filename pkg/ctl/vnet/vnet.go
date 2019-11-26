@@ -3,10 +3,11 @@ package vnet
 import (
 	"bytes"
 	"fmt"
-	"os/exec"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
 	"os"
+	"os/exec"
 	"time"
 )
 
@@ -28,6 +29,7 @@ func CreateVNet(vNetName string, rgroupName string) {
 	}
 	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
+	emoji.Println(":beer: Cheers!!!")
 }
 
 func DeleteVNet(vNetName string, rgroupName string) {

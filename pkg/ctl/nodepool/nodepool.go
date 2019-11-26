@@ -3,11 +3,12 @@ package nodepool
 import (
 	"bytes"
 	"fmt"
-	"os/exec"
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
 	"os"
+	"os/exec"
 	"time"
 )
 
@@ -29,6 +30,7 @@ func CreateNodePool(clusterName string, nodePoolName string, rgroupName string, 
 	}
 	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
+	emoji.Println(":beer: Cheers!!!")
 }
 
 func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) {
