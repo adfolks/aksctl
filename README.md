@@ -5,7 +5,8 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 You will need to have Azure credentials configured. What works for AZ CLI should be sufficient. If you dont have Azure CLI installed, you can refer [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 ### Installation
-To install aksctl, clone the repository using:
+#### Option 1:
+To install aksctl from source code with building by yourself, clone the repository using:
 ```bash
 git clone https://github.com/adfolks/aksctl
 ```
@@ -19,6 +20,15 @@ Finally, use
 go build
 ```
 to fetch the latest dependencies.
+
+#### Option 2:
+To install aksctl on linux bash from release binary:
+```bash
+release=v0.1.0 ## choose the available release version
+curl --silent --location "https://github.com/adfolks/aksctl/releases/download/$release/aksctl-$(uname -s)-amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/aksctl /usr/local/bin
+```
+
 ## Basic usage
  A default cluster can be created by running:
   ```bash
