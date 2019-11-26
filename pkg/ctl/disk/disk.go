@@ -8,6 +8,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
 	"os"
 	"time"
 )
@@ -31,6 +32,7 @@ func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, 
 	}
 	a.PersistWith(spin.Spinner{}, "....")
 	color.Green("Disk Created")
+	emoji.Println(":beer: Cheers!!!")
 }
 
 func DeleteDisk(diskName string, diskResourceGroup string) {
