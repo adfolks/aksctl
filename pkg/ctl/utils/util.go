@@ -1,11 +1,11 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
 	"github.com/fatih/color"
-	"github.com/adfolks/aksctl/pkg/ctl/utils"
 )
 
 // askForConfirmation uses Scanln to parse user input. A user must type in "yes" or "no" and
@@ -13,7 +13,7 @@ import (
 // confirmations. If the input is not recognized, it will ask again. The function does not return
 // until it gets a valid response from the user. Typically, you should use fmt to print out a question
 // before calling askForConfirmation. E.g. fmt.Println("WARNING: Are you sure? (yes/no)")
-func AskForConfirmation(okayResponses []string,nokayResponses []string,message string) bool {
+func AskForConfirmation(okayResponses []string, nokayResponses []string, message string) bool {
 	var response string
 	_, err := fmt.Scanln(&response)
 	if err != nil {
@@ -25,10 +25,9 @@ func AskForConfirmation(okayResponses []string,nokayResponses []string,message s
 		return false
 	} else {
 		color.Blue(message)
-		return AskForConfirmation(okayResponses,nokayResponses,message)
+		return AskForConfirmation(okayResponses, nokayResponses, message)
 	}
 }
-
 
 // You might want to put the following two functions in a separate utility package.
 
@@ -67,4 +66,3 @@ func FilterStringMap(data string, key string) []string {
 	}
 	return slice
 }
-
