@@ -28,9 +28,10 @@ func UninstallAddon(chartName string) {
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+	}else{
+		a.PersistWith(spin.Spinner{}, "....")
+		color.Green("Addon uninstalled")
+		emoji.Println(":beer: Cheers!!!")
 	}
 
-	a.PersistWith(spin.Spinner{}, "....")
-	color.Green("Addon uninstalled")
-	emoji.Println(":beer: Cheers!!!")
 }
