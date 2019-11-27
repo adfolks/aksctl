@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"github.com/kyokomi/emoji"
 	"fmt"
+	"strings"
 )
 
 func InstallAddon(chartName string, repoName string) {
@@ -31,4 +32,19 @@ func InstallAddon(chartName string, repoName string) {
 	a.PersistWith(spin.Spinner{}, "....")
 	color.Green("Addon installed")
     emoji.Println(":beer: Cheers!!!")
+}
+
+func CheckHelm()bool{
+	fmt.Println("Checking if latest version of helm is present")
+	cmd := exec.Command("helm", "version")
+	versioncheck := false
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println("Install helm to use charts")
+	}else{
+	versioncheck = strings.Contains(out.String(), "Version:\"v3.")
+	}
+	return versioncheck
 }
