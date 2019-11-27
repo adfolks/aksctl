@@ -1,13 +1,23 @@
-package coreaksctl
+package resourcegroup
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/fatih/color"
+	"github.com/gernest/wow"
+	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
+	"os"
 	"os/exec"
+	"time"
 )
 
+//CreateResourceGroup will create a resource group
 func CreateResourceGroup(rgroupName string, rgroupRegion string) {
-
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating resource group : "+rgroupName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	cmd := exec.Command("az", "group", "create", "-l", rgroupRegion, "-n", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -17,11 +27,15 @@ func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 	}
-	fmt.Println("Result: " + out.String())
+	a.PersistWith(spin.Spinner{}, "....")
+	color.Green("Resource group Created")
+	emoji.Println(":beer: Cheers!!!")
 }
 
+//CheckResoureGroup will check whether a resource group exit or not
 func CheckResourceGroup(rgroupName string) bool {
 	cmd := exec.Command("az", "group", "exists", "-n", rgroupName)
+	var check bool
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -30,18 +44,25 @@ func CheckResourceGroup(rgroupName string) bool {
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 	}
-	fmt.Println("Result:" + out.String() + "a")
-	if out.String() == "true\n" {
-		return true
-	} else {
-		return false
-	}
 
+	if out.String() == "true\n" {
+		check = true
+		fmt.Println("Using existing resource group")
+	} else {
+		check = false
+		color.Red("The resource group " + rgroupName + " does not exist.")
+	}
+	return check
 }
 
+//DeleteResourceGroup will delete a resource group
 func DeleteResourceGroup(rgroupName string) {
 
 	//Delete AKS ResourceGroup
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting resource group : "+rgroupName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	cmd := exec.Command("az", "group", "delete", "--name", rgroupName, "--yes")
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -52,12 +73,18 @@ func DeleteResourceGroup(rgroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	a.PersistWith(spin.Spinner{}, "....")
+	color.Green("Resource group Deleted")
 }
 
+//UpdateResourceGroup
 func UpdateResourceGroup(rgroupName string) {
-
 	//Update AKS ResourceGroup
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating resource group : "+rgroupName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
+
 	cmd := exec.Command("az", "group", "update", "--name", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -68,11 +95,16 @@ func UpdateResourceGroup(rgroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
+	a.PersistWith(spin.Spinner{}, "....")
+	color.Green("Resource Group Updated")
 }
 
+//GetResourceGroup will list the resource groups
 func GetResourceGroup() {
-
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching resource groups")
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//List AKS ResourceGroup
 	cmd := exec.Command("az", "group", "list")
 	var out bytes.Buffer
@@ -84,5 +116,6 @@ func GetResourceGroup() {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
 }

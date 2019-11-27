@@ -1,4 +1,4 @@
-/*
+/*Package cmd is used for command line
 Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,12 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/cluster"
+	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -29,13 +33,14 @@ var createViper = viper.New()
 var deleteViper = viper.New()
 var updateViper = viper.New()
 var getViper = viper.New()
+var credViper = viper.New()
 var cfgFilef string = "default"
 
 var clusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Create an AKS cluster",
 	Long: `Create an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -45,16 +50,43 @@ var clusterCmd = &cobra.Command{
 		createViper.AddConfigPath(".")      // optionally look for config in the working directory
 		err := createViper.ReadInConfig()   // Find and read the config file
 		if err != nil {                     // Handle errors reading the config file
-			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+
+			color.Red("Config yaml file doesn't exist")
+			fmt.Println("Do you want to create a default yaml file? (yes/no)")
+
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
+			if confirmation == true {
+				_, errc := os.Create(cfgFilef + ".yaml")
+				if errc != nil {
+					color.Red("Error creating default yaml try creating it mannually")
+					os.Exit(0)
+				}
+				createViper.SetConfigType("yaml")
+				createViper.Set("metadata.name", "defaulCluster")
+				createViper.Set("metadata.resource-group", "defaultRGroup")
+				createViper.Set("metadata.location", "eastus")
+				errb := createViper.WriteConfig()
+				if errb != nil {
+					fmt.Print("Error : ", errb)
+				}
+				color.Green("Default config yaml generated")
+			} else {
+				color.Red("Can't continue without yaml file")
+				os.Exit(0)
+			}
+
 		}
 
 		/*
-			viper default value will be prior than Flag default
-			so value selection priority oerder is
-				- Flag Value
-				- Config File
-				- Vipro Default
-				- Flag Default
+		   viper default value will be prior than Flag default
+		   so value selection priority order is
+		           - Flag Value
+		           - Config File
+		           - Vipro Default
+		           - Flag Default
 		*/
 		// viper.Set("rgroupName", "opsOverrided")   //setting overide for any value
 
@@ -63,7 +95,7 @@ var clusterCmd = &cobra.Command{
 		rgroupRegion := createViper.GetString("metadata.location")
 		aadServerAppId := createViper.GetStringMap("metadata")
 
-		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", rgroupRegion, ", ", "clusterName : ", clusterName)
+		color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion : " + rgroupRegion + ", clusterName : " + clusterName)
 		var extraflags []string
 		for k, v := range aadServerAppId {
 			if k != "name" && k != "resource-group" && k != "location" {
@@ -73,9 +105,30 @@ var clusterCmd = &cobra.Command{
 				}
 			}
 		}
+		status := resourcegroup.CheckResourceGroup(rgroupName)
+		if status == false {
+			color.Red("Resource group doesn't exist")
+			fmt.Println("Do you want to create a new resource group? (yes/no)")
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
+			if confirmation == true {
 
-		coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
-		coreaksctl.CreateCluster(clusterName, rgroupName, extraflags)
+				rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
+				rgroupRegion := createViper.GetString("metadata.location")
+
+				color.Cyan("rgroupName : " + rgroupName + ", rgroupRegion: " + rgroupRegion)
+
+				resourcegroup.CreateResourceGroup(rgroupName, rgroupRegion)
+
+				cluster.CreateCluster(clusterName, rgroupName, extraflags)
+			} else {
+				color.Red("Cannot create cluster as the resource group does not exist")
+			}
+		} else {
+			cluster.CreateCluster(clusterName, rgroupName, extraflags)
+		}
 	},
 }
 
@@ -84,7 +137,7 @@ var deleteClusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Delete an AKS cluster",
 	Long: `Delete an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -101,9 +154,9 @@ var deleteClusterCmd = &cobra.Command{
 		clusterName := deleteViper.GetString("metadata.name")
 		rgroupName := deleteViper.GetString("metadata.resource-group") // getting values through viper
 
-		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", "clusterName : ", clusterName)
+		color.Cyan("rgroupName : " + rgroupName + ", clusterName : " + clusterName)
 
-		coreaksctl.DeleteCluster(clusterName, rgroupName)
+		cluster.DeleteCluster(clusterName, rgroupName)
 	},
 }
 
@@ -112,7 +165,7 @@ var updateClusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Update an AKS cluster",
 	Long: `Update an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -126,9 +179,9 @@ var updateClusterCmd = &cobra.Command{
 		clusterName := updateViper.GetString("metadata.name")
 		rgroupName := updateViper.GetString("metadata.resource-group") // getting values through viper
 
-		fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion : ", "clusterName : ", clusterName)
+		color.Cyan("rgroupName : " + rgroupName + ", clusterName : " + clusterName)
 
-		coreaksctl.UpdateCluster(clusterName, rgroupName)
+		cluster.UpdateCluster(clusterName, rgroupName)
 	},
 }
 
@@ -138,7 +191,6 @@ var getClusterCmd = &cobra.Command{
 	Short: "Get list of AKS cluster",
 	Long:  `Get list of AKS cluster from a resource group.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 		// getViper.SetDefault("rgroupName", "opsDefault") // for setting a default value
@@ -150,11 +202,36 @@ var getClusterCmd = &cobra.Command{
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		rgroupName := viper.GetString("metadata.resource-group") // getting values through viper
+		rgroupName := getViper.GetString("metadata.resource-group") // getting values through viper
 
-		fmt.Println("rgroupName : ", rgroupName)
+		color.Cyan("rgroupName : " + rgroupName)
 
-		coreaksctl.GetCluster(rgroupName)
+		cluster.GetCluster(rgroupName)
+	},
+}
+
+var getCredentialCmd = &cobra.Command{
+	Use:   "credential",
+	Short: "Get list of AKS cluster",
+	Long:  `Get list of AKS cluster from a resource group.`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+		// Setting config file with viper
+		// getViper.SetDefault("rgroupName", "opsDefault") // for setting a default value
+
+		credViper.SetConfigName("default") // name of config file (without extension)
+		credViper.AddConfigPath(".")       // optionally look for config in the working directory
+		err := credViper.ReadInConfig()    // Find and read the config file
+		if err != nil {                    // Handle errors reading the config file
+			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		}
+
+		name := credViper.GetString("metadata.name")                 // getting values through viper
+		rgroupName := credViper.GetString("metadata.resource-group") // getting values through viper
+
+		color.Cyan("cluster name : " + name)
+
+		cluster.GetClusterCredentials(name, rgroupName)
 	},
 }
 
@@ -196,6 +273,13 @@ func init() {
 
 	getCmd.AddCommand(getClusterCmd)
 	getClusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
+	getClusterCmd.PersistentFlags().StringP("flag", "l", "all", "filtr flag")
 
 	getViper.BindPFlag("metadata.resource-group", getClusterCmd.PersistentFlags().Lookup("rgroupname"))
+
+	getCmd.AddCommand(getCredentialCmd)
+	getCredentialCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "cluster name")
+	getCredentialCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "resource group name")
+	credViper.BindPFlag("metadata.name", getCredentialCmd.PersistentFlags().Lookup("name"))
+	credViper.BindPFlag("metadata.resource-group", getCredentialCmd.PersistentFlags().Lookup("rgroupname"))
 }

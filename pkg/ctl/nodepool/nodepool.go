@@ -1,14 +1,46 @@
-package coreaksctl
+package nodepool
 
 import (
 	"bytes"
 	"fmt"
+	"github.com/fatih/color"
+	"github.com/gernest/wow"
+	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
+	"os"
 	"os/exec"
+	"time"
 )
 
-func CreateNodePool(clusterName string, nodePoolName string, rgroupName string) {
-
+//CreateNodePool will create a nodepool
+func CreateNodePool(clusterName string, nodePoolName string, rgroupName string, npNodeCount string) {
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating nodepool : "+nodePoolName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	cmd := exec.Command("az", "aks", "nodepool", "add", "--cluster-name", clusterName, "--name",
+		nodePoolName, "--resource-group", rgroupName, "--node-count", npNodeCount)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+		return
+	}
+	a.PersistWith(spin.Spinner{}, "....")
+	fmt.Println("Result: " + out.String())
+	emoji.Println(":beer: Cheers!!!")
+}
+
+//DeleteNodePool will delete a nodepool
+func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) {
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting nodepool : "+nodePoolName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
+	cmd := exec.Command("az", "aks", "nodepool", "delete", "--cluster-name", clusterName, "--name",
 		nodePoolName, "--resource-group", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -19,27 +51,15 @@ func CreateNodePool(clusterName string, nodePoolName string, rgroupName string) 
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
-	fmt.Println("Result: " + out.String())
-}
-
-func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) {
-
-	cmd := exec.Command("az", "aks", "nodepool", "delete", "--cluster-name", clusterName, "--name",
-		nodePoolName, "--resource-group", rgroupName, "--yes")
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-		return
-	}
-	fmt.Println("Result: " + out.String())
+	a.PersistWith(spin.Spinner{}, "....")
+	color.Green("Nodepool Deleted")
 }
 
 func ScaleNodePool(clusterName string, nodePoolName string, rgroupName string) {
-
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Scaling nodepool : "+nodePoolName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	cmd := exec.Command("az", "aks", "nodepool", "scale", "--cluster-name", clusterName, "--name",
 		nodePoolName, "--resource-group", rgroupName)
 	var out bytes.Buffer
@@ -51,11 +71,16 @@ func ScaleNodePool(clusterName string, nodePoolName string, rgroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
 }
 
+//UpdateNodePool
 func UpdateNodePool(clusterName string, nodePoolName string, rgroupName string) {
-
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating nodepool : "+nodePoolName)
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	cmd := exec.Command("az", "aks", "nodepool", "update", "--cluster-name", clusterName, "--name",
 		nodePoolName, "--resource-group", rgroupName)
 	var out bytes.Buffer
@@ -67,11 +92,16 @@ func UpdateNodePool(clusterName string, nodePoolName string, rgroupName string) 
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
 }
 
+//GetNodePool will list the nodepools
 func GetNodePool(clusterName string, rgroupName string) {
-
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching nodepools")
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	cmd := exec.Command("az", "aks", "nodepool", "list", "--cluster-name", clusterName, "--resource-group", rgroupName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -82,5 +112,6 @@ func GetNodePool(clusterName string, rgroupName string) {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		return
 	}
+	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
 }

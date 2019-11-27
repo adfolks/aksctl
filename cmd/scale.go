@@ -1,4 +1,4 @@
-/*
+/*Package cmd is used for command line
 Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +26,7 @@ var scaleCmd = &cobra.Command{
 	Short: "To scale a node pool in AKS cluster",
 	Long:  `You can scale the node pool in a managed Kubernetes cluster with aksctl scale cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("scale called")
+		color.Red("scale is not in aksctl command group. See 'aksctl scale --help' ")
 	},
 }
 

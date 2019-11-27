@@ -1,4 +1,4 @@
-// /*
+// /*Package cmd is used for command line
 // Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/coreaksctl"
+	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
+	"github.com/adfolks/aksctl/pkg/ctl/vnet"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -32,11 +34,10 @@ var deleteVNetViper = viper.New()
 
 var createVNetCmd = &cobra.Command{
 	Use:   "vnet",
-	Short: "Create and manage Virtual Networks.",
-	Long: `Create and manage Virtual Networks, it will use a random name, a default resource group and cluster for the nodepool if not specified.
- 	If you need to specify name or other resources use yaml file for more custom configuration`,
+	Short: "Create a Virtual Network.",
+	Long: `Create and manage Virtual Networks, it will use a random name, a default resource group for the Virtual Network if not specified.
+        If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
 
 		// Setting config file with viper
 
@@ -54,36 +55,39 @@ var createVNetCmd = &cobra.Command{
 
 		fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
 
-		status := coreaksctl.CheckResourceGroup(rgroupName)
+		status := resourcegroup.CheckResourceGroup(rgroupName)
 		fmt.Println("status =", status)
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
-			confirmation := coreaksctl.AskForConfirmation()
+			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
+			nokayResponses := []string{"n", "N", "no", "No", "NO"}
+			message := "Please type yes or no and then press enter:"
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
 			if confirmation == true {
 				rgroupName := createVNetViper.GetString("vnet.resource-group") // getting values through viper
 				rgroupRegion := createVNetViper.GetString("metadata.location")
 
 				fmt.Println("rgroupName : ", rgroupName, ", ", "rgroupRegion: ", rgroupRegion)
 
-				coreaksctl.CreateResourceGroup(rgroupName, rgroupRegion)
+				resourcegroup.CreateResourceGroup(rgroupName, rgroupRegion)
 				fmt.Println("Resource group created")
 				fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
-				coreaksctl.CreateVNet(vNetName, rgroupName)
+				vnet.CreateVNet(vNetName, rgroupName)
 			} else {
 				fmt.Println("The resource group does not exist")
 			}
 		} else {
 			fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
-			coreaksctl.CreateVNet(vNetName, rgroupName)
+			vnet.CreateVNet(vNetName, rgroupName)
 		}
 	},
 }
 
 var deleteVNetCmd = &cobra.Command{
 	Use:   "vnet",
-	Short: "Delete and manage Virtual Networks.",
-	Long: `Delete and manage Virtual Networks, it will use a random name, a default resource group for the Virtual Network if not specified.
- 	If you need to specify name or other resources use yaml file for more custom configuration`,
+	Short: "Delete a Virtual Networks.",
+	Long: `Delete Virtual Network with the specified name and resource group.
+        If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -103,7 +107,7 @@ var deleteVNetCmd = &cobra.Command{
 
 		fmt.Println("vNetName : ", vNetName, ", ", "rgroupName : ", rgroupName)
 
-		coreaksctl.DeleteVNet(vNetName, rgroupName)
+		vnet.DeleteVNet(vNetName, rgroupName)
 
 	},
 }

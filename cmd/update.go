@@ -1,4 +1,4 @@
-/*
+/*Package cmd is used for command line
 Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +26,7 @@ var updateCmd = &cobra.Command{
 	Short: "To update an AKS cluster",
 	Long:  `You can get a cluster with aksctl update cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("update called")
+		color.Red("update is not in aksctl command group. See 'aksctl update --help' ")
 	},
 }
 

@@ -1,0 +1,54 @@
+package addon
+
+import (
+	"bytes"
+	"fmt"
+	"os"
+	"os/exec"
+	"strings"
+	"time"
+
+	"github.com/fatih/color"
+	"github.com/gernest/wow"
+	"github.com/gernest/wow/spin"
+	"github.com/kyokomi/emoji"
+)
+
+//InstallAddon will install an addon
+func InstallAddon(chartName string, repoName string) {
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Installing your addon")
+	a.Start()
+	time.Sleep(2 * time.Second)
+	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
+	//Install Addon code here
+	cmd := exec.Command("helm", "install", chartName, repoName)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+	}
+
+	a.PersistWith(spin.Spinner{}, "....")
+	color.Green("Addon installed")
+	emoji.Println(":beer: Cheers!!!")
+}
+
+//ChekHelm will check the version
+func CheckHelm() bool {
+	cmd := exec.Command("helm", "version")
+	var out bytes.Buffer
+	var versioncheck = false
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	if err == nil {
+		fmt.Println(stderr.String())
+	} else {
+		versioncheck = strings.Contains(out.String(), "Version:\"v3.")
+	}
+	return versioncheck
+}

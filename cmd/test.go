@@ -16,21 +16,22 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // createCmd represents the create command
-var deleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "To Delete an AKS cluster",
-	Long:  `You can delete a cluster with aksctl delete cluster`,
+var testViper = viper.New()
+
+var testCmd = &cobra.Command{
+	Use:   "test",
+	Short: "To test a cluster",
+	Long:  `test message`,
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Red("delete is not in aksctl command group. See 'aksctl delete --help' ")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(deleteCmd)
+	rootCmd.AddCommand(testCmd)
 
 }

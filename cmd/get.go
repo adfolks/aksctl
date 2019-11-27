@@ -1,4 +1,4 @@
-/*
+/*Package cmd is used for command line
 Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,20 +26,11 @@ var getCmd = &cobra.Command{
 	Short: "To get an AKS cluster",
 	Long:  `You can get a cluster with aksctl get cluster`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
+		color.Red("get is not in aksctl command group. See 'aksctl get --help' ")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(getCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// createCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// createCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

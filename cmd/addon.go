@@ -16,21 +16,20 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
-// createCmd represents the create command
-var deleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "To Delete an AKS cluster",
-	Long:  `You can delete a cluster with aksctl delete cluster`,
+// addOnCmd represents the addon command
+
+var addOnCmd = &cobra.Command{
+	Use:   "addon",
+	Short: "To manage add on",
+	Long:  `addon message`,
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Red("delete is not in aksctl command group. See 'aksctl delete --help' ")
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(deleteCmd)
+	rootCmd.AddCommand(addOnCmd)
 
 }
