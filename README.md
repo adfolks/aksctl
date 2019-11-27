@@ -1,5 +1,6 @@
 # aksctl
-![GitHub All Releases](https://img.shields.io/github/downloads/adfolks/aksctl/total)  ![GitHub](https://img.shields.io/github/license/adfolks/aksctl)  ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/adfolks/aksctl)  ![GitHub closed issues](https://img.shields.io/github/issues-closed/adfolks/aksctl)  ![GitHub issues](https://img.shields.io/github/issues/adfolks/aksctl)  [![Go Report Card](https://goreportcard.com/badge/github.com/adfolks/aksctl)](https://goreportcard.com/report/github.com/adfolks/aksctl)
+![GitHub All Releases](https://img.shields.io/github/downloads/adfolks/aksctl/total) ![GitHub](https://img.shields.io/github/license/adfolks/aksctl) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/adfolks/aksctl) ![GitHub closed issues](https://img.shields.io/github/issues-closed/adfolks/aksctl)  ![GitHub issues](https://img.shields.io/github/issues/adfolks/aksctl) [![Go Report Card](https://goreportcard.com/badge/github.com/adfolks/aksctl)](https://goreportcard.com/report/github.com/adfolks/aksctl)
+
  `aksctl` is an easy to use CLI(Command Line Utility) for creating and managing Kubernetes Cluster on Azure AKS ( Azure Kubernetes Service). It is written in Go.
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
