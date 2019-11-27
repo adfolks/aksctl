@@ -17,11 +17,10 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	
 )
 
-// createCmd represents the create command
-var addOnViper = viper.New()
+// addOnCmd represents the addon command
 
 var addOnCmd = &cobra.Command{
 	Use:   "addon",

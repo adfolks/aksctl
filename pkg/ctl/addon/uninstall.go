@@ -1,24 +1,25 @@
 package addon
 
 import (
+	"bytes"
+	"fmt"
+	"os"
+	"os/exec"
+	"time"
+
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
-	"os"
-	"time"
-	"bytes"
-	"os/exec"
 	"github.com/kyokomi/emoji"
-	"fmt"
 )
 
-func InstallAddon(chartName string, repoName string) {
-	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Installing your addon")
+func UninstallAddon(chartName string) {
+	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Uninstalling your addon")
 	a.Start()
 	time.Sleep(2 * time.Second)
 	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
 	//Install Addon code here
-	cmd := exec.Command("helm", "install", chartName, repoName)
+	cmd := exec.Command("helm", "delete", chartName)
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
@@ -27,8 +28,8 @@ func InstallAddon(chartName string, repoName string) {
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 	}
-	
+
 	a.PersistWith(spin.Spinner{}, "....")
-	color.Green("Addon installed")
-    emoji.Println(":beer: Cheers!!!")
+	color.Green("Addon uninstalled")
+	emoji.Println(":beer: Cheers!!!")
 }
