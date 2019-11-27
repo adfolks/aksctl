@@ -18,9 +18,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/adfolks/aksctl/pkg/ctl/disk"
 	"github.com/adfolks/aksctl/pkg/ctl/resourcegroup"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -35,7 +35,7 @@ var createDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Create and manage Azure Managed Disks.",
 	Long: `Create and manage Azure Managed Disks, it will use a random name and default resource group for the disk if not specified.
- 	If you need to specify name or other resources use yaml file for more custom configuration`,
+        If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -55,14 +55,14 @@ var createDiskCmd = &cobra.Command{
 		diskSize := createDiskViper.GetString("managedDisk.size-gb")
 
 		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup + ", diskLocation : " + diskLocation + ", diskSize : " + diskSize)
-		status :=  resourcegroup.CheckResourceGroup(diskResourceGroup)
+		status := resourcegroup.CheckResourceGroup(diskResourceGroup)
 
 		if status == false {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
 			message := "Please type yes or no and then press enter:"
-			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
 			if confirmation == true {
 				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
 				rgroupRegion := createDiskViper.GetString("managedDisk.location")
@@ -86,7 +86,7 @@ var deleteDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Delete an AKS disk",
 	Long: `Delete an AKS disk with the specified disk name and resource group.
-	If you need to specify name or other resources use yaml file for more custom configuration`,
+        If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -116,7 +116,7 @@ var updateDiskCmd = &cobra.Command{
 	Use:   "disk",
 	Short: "Update an AKS disk",
 	Long: `Update an AKS disk with the specified disk name and resource group.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper

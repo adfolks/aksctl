@@ -36,7 +36,7 @@ var createVNetCmd = &cobra.Command{
 	Use:   "vnet",
 	Short: "Create a Virtual Network.",
 	Long: `Create and manage Virtual Networks, it will use a random name, a default resource group for the Virtual Network if not specified.
- 	If you need to specify name or other resources use yaml file for more custom configuration`,
+        If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Setting config file with viper
@@ -62,7 +62,7 @@ var createVNetCmd = &cobra.Command{
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
 			message := "Please type yes or no and then press enter:"
-			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
 			if confirmation == true {
 				rgroupName := createVNetViper.GetString("vnet.resource-group") // getting values through viper
 				rgroupRegion := createVNetViper.GetString("metadata.location")
@@ -87,7 +87,7 @@ var deleteVNetCmd = &cobra.Command{
 	Use:   "vnet",
 	Short: "Delete a Virtual Networks.",
 	Long: `Delete Virtual Network with the specified name and resource group.
- 	If you need to specify name or other resources use yaml file for more custom configuration`,
+        If you need to specify name or other resources use yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
