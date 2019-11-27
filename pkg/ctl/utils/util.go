@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/fatih/color"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 )
 
 // askForConfirmation uses Scanln to parse user input. A user must type in "yes" or "no" and
@@ -46,3 +47,24 @@ func posString(slice []string, element string) int {
 func ContainsString(slice []string, element string) bool {
 	return !(posString(slice, element) == -1)
 }
+
+func stringToMap(data string) []map[string]interface{} {
+	var value []map[string]interface{}
+
+	err := json.Unmarshal([]byte(data), &value)
+
+	if err != nil {
+		panic(err)
+	}
+	return value
+}
+
+func FilterStringMap(data string, key string) []string {
+	mapdata := stringToMap(data)
+	var slice []string
+	for _, mapItem := range mapdata {
+		slice = append(slice, mapItem[key].(string))
+	}
+	return slice
+}
+
