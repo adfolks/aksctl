@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+//CreateResourceGroup will create a resource group
 func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating resource group : "+rgroupName)
 	a.Start()
@@ -31,8 +32,8 @@ func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 	emoji.Println(":beer: Cheers!!!")
 }
 
+//CheckResoureGroup will check whether a resource group exit or not
 func CheckResourceGroup(rgroupName string) bool {
-
 	cmd := exec.Command("az", "group", "exists", "-n", rgroupName)
 	var check bool
 	var out bytes.Buffer
@@ -54,6 +55,7 @@ func CheckResourceGroup(rgroupName string) bool {
 	return check
 }
 
+//DeleteResourceGroup will delete a resource group
 func DeleteResourceGroup(rgroupName string) {
 
 	//Delete AKS ResourceGroup
@@ -75,8 +77,8 @@ func DeleteResourceGroup(rgroupName string) {
 	color.Green("Resource group Deleted")
 }
 
+//UpdateResourceGroup
 func UpdateResourceGroup(rgroupName string) {
-
 	//Update AKS ResourceGroup
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating resource group : "+rgroupName)
 	a.Start()
@@ -97,8 +99,8 @@ func UpdateResourceGroup(rgroupName string) {
 	color.Green("Resource Group Updated")
 }
 
+//GetResourceGroup will list the resource groups
 func GetResourceGroup() {
-
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching resource groups")
 	a.Start()
 	time.Sleep(2 * time.Second)

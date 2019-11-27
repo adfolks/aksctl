@@ -3,6 +3,7 @@ package cluster
 import (
 	"bytes"
 	"fmt"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
@@ -12,6 +13,7 @@ import (
 	"time"
 )
 
+//CreateCluster creates a cluster
 func CreateCluster(clusterName string, resourceGroupName string, extraflags []string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Starting to set up your k8s Cluster")
 	a.Start()
@@ -43,6 +45,7 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	emoji.Println(":beer: Cheers!!!")
 }
 
+//GetClusterCredentials
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
 	b := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching credentials")
 	b.Start()
@@ -64,6 +67,7 @@ func GetClusterCredentials(clusterName string, resourceGroupName string) {
 	color.Cyan(out.String())
 }
 
+//DeleteCluster deletes a cluster
 func DeleteCluster(clusterName string, resourceGroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting your k8s Cluster "+clusterName)
 	a.Start()
@@ -85,8 +89,8 @@ func DeleteCluster(clusterName string, resourceGroupName string) {
 	color.Green("Cluster Deleted")
 }
 
+//UpdateClustr update a cluster
 func UpdateCluster(clusterName string, resourceGroupName string) {
-
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating your k8s Cluster")
 	a.Start()
 	time.Sleep(2 * time.Second)
@@ -107,6 +111,7 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 	color.Green("Cluster Updated")
 }
 
+//GetCluster will list the available clusters
 func GetCluster(resourceGroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Collecting your k8s Cluster informations")
 	a.Start()
@@ -126,6 +131,8 @@ func GetCluster(resourceGroupName string) {
 	}
 	a.PersistWith(spin.Spinner{}, "....")
 	fmt.Println("Result: " + out.String())
+	fmt.Println("Type:", utils.FilterStringMap(out.String(), "name"))
+
 }
 
 // Find takes a slice and looks for an element in it. If found it will
