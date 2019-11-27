@@ -1,4 +1,4 @@
-// /*
+// /*Package cmd is used for command line
 // Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 // Licensed under the Apache License, Version 2.0 (the "License");
