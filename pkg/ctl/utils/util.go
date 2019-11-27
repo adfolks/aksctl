@@ -8,7 +8,7 @@ import (
 	"github.com/fatih/color"
 )
 
-// askForConfirmation uses Scanln to parse user input. A user must type in "yes" or "no" and
+// AskForConfirmation uses Scanln to parse user input. A user must type in "yes" or "no" and
 // then press enter. It has fuzzy matching, so "y", "Y", "yes", "YES", and "Yes" all count as
 // confirmations. If the input is not recognized, it will ask again. The function does not return
 // until it gets a valid response from the user. Typically, you should use fmt to print out a question
@@ -42,11 +42,12 @@ func posString(slice []string, element string) int {
 	return -1
 }
 
-// containsString returns true iff slice contains element
+// ContainsString returns true iff slice contains element
 func ContainsString(slice []string, element string) bool {
 	return !(posString(slice, element) == -1)
 }
 
+//StringToMap changes string to map
 func stringToMap(data string) []map[string]interface{} {
 	var value []map[string]interface{}
 
@@ -58,6 +59,7 @@ func stringToMap(data string) []map[string]interface{} {
 	return value
 }
 
+//FilterStringMap
 func FilterStringMap(data string, key string) []string {
 	mapdata := stringToMap(data)
 	var slice []string

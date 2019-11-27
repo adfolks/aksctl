@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+//CreatVNet will create vnet
 func CreateVNet(vNetName string, rgroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating virtual network : "+vNetName)
 	a.Start()
@@ -32,6 +33,7 @@ func CreateVNet(vNetName string, rgroupName string) {
 	emoji.Println(":beer: Cheers!!!")
 }
 
+//DeleteVNet will delete vnet
 func DeleteVNet(vNetName string, rgroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting virtual network : "+vNetName)
 	a.Start()

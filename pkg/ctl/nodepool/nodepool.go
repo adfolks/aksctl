@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+//CreateNodePool will create a nodepool
 func CreateNodePool(clusterName string, nodePoolName string, rgroupName string, npNodeCount string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating nodepool : "+nodePoolName)
 	a.Start()
@@ -33,6 +34,7 @@ func CreateNodePool(clusterName string, nodePoolName string, rgroupName string, 
 	emoji.Println(":beer: Cheers!!!")
 }
 
+//DeleteNodePool will delete a nodepool
 func DeleteNodePool(clusterName string, nodePoolName string, rgroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting nodepool : "+nodePoolName)
 	a.Start()
@@ -73,6 +75,7 @@ func ScaleNodePool(clusterName string, nodePoolName string, rgroupName string) {
 	fmt.Println("Result: " + out.String())
 }
 
+//UpdateNodePool
 func UpdateNodePool(clusterName string, nodePoolName string, rgroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating nodepool : "+nodePoolName)
 	a.Start()
@@ -93,6 +96,7 @@ func UpdateNodePool(clusterName string, nodePoolName string, rgroupName string) 
 	fmt.Println("Result: " + out.String())
 }
 
+//GetNodePool will list the nodepools
 func GetNodePool(clusterName string, rgroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching nodepools")
 	a.Start()
