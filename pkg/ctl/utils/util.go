@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 
@@ -12,7 +13,7 @@ import (
 // confirmations. If the input is not recognized, it will ask again. The function does not return
 // until it gets a valid response from the user. Typically, you should use fmt to print out a question
 // before calling askForConfirmation. E.g. fmt.Println("WARNING: Are you sure? (yes/no)")
-func AskForConfirmation(okayResponses []string,nokayResponses []string,message string) bool {
+func AskForConfirmation(okayResponses []string, nokayResponses []string, message string) bool {
 	var response string
 	_, err := fmt.Scanln(&response)
 	if err != nil {
@@ -24,10 +25,9 @@ func AskForConfirmation(okayResponses []string,nokayResponses []string,message s
 		return false
 	} else {
 		color.Blue(message)
-		return AskForConfirmation(okayResponses,nokayResponses,message)
+		return AskForConfirmation(okayResponses, nokayResponses, message)
 	}
 }
-
 
 // You might want to put the following two functions in a separate utility package.
 
@@ -45,4 +45,24 @@ func posString(slice []string, element string) int {
 // containsString returns true iff slice contains element
 func ContainsString(slice []string, element string) bool {
 	return !(posString(slice, element) == -1)
+}
+
+func stringToMap(data string) []map[string]interface{} {
+	var value []map[string]interface{}
+
+	err := json.Unmarshal([]byte(data), &value)
+
+	if err != nil {
+		panic(err)
+	}
+	return value
+}
+
+func FilterStringMap(data string, key string) []string {
+	mapdata := stringToMap(data)
+	var slice []string
+	for _, mapItem := range mapdata {
+		slice = append(slice, mapItem[key].(string))
+	}
+	return slice
 }
