@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// createCmd represents the create command
+//createCmd represents the create command
 var installViper = viper.New()
 
 var installCmd = &cobra.Command{
@@ -37,11 +37,10 @@ var installCmd = &cobra.Command{
 		installViper.SetConfigName("default") // name of config file (without extension)
 		installViper.AddConfigPath(".")       // optionally look for config in the working directory
 		err := installViper.ReadInConfig()    // Find and read the config file
-		if err != nil {                        // Handle errors reading the config file
+		if err != nil {                       // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		
 		//installViper.SetDefault("chartName", "test") // for setting a default value
 		chartName, _ := cmd.Flags().GetString("name")
 		repoName, _ := cmd.Flags().GetString("reponame")
@@ -53,8 +52,6 @@ var installCmd = &cobra.Command{
 		addon.InstallAddon(chartName, repoName)
 	},
 }
-
-
 
 func init() {
 	addOnCmd.AddCommand(installCmd)

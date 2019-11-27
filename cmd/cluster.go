@@ -40,7 +40,7 @@ var clusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Create an AKS cluster",
 	Long: `Create an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -50,44 +50,43 @@ var clusterCmd = &cobra.Command{
 		createViper.AddConfigPath(".")      // optionally look for config in the working directory
 		err := createViper.ReadInConfig()   // Find and read the config file
 		if err != nil {                     // Handle errors reading the config file
-			
+
 			color.Red("Config yaml file doesn't exist")
 			fmt.Println("Do you want to create a default yaml file? (yes/no)")
 
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
 			message := "Please type yes or no and then press enter:"
-			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
 			if confirmation == true {
-					_,errc := os.Create(cfgFilef+".yaml")
-					if errc != nil {
-						color.Red("Error creating default yaml try creating it mannually");
-						os.Exit(0)
-					}
-					createViper.SetConfigType("yaml")
-					createViper.Set("metadata.name", "defaulCluster")
-					createViper.Set("metadata.resource-group", "defaultRGroup")
-					createViper.Set("metadata.location", "eastus")
-					errb := createViper.WriteConfig()
-					if errb != nil {
-						fmt.Print("Error : ",errb);
-					}
-					color.Green("Default config yaml generated")
-				} else {
-					color.Red("Can't continue without yaml file")
+				_, errc := os.Create(cfgFilef + ".yaml")
+				if errc != nil {
+					color.Red("Error creating default yaml try creating it mannually")
 					os.Exit(0)
 				}
-			
-			
+				createViper.SetConfigType("yaml")
+				createViper.Set("metadata.name", "defaulCluster")
+				createViper.Set("metadata.resource-group", "defaultRGroup")
+				createViper.Set("metadata.location", "eastus")
+				errb := createViper.WriteConfig()
+				if errb != nil {
+					fmt.Print("Error : ", errb)
+				}
+				color.Green("Default config yaml generated")
+			} else {
+				color.Red("Can't continue without yaml file")
+				os.Exit(0)
+			}
+
 		}
 
 		/*
-			viper default value will be prior than Flag default
-			so value selection priority order is
-				- Flag Value
-				- Config File
-				- Vipro Default
-				- Flag Default
+		   viper default value will be prior than Flag default
+		   so value selection priority order is
+		           - Flag Value
+		           - Config File
+		           - Vipro Default
+		           - Flag Default
 		*/
 		// viper.Set("rgroupName", "opsOverrided")   //setting overide for any value
 
@@ -113,7 +112,7 @@ var clusterCmd = &cobra.Command{
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
 			message := "Please type yes or no and then press enter:"
-			confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
+			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
 			if confirmation == true {
 
 				rgroupName := createViper.GetString("metadata.resource-group") // getting values through viper
@@ -138,7 +137,7 @@ var deleteClusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Delete an AKS cluster",
 	Long: `Delete an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -166,7 +165,7 @@ var updateClusterCmd = &cobra.Command{
 	Use:   "cluster",
 	Short: "Update an AKS cluster",
 	Long: `Update an AKS cluster, it would use a Random Name for cluster.
-	If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
+        If you need to specify name or other resources use cluster.yaml file for more custom configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(args)
 
@@ -211,7 +210,6 @@ var getClusterCmd = &cobra.Command{
 	},
 }
 
-
 var getCredentialCmd = &cobra.Command{
 	Use:   "credential",
 	Short: "Get list of AKS cluster",
@@ -224,11 +222,11 @@ var getCredentialCmd = &cobra.Command{
 		credViper.SetConfigName("default") // name of config file (without extension)
 		credViper.AddConfigPath(".")       // optionally look for config in the working directory
 		err := credViper.ReadInConfig()    // Find and read the config file
-		if err != nil {                   // Handle errors reading the config file
+		if err != nil {                    // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		name := credViper.GetString("metadata.name") // getting values through viper
+		name := credViper.GetString("metadata.name")                 // getting values through viper
 		rgroupName := credViper.GetString("metadata.resource-group") // getting values through viper
 
 		color.Cyan("cluster name : " + name)
@@ -275,9 +273,9 @@ func init() {
 
 	getCmd.AddCommand(getClusterCmd)
 	getClusterCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefault", "disk resource group")
+	getClusterCmd.PersistentFlags().StringP("flag", "l", "all", "filtr flag")
 
 	getViper.BindPFlag("metadata.resource-group", getClusterCmd.PersistentFlags().Lookup("rgroupname"))
-
 
 	getCmd.AddCommand(getCredentialCmd)
 	getCredentialCmd.PersistentFlags().StringP("name", "n", "opsFlagDefault", "cluster name")

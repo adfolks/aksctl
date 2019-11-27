@@ -37,23 +37,19 @@ var uninstallCmd = &cobra.Command{
 		uninstallViper.SetConfigName("default") // name of config file (without extension)
 		uninstallViper.AddConfigPath(".")       // optionally look for config in the working directory
 		err := uninstallViper.ReadInConfig()    // Find and read the config file
-		if err != nil {                        // Handle errors reading the config file
+		if err != nil {                         // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
 
-		
 		//installViper.SetDefault("chartName", "test") // for setting a default value
 		chartName, _ := cmd.Flags().GetString("name")
 		//chartName := uninstallViper.GetString("metadata.chartname") // getting values through viper
-	
+
 		color.Cyan("chartName : " + chartName)
 
 		addon.UninstallAddon(chartName)
 	},
 }
-
-
-
 
 func init() {
 	addOnCmd.AddCommand(uninstallCmd)

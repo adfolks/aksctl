@@ -17,11 +17,11 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/adfolks/aksctl/pkg/ctl/utils"
+	"os"
 )
 
 // createCmd represents the create command
@@ -39,44 +39,44 @@ var initCmd = &cobra.Command{
 		okayResponses := []string{"p", "P", "prod", "Prod", "PROD"}
 		nokayResponses := []string{"d", "D", "dev", "Dev", "DEV"}
 		message := "Please type prod or dev and then press enter:"
-		confirmation := utils.AskForConfirmation(okayResponses,nokayResponses,message)
+		confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
 		if confirmation == true {
-			_,errc := os.Create(prodFilef+".yaml")
+			_, errc := os.Create(prodFilef + ".yaml")
 			if errc != nil {
-				color.Red("Error creating default prod yaml try creating it mannually");
+				color.Red("Error creating default prod yaml try creating it mannually")
 				os.Exit(0)
 			}
 			initViper.SetConfigName(prodFilef) // name of config file (without extension)
-			initViper.AddConfigPath(".")      // optionally look for config in the working directory 
+			initViper.AddConfigPath(".")       // optionally look for config in the working directory
 			initViper.SetConfigType("yaml")
 			initViper.Set("metadata.name", "defaulCluster")
 			initViper.Set("metadata.resource-group", "defaultRGroup")
 			initViper.Set("metadata.location", "eastus")
 			errb := initViper.WriteConfig()
 			if errb != nil {
-				fmt.Print("Error : ",errb);
+				fmt.Print("Error : ", errb)
 			}
 			color.Green("Default prod yaml generated")
 		} else {
-			_,errc := os.Create(devFilef+".yaml")
+			_, errc := os.Create(devFilef + ".yaml")
 			if errc != nil {
-				color.Red("Error creating default dev yaml try creating it mannually");
+				color.Red("Error creating default dev yaml try creating it mannually")
 				os.Exit(0)
 			}
 			initViper.SetConfigName(devFilef) // name of config file (without extension)
-			initViper.AddConfigPath(".")      // optionally look for config in the working directory 
+			initViper.AddConfigPath(".")      // optionally look for config in the working directory
 			initViper.SetConfigType("yaml")
 			initViper.Set("metadata.name", "defaulCluster")
 			initViper.Set("metadata.resource-group", "defaultRGroup")
 			initViper.Set("metadata.location", "eastus")
 			errb := initViper.WriteConfig()
 			if errb != nil {
-				fmt.Print("Error : ",errb);
+				fmt.Print("Error : ", errb)
 			}
 			color.Green("Default dev yaml generated")
 			os.Exit(0)
 		}
-	
+
 	},
 }
 

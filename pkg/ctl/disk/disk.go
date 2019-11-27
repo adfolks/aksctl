@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+//CreateDisk will create a disk
 func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, diskSize string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating disk : "+diskName)
 	a.Start()
@@ -35,6 +36,7 @@ func CreateDisk(diskName string, diskResourcegroup string, diskLocation string, 
 	emoji.Println(":beer: Cheers!!!")
 }
 
+//DeleteDisk will delete a disk
 func DeleteDisk(diskName string, diskResourceGroup string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Deleting disk : "+diskName)
 	a.Start()
@@ -56,6 +58,7 @@ func DeleteDisk(diskName string, diskResourceGroup string) {
 	color.Green("Disk Deleted")
 }
 
+//UpdateDisk will modify the changes
 func UpdateDisk(diskName string, diskResourceGroup string, diskSize string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating disk : "+diskName)
 	a.Start()
@@ -77,6 +80,7 @@ func UpdateDisk(diskName string, diskResourceGroup string, diskSize string) {
 	color.Green("Disk Updated")
 }
 
+//GetDisk will list the available disks
 func GetDisk(diskResourceGroup string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching disks")
 	a.Start()

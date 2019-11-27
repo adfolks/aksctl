@@ -13,6 +13,7 @@ import (
 	"github.com/kyokomi/emoji"
 )
 
+//UninstallAddon will delete an addon
 func UninstallAddon(chartName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Uninstalling your addon")
 	a.Start()
