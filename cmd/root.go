@@ -1,4 +1,4 @@
-/*
+/*Package cmd is used for command line
 Copyright © 2019 Anoop Lekshmanan anoopl@adfolks.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
