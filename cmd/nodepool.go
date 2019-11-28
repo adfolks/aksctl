@@ -167,10 +167,11 @@ var getNodePoolCmd = &cobra.Command{
 		// getting values through viper
 		clusterName := getNPViper.GetString("nodePools.cluster-name")
 		rgroupName := getNPViper.GetString("nodePools.resource-group")
+		nodepoolFilter, _ := cmd.Flags().GetString("flag")
 
 		fmt.Println("clusterName : ", clusterName, ", ", "rgroupName : ", rgroupName)
 
-		nodepool.GetNodePool(clusterName, rgroupName)
+		nodepool.GetNodePool(clusterName, rgroupName, nodepoolFilter)
 	},
 }
 
@@ -229,6 +230,7 @@ func init() {
 	getCmd.AddCommand(getNodePoolCmd)
 	getNodePoolCmd.PersistentFlags().StringP("rgroupname", "g", "rgFlag", "NodePool resource group")
 	getNodePoolCmd.PersistentFlags().StringP("clustername", "c", "clusterFlag", "NodePool cluster")
+	getNodePoolCmd.PersistentFlags().StringP("flag", "l", "all", "filtr flag")
 
 	getNPViper.BindPFlag("nodePools.cluster-name", getNodePoolCmd.PersistentFlags().Lookup("clustername"))
 	getNPViper.BindPFlag("nodePools.resource-group", getNodePoolCmd.PersistentFlags().Lookup("rgroupname"))
