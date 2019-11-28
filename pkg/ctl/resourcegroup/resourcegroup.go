@@ -32,7 +32,7 @@ func CreateResourceGroup(rgroupName string, rgroupRegion string) {
 	emoji.Println(":beer: Cheers!!!")
 }
 
-//CheckResoureGroup will check whether a resource group exit or not
+//CheckResourceGroup will check whether a resource group exit or not
 func CheckResourceGroup(rgroupName string) bool {
 	cmd := exec.Command("az", "group", "exists", "-n", rgroupName)
 	var check bool
@@ -77,7 +77,7 @@ func DeleteResourceGroup(rgroupName string) {
 	color.Green("Resource group Deleted")
 }
 
-//UpdateResourceGroup
+//UpdateResourceGroup updates a resource group
 func UpdateResourceGroup(rgroupName string) {
 	//Update AKS ResourceGroup
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating resource group : "+rgroupName)

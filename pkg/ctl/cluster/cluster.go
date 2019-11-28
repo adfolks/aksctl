@@ -45,7 +45,7 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	emoji.Println(":beer: Cheers!!!")
 }
 
-//GetClusterCredentials
+//GetClusterCredentials  gives the cluster credentials
 func GetClusterCredentials(clusterName string, resourceGroupName string) {
 	b := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching credentials")
 	b.Start()
@@ -89,7 +89,7 @@ func DeleteCluster(clusterName string, resourceGroupName string) {
 	color.Green("Cluster Deleted")
 }
 
-//UpdateClustr update a cluster
+//UpdateCluster updates a cluster
 func UpdateCluster(clusterName string, resourceGroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Updating your k8s Cluster")
 	a.Start()
