@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-//CreatVNet will create vnet
+//CreateVNet will create a vnet
 func CreateVNet(vNetName string, rgroupName string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Creating virtual network : "+vNetName)
 	a.Start()

@@ -59,7 +59,7 @@ func stringToMap(data string) []map[string]interface{} {
 	return value
 }
 
-//FilterStringMap
+//FilterStringMap will filter the map
 func FilterStringMap(data string, key string) []string {
 	mapdata := stringToMap(data)
 	var slice []string
