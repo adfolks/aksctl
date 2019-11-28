@@ -57,7 +57,7 @@ var createDiskCmd = &cobra.Command{
 		color.Cyan("diskName : " + diskName + ", diskResourceGroup : " + diskResourceGroup + ", diskLocation : " + diskLocation + ", diskSize : " + diskSize)
 		status := resourcegroup.CheckResourceGroup(diskResourceGroup)
 
-		if status == false {
+		if !status {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
