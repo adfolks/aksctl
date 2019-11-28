@@ -40,7 +40,7 @@ var initCmd = &cobra.Command{
 		nokayResponses := []string{"d", "D", "dev", "Dev", "DEV"}
 		message := "Please type prod or dev and then press enter:"
 		confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
-		if confirmation == true {
+		if confirmation {
 			_, errc := os.Create(prodFilef + ".yaml")
 			if errc != nil {
 				color.Red("Error creating default prod yaml try creating it mannually")
