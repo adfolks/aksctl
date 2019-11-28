@@ -63,7 +63,7 @@ var createDiskCmd = &cobra.Command{
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
 			message := "Please type yes or no and then press enter:"
 			confirmation := utils.AskForConfirmation(okayResponses, nokayResponses, message)
-			if confirmation == true {
+			if confirmation {
 				rgroupName := createDiskViper.GetString("managedDisk.resource-group") // getting values through viper
 				rgroupRegion := createDiskViper.GetString("managedDisk.location")
 

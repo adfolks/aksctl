@@ -57,7 +57,7 @@ var createVNetCmd = &cobra.Command{
 
 		status := resourcegroup.CheckResourceGroup(rgroupName)
 		fmt.Println("status =", status)
-		if status {
+		if !status {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}

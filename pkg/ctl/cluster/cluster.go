@@ -18,7 +18,7 @@ func CreateCluster(clusterName string, resourceGroupName string, extraflags []st
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Starting to set up your k8s Cluster")
 	a.Start()
 	time.Sleep(2 * time.Second)
-	a.Text("This would take a few minutes...").Spinner(spin.Get(spin.Dots))
+	a.Text("This would take a few minutes... \n").Spinner(spin.Get(spin.Dots))
 	//Create AKS Cluster
 	var args = []string{"aks", "create", "--name", clusterName, "--resource-group", resourceGroupName}
 	//handle the SSH keys generation in case of basic usage or the key value is not present on the config file
