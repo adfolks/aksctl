@@ -3,13 +3,13 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
   annotations:
     seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
     seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
@@ -56,13 +56,13 @@ spec:
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
 spec:
   allowPrivilegeEscalation: true
   privileged: false
@@ -88,12 +88,12 @@ spec:
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-kube-state-metrics
+  name: v1-kube-state-metrics
   labels:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: kube-state-metrics-2.4.1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: v1
 spec:
   privileged: false
   volumes:
@@ -126,10 +126,10 @@ metadata:
   labels:     
     app: prometheus-node-exporter
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
     chart: prometheus-node-exporter-1.7.3
     jobLabel: node-exporter
-  name: RELEASE-NAME-prometheus-node-exporter
+  name: v1-prometheus-node-exporter
 spec:
   privileged: false
   # Required to prevent escalations to root.
@@ -177,13 +177,13 @@ spec:
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   namespace: default
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   privileged: false
@@ -228,13 +228,13 @@ spec:
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   namespace: default
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   privileged: false
@@ -279,13 +279,13 @@ spec:
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   namespace: default
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   privileged: false
@@ -330,12 +330,12 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
 type: Opaque
 data:
@@ -347,13 +347,13 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: alertmanager-RELEASE-NAME-prometheus-op-alertmanager
+  name: alertmanager-v1-prometheus-op-alertmanager
   namespace: default
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   alertmanager.yaml: "Z2xvYmFsOgogIHJlc29sdmVfdGltZW91dDogNW0KcmVjZWl2ZXJzOgotIG5hbWU6ICJudWxsIgpyb3V0ZToKICBncm91cF9ieToKICAtIGpvYgogIGdyb3VwX2ludGVydmFsOiA1bQogIGdyb3VwX3dhaXQ6IDMwcwogIHJlY2VpdmVyOiAibnVsbCIKICByZXBlYXRfaW50ZXJ2YWw6IDEyaAogIHJvdXRlczoKICAtIG1hdGNoOgogICAgICBhbGVydG5hbWU6IFdhdGNoZG9nCiAgICByZWNlaXZlcjogIm51bGwi"
@@ -365,9 +365,9 @@ metadata:
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
-  name: RELEASE-NAME-grafana-config-dashboards
+  name: v1-grafana-config-dashboards
   namespace: default
 data:
   provider.yaml: |-
@@ -385,12 +385,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
 data:
   grafana.ini: |
@@ -410,17 +410,17 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
   namespace: default
   labels:
-    app: RELEASE-NAME-grafana
+    app: v1-grafana
     chart: "grafana-4.0.2"
     heritage: "Helm"
-    release: "RELEASE-NAME"
+    release: "v1"
 data:
   run.sh: |-
     @test "Test Health" {
-      url="http://RELEASE-NAME-grafana/api/health"
+      url="http://v1-grafana/api/health"
 
       code=$(curl -s -o /dev/null -I -w "%{http_code}" $url)
       [ "$code" == "200" ]
@@ -430,14 +430,14 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-grafana-datasource
+  name: v1-prometheus-op-grafana-datasource
   namespace: default
   labels:
     grafana_datasource: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   datasource.yaml: |-
@@ -445,7 +445,7 @@ data:
     datasources:
     - name: Prometheus
       type: prometheus
-      url: http://RELEASE-NAME-prometheus-op-prometheus:9090/
+      url: http://v1-prometheus-op-prometheus:9090/
       access: proxy
       isDefault: true
 ---
@@ -456,13 +456,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-apiserver
+  name: v1-prometheus-op-apiserver
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   apiserver.json: |-
@@ -1754,13 +1754,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-cluster-total
+  name: v1-prometheus-op-cluster-total
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   cluster-total.json: |-
@@ -3145,13 +3145,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-controller-manager
+  name: v1-prometheus-op-controller-manager
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   controller-manager.json: |-
@@ -4273,13 +4273,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-etcd
+  name: v1-prometheus-op-etcd
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   etcd.json: |-
@@ -5382,13 +5382,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-coredns
+  name: v1-prometheus-op-k8s-coredns
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-coredns.json: |-
@@ -6708,13 +6708,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-resources-cluster
+  name: v1-prometheus-op-k8s-resources-cluster
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-resources-cluster.json: |-
@@ -9295,13 +9295,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-resources-namespace
+  name: v1-prometheus-op-k8s-resources-namespace
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-resources-namespace.json: |-
@@ -11170,13 +11170,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-resources-node
+  name: v1-prometheus-op-k8s-resources-node
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-resources-node.json: |-
@@ -12128,13 +12128,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-resources-pod
+  name: v1-prometheus-op-k8s-resources-pod
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-resources-pod.json: |-
@@ -13752,13 +13752,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-resources-workload
+  name: v1-prometheus-op-k8s-resources-workload
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-resources-workload.json: |-
@@ -15796,13 +15796,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s-resources-workloads-namespace
+  name: v1-prometheus-op-k8s-resources-workloads-namespace
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   k8s-resources-workloads-namespace.json: |-
@@ -17926,13 +17926,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubelet
+  name: v1-prometheus-op-kubelet
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   kubelet.json: |-
@@ -20418,13 +20418,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-namespace-by-pod
+  name: v1-prometheus-op-namespace-by-pod
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   namespace-by-pod.json: |-
@@ -21833,13 +21833,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-namespace-by-workload
+  name: v1-prometheus-op-namespace-by-workload
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   namespace-by-workload.json: |-
@@ -23288,13 +23288,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-cluster-rsrc-use
+  name: v1-prometheus-op-node-cluster-rsrc-use
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   node-cluster-rsrc-use.json: |-
@@ -24247,13 +24247,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-rsrc-use
+  name: v1-prometheus-op-node-rsrc-use
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   node-rsrc-use.json: |-
@@ -25233,13 +25233,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-nodes
+  name: v1-prometheus-op-nodes
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   nodes.json: |-
@@ -26215,13 +26215,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-persistentvolumesusage
+  name: v1-prometheus-op-persistentvolumesusage
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   persistentvolumesusage.json: |-
@@ -26783,13 +26783,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-pod-total
+  name: v1-prometheus-op-pod-total
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   pod-total.json: |-
@@ -27966,13 +27966,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-pods
+  name: v1-prometheus-op-pods
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   pods.json: |-
@@ -28641,13 +28641,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   prometheus.json: |-
@@ -29858,13 +29858,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-proxy
+  name: v1-prometheus-op-proxy
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   proxy.json: |-
@@ -31064,13 +31064,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-scheduler
+  name: v1-prometheus-op-scheduler
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   scheduler.json: |-
@@ -32117,13 +32117,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-statefulset
+  name: v1-prometheus-op-statefulset
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   statefulset.json: |-
@@ -33038,13 +33038,13 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: RELEASE-NAME-prometheus-op-workload-total
+  name: v1-prometheus-op-workload-total
   labels:
     grafana_dashboard: "1"
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 data:
   workload-total.json: |-
@@ -34200,8 +34200,8 @@ metadata:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
-  name: RELEASE-NAME-grafana
+    release: v1
+  name: v1-grafana
   namespace: default
 ---
 # Source: prometheus-operator/charts/grafana/templates/tests/test-serviceaccount.yaml
@@ -34212,8 +34212,8 @@ metadata:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
-  name: RELEASE-NAME-grafana-test
+    release: v1
+  name: v1-grafana-test
   namespace: default
 ---
 # Source: prometheus-operator/charts/kube-state-metrics/templates/serviceaccount.yaml
@@ -34224,8 +34224,8 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: kube-state-metrics-2.4.1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: RELEASE-NAME
-  name: RELEASE-NAME-kube-state-metrics
+    app.kubernetes.io/instance: v1
+  name: v1-kube-state-metrics
 imagePullSecrets:
   []
 ---
@@ -34233,11 +34233,11 @@ imagePullSecrets:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: RELEASE-NAME-prometheus-node-exporter
+  name: v1-prometheus-node-exporter
   labels:
     app: prometheus-node-exporter
     chart: prometheus-node-exporter-1.7.3    
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 imagePullSecrets: 
   []
@@ -34246,13 +34246,13 @@ imagePullSecrets:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   namespace: default
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 imagePullSecrets:
   []
@@ -34261,13 +34261,13 @@ imagePullSecrets:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   namespace: default
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 imagePullSecrets:
   []
@@ -34276,13 +34276,13 @@ imagePullSecrets:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   namespace: default
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 imagePullSecrets:
   []
@@ -34294,9 +34294,9 @@ metadata:
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
-  name: RELEASE-NAME-grafana-clusterrole
+  name: v1-grafana-clusterrole
 rules:
 - apiGroups: [""] # "" indicates the core API group
   resources: ["configmaps", "secrets"]
@@ -34310,8 +34310,8 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: kube-state-metrics-2.4.1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: RELEASE-NAME
-  name: RELEASE-NAME-kube-state-metrics
+    app.kubernetes.io/instance: v1
+  name: v1-kube-state-metrics
 rules:
 
 - apiGroups: ["certificates.k8s.io"]
@@ -34437,14 +34437,14 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: kube-state-metrics-2.4.1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: RELEASE-NAME
-  name: psp-RELEASE-NAME-kube-state-metrics
+    app.kubernetes.io/instance: v1
+  name: psp-v1-kube-state-metrics
 rules:
 - apiGroups: ['extensions']
   resources: ['podsecuritypolicies']
   verbs:     ['use']
   resourceNames:
-  - RELEASE-NAME-kube-state-metrics
+  - v1-kube-state-metrics
 ---
 # Source: prometheus-operator/charts/prometheus-node-exporter/templates/psp-clusterrole.yaml
 kind: ClusterRole
@@ -34453,45 +34453,45 @@ metadata:
   labels:     
     app: prometheus-node-exporter
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
     chart: prometheus-node-exporter-1.7.3
     jobLabel: node-exporter
-  name: psp-RELEASE-NAME-prometheus-node-exporter
+  name: psp-v1-prometheus-node-exporter
 rules:
 - apiGroups: ['extensions']
   resources: ['podsecuritypolicies']
   verbs:     ['use']
   resourceNames:
-  - RELEASE-NAME-prometheus-node-exporter
+  - v1-prometheus-node-exporter
 ---
 # Source: prometheus-operator/templates/alertmanager/psp-clusterrole.yaml
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 rules:
 - apiGroups: ['extensions']
   resources: ['podsecuritypolicies']
   verbs:     ['use']
   resourceNames:
-  - RELEASE-NAME-prometheus-op-alertmanager
+  - v1-prometheus-op-alertmanager
 ---
 # Source: prometheus-operator/templates/prometheus-operator/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 rules:
 - apiGroups:
@@ -34564,30 +34564,30 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator-psp
+  name: v1-prometheus-op-operator-psp
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 rules:
 - apiGroups: ['extensions']
   resources: ['podsecuritypolicies']
   verbs:     ['use']
   resourceNames:
-  - RELEASE-NAME-prometheus-op-operator
+  - v1-prometheus-op-operator
 ---
 # Source: prometheus-operator/templates/prometheus/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 rules:
 - apiGroups:
@@ -34621,37 +34621,37 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus-psp
+  name: v1-prometheus-op-prometheus-psp
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 rules:
 - apiGroups: ['extensions']
   resources: ['podsecuritypolicies']
   verbs:     ['use']
   resourceNames:
-  - RELEASE-NAME-prometheus-op-prometheus
+  - v1-prometheus-op-prometheus
 ---
 # Source: prometheus-operator/charts/grafana/templates/clusterrolebinding.yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: RELEASE-NAME-grafana-clusterrolebinding
+  name: v1-grafana-clusterrolebinding
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-grafana
+    name: v1-grafana
     namespace: default
 roleRef:
   kind: ClusterRole
-  name: RELEASE-NAME-grafana-clusterrole
+  name: v1-grafana-clusterrole
   apiGroup: rbac.authorization.k8s.io
 ---
 # Source: prometheus-operator/charts/kube-state-metrics/templates/clusterrolebinding.yaml
@@ -34662,15 +34662,15 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: kube-state-metrics-2.4.1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: RELEASE-NAME
-  name: RELEASE-NAME-kube-state-metrics
+    app.kubernetes.io/instance: v1
+  name: v1-kube-state-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-kube-state-metrics
+  name: v1-kube-state-metrics
 subjects:
 - kind: ServiceAccount
-  name: RELEASE-NAME-kube-state-metrics
+  name: v1-kube-state-metrics
   namespace: default
 ---
 # Source: prometheus-operator/charts/kube-state-metrics/templates/psp-clusterrolebinding.yaml
@@ -34681,15 +34681,15 @@ metadata:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: kube-state-metrics-2.4.1
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: RELEASE-NAME
-  name: psp-RELEASE-NAME-kube-state-metrics
+    app.kubernetes.io/instance: v1
+  name: psp-v1-kube-state-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: psp-RELEASE-NAME-kube-state-metrics
+  name: psp-v1-kube-state-metrics
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-kube-state-metrics
+    name: v1-kube-state-metrics
     namespace: default
 ---
 # Source: prometheus-operator/charts/prometheus-node-exporter/templates/psp-clusterrolebinding.yaml
@@ -34699,203 +34699,203 @@ metadata:
   labels:     
     app: prometheus-node-exporter
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
     chart: prometheus-node-exporter-1.7.3
     jobLabel: node-exporter
-  name: psp-RELEASE-NAME-prometheus-node-exporter
+  name: psp-v1-prometheus-node-exporter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: psp-RELEASE-NAME-prometheus-node-exporter
+  name: psp-v1-prometheus-node-exporter
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-node-exporter
+    name: v1-prometheus-node-exporter
     namespace: default
 ---
 # Source: prometheus-operator/templates/alertmanager/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-op-alertmanager
+    name: v1-prometheus-op-alertmanager
     namespace: default
 ---
 # Source: prometheus-operator/templates/prometheus-operator/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
 subjects:
 - kind: ServiceAccount
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   namespace: default
 ---
 # Source: prometheus-operator/templates/prometheus-operator/psp-clusterrolebinding.yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator-psp
+  name: v1-prometheus-op-operator-psp
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-prometheus-op-operator-psp
+  name: v1-prometheus-op-operator-psp
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-op-operator
+    name: v1-prometheus-op-operator
     namespace: default
 ---
 # Source: prometheus-operator/templates/prometheus/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-op-prometheus
+    name: v1-prometheus-op-prometheus
     namespace: default
 ---
 # Source: prometheus-operator/templates/prometheus/psp-clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus-psp
+  name: v1-prometheus-op-prometheus-psp
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-prometheus-op-prometheus-psp
+  name: v1-prometheus-op-prometheus-psp
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-op-prometheus
+    name: v1-prometheus-op-prometheus
     namespace: default
 ---
 # Source: prometheus-operator/charts/grafana/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
 rules:
 - apiGroups:      ['extensions']
   resources:      ['podsecuritypolicies']
   verbs:          ['use']
-  resourceNames:  [RELEASE-NAME-grafana]
+  resourceNames:  [v1-grafana]
 ---
 # Source: prometheus-operator/charts/grafana/templates/tests/test-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
 rules:
 - apiGroups:      ['policy']
   resources:      ['podsecuritypolicies']
   verbs:          ['use']
-  resourceNames:  [RELEASE-NAME-grafana-test]
+  resourceNames:  [v1-grafana-test]
 ---
 # Source: prometheus-operator/charts/grafana/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
 subjects:
 - kind: ServiceAccount
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
 ---
 # Source: prometheus-operator/charts/grafana/templates/tests/test-rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
 subjects:
 - kind: ServiceAccount
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
   namespace: default
 ---
 # Source: prometheus-operator/charts/grafana/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
 spec:
   type: ClusterIP
@@ -34907,17 +34907,17 @@ spec:
 
   selector:
     app: grafana
-    release: RELEASE-NAME
+    release: v1
 ---
 # Source: prometheus-operator/charts/kube-state-metrics/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-kube-state-metrics
+  name: v1-kube-state-metrics
   labels:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: "kube-state-metrics-2.4.1"
-    app.kubernetes.io/instance: "RELEASE-NAME"
+    app.kubernetes.io/instance: "v1"
     app.kubernetes.io/managed-by: "Helm"
   annotations:
     prometheus.io/scrape: 'true'
@@ -34930,19 +34930,19 @@ spec:
     targetPort: 8080
   selector:
     app.kubernetes.io/name: kube-state-metrics
-    app.kubernetes.io/instance: RELEASE-NAME
+    app.kubernetes.io/instance: v1
 ---
 # Source: prometheus-operator/charts/prometheus-node-exporter/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-node-exporter
+  name: v1-prometheus-node-exporter
   annotations:
     prometheus.io/scrape: "true"
   labels:     
     app: prometheus-node-exporter
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
     chart: prometheus-node-exporter-1.7.3
     jobLabel: node-exporter
 spec:
@@ -34954,19 +34954,19 @@ spec:
       name: metrics
   selector:
     app: prometheus-node-exporter
-    release: RELEASE-NAME
+    release: v1
 ---
 # Source: prometheus-operator/templates/alertmanager/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   namespace: default
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   ports:
@@ -34976,20 +34976,20 @@ spec:
       protocol: TCP
   selector:
     app: alertmanager
-    alertmanager: RELEASE-NAME-prometheus-op-alertmanager
+    alertmanager: v1-prometheus-op-alertmanager
   type: "ClusterIP"
 ---
 # Source: prometheus-operator/templates/exporters/core-dns/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-coredns
+  name: v1-prometheus-op-coredns
   labels:
     app: prometheus-operator-coredns
     jobLabel: coredns
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
   namespace: kube-system
 spec:
@@ -35006,13 +35006,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-controller-manager
+  name: v1-prometheus-op-kube-controller-manager
   labels:
     app: prometheus-operator-kube-controller-manager
     jobLabel: kube-controller-manager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
   namespace: kube-system
 spec:
@@ -35030,13 +35030,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-etcd
+  name: v1-prometheus-op-kube-etcd
   labels:
     app: prometheus-operator-kube-etcd
     jobLabel: kube-etcd
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
   namespace: kube-system
 spec:
@@ -35054,13 +35054,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-proxy
+  name: v1-prometheus-op-kube-proxy
   labels:
     app: prometheus-operator-kube-proxy
     jobLabel: kube-proxy
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
   namespace: kube-system
 spec:
@@ -35078,13 +35078,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-scheduler
+  name: v1-prometheus-op-kube-scheduler
   labels:
     app: prometheus-operator-kube-scheduler
     jobLabel: kube-scheduler
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
   namespace: kube-system
 spec:
@@ -35102,13 +35102,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   namespace: default
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   ports:
@@ -35120,21 +35120,21 @@ spec:
     targetPort: https
   selector:
     app: prometheus-operator-operator
-    release: "RELEASE-NAME"
+    release: "v1"
   type: "ClusterIP"
 ---
 # Source: prometheus-operator/templates/prometheus/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   namespace: default
   labels:
     app: prometheus-operator-prometheus
     self-monitor: "true"
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   ports:
@@ -35143,25 +35143,25 @@ spec:
     targetPort: 9090
   selector:
     app: prometheus
-    prometheus: RELEASE-NAME-prometheus-op-prometheus
+    prometheus: v1-prometheus-op-prometheus
   type: "ClusterIP"
 ---
 # Source: prometheus-operator/charts/prometheus-node-exporter/templates/daemonset.yaml
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: RELEASE-NAME-prometheus-node-exporter
+  name: v1-prometheus-node-exporter
   labels:     
     app: prometheus-node-exporter
     heritage: Helm
-    release: RELEASE-NAME
+    release: v1
     chart: prometheus-node-exporter-1.7.3
     jobLabel: node-exporter
 spec:
   selector:
     matchLabels:
       app: prometheus-node-exporter
-      release: RELEASE-NAME
+      release: v1
   updateStrategy:
     type: RollingUpdate
     rollingUpdate:
@@ -35171,11 +35171,11 @@ spec:
       labels:         
         app: prometheus-node-exporter
         heritage: Helm
-        release: RELEASE-NAME
+        release: v1
         chart: prometheus-node-exporter-1.7.3
         jobLabel: node-exporter
     spec:
-      serviceAccountName: RELEASE-NAME-prometheus-node-exporter
+      serviceAccountName: v1-prometheus-node-exporter
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
@@ -35227,26 +35227,26 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: RELEASE-NAME-grafana
+  name: v1-grafana
   namespace: default
   labels:
     app: grafana
     chart: grafana-4.0.2
-    release: RELEASE-NAME
+    release: v1
     heritage: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: grafana
-      release: RELEASE-NAME
+      release: v1
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         app: grafana
-        release: RELEASE-NAME
+        release: v1
       annotations:
         checksum/config: 66a8a8d595dfe947d08717db260eac42928baa97ae53ec5caa265b7706349d30
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
@@ -35254,7 +35254,7 @@ spec:
         checksum/secret: e0ac8d4bc4b05972251da094706efd4053a804d4861dde773bc1fdb9a7396a48
     spec:
       
-      serviceAccountName: RELEASE-NAME-grafana
+      serviceAccountName: v1-grafana
       securityContext:
         fsGroup: 472
         runAsUser: 472
@@ -35319,12 +35319,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: RELEASE-NAME-grafana
+                  name: v1-grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: RELEASE-NAME-grafana
+                  name: v1-grafana
                   key: admin-password
           livenessProbe:
             failureThreshold: 10
@@ -35342,14 +35342,14 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: RELEASE-NAME-grafana
+            name: v1-grafana
         - name: storage
           emptyDir: {}
         - name: sc-dashboard-volume
           emptyDir: {}
         - name: sc-dashboard-provider
           configMap:
-            name: RELEASE-NAME-grafana-config-dashboards
+            name: v1-grafana-config-dashboards
         - name: sc-datasources-volume
           emptyDir: {}
 ---
@@ -35357,11 +35357,11 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: RELEASE-NAME-kube-state-metrics
+  name: v1-kube-state-metrics
   labels:
     app.kubernetes.io/name: kube-state-metrics
     helm.sh/chart: "kube-state-metrics-2.4.1"
-    app.kubernetes.io/instance: "RELEASE-NAME"
+    app.kubernetes.io/instance: "v1"
     app.kubernetes.io/managed-by: "Helm"
 spec:
   selector:
@@ -35372,10 +35372,10 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: kube-state-metrics
-        app.kubernetes.io/instance: "RELEASE-NAME"
+        app.kubernetes.io/instance: "v1"
     spec:
       hostNetwork: false
-      serviceAccountName: RELEASE-NAME-kube-state-metrics
+      serviceAccountName: v1-kube-state-metrics
       securityContext:
         fsGroup: 65534
         runAsUser: 65534
@@ -35474,27 +35474,27 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   namespace: default
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: prometheus-operator-operator
-      release: "RELEASE-NAME"
+      release: "v1"
   template:
     metadata:
       labels:
         app: prometheus-operator-operator
         
         chart: prometheus-operator-8.2.4
-        release: "RELEASE-NAME"
+        release: "v1"
         heritage: "Helm"
     spec:
       containers:
@@ -35502,7 +35502,7 @@ spec:
           image: "quay.io/coreos/prometheus-operator:v0.34.0"
           imagePullPolicy: "IfNotPresent"
           args:
-            - --kubelet-service=kube-system/RELEASE-NAME-prometheus-op-kubelet
+            - --kubelet-service=kube-system/v1-prometheus-op-kubelet
             - --logtostderr=true
             - --localhost=127.0.0.1
             - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.34.0
@@ -35543,11 +35543,11 @@ spec:
         - name: tls-proxy-secret
           secret:
             defaultMode: 420
-            secretName: RELEASE-NAME-prometheus-op-admission
+            secretName: v1-prometheus-op-admission
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-      serviceAccountName: RELEASE-NAME-prometheus-op-operator
+      serviceAccountName: v1-prometheus-op-operator
 ---
 # Source: prometheus-operator/templates/grafana/dashboards-1.14/prometheus-remote-write.yaml
 # Generated from 'prometheus-remote-write' from https://raw.githubusercontent.com/coreos/kube-prometheus/master/manifests/grafana-dashboardDefinitions.yaml
@@ -35708,21 +35708,21 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: Alertmanager
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   namespace: default
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   baseImage: quay.io/prometheus/alertmanager
   version: v0.19.0
   replicas: 1
   listenLocal: false
-  serviceAccountName: RELEASE-NAME-prometheus-op-alertmanager
-  externalUrl: http://RELEASE-NAME-prometheus-op-alertmanager.default:9093
+  serviceAccountName: v1-prometheus-op-alertmanager
+  externalUrl: http://v1-prometheus-op-alertmanager.default:9093
   paused: false
   logFormat: "logfmt"
   logLevel:  "info"
@@ -35738,12 +35738,12 @@ spec:
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingWebhookConfiguration
 metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
+  name:  v1-prometheus-op-admission
   namespace: default
   labels:
     app: prometheus-operator-admission    
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 webhooks:
   - name: prometheusrulemutate.monitoring.coreos.com
@@ -35761,31 +35761,31 @@ webhooks:
     clientConfig:
       service:
         namespace: default
-        name: RELEASE-NAME-prometheus-op-operator
+        name: v1-prometheus-op-operator
         path: /admission-prometheusrules/mutate
 ---
 # Source: prometheus-operator/templates/prometheus/prometheus.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   namespace: default
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   alerting:
     alertmanagers:
       - namespace: default
-        name: RELEASE-NAME-prometheus-op-alertmanager
+        name: v1-prometheus-op-alertmanager
         port: web
         pathPrefix: "/"
   baseImage: quay.io/prometheus/prometheus
   version: v2.13.1
-  externalUrl: http://RELEASE-NAME-prometheus-op-prometheus.default:9090
+  externalUrl: http://v1-prometheus-op-prometheus.default:9090
   paused: false
   replicas: 1
   logLevel:  info
@@ -35794,15 +35794,15 @@ spec:
   enableAdminAPI: false
   retention: "10d"
   routePrefix: "/"
-  serviceAccountName: RELEASE-NAME-prometheus-op-prometheus
+  serviceAccountName: v1-prometheus-op-prometheus
   serviceMonitorSelector:
     matchLabels:
-      release: "RELEASE-NAME"
+      release: "v1"
 
   serviceMonitorNamespaceSelector: {}
   podMonitorSelector:
     matchLabels:
-      release: "RELEASE-NAME"
+      release: "v1"
 
   podMonitorNamespaceSelector: {}
   securityContext:
@@ -35813,7 +35813,7 @@ spec:
   ruleSelector:
     matchLabels:
       app: prometheus-operator
-      release: "RELEASE-NAME"
+      release: "v1"
 
   portName: web
 ---
@@ -35824,12 +35824,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager.rules
+  name: v1-prometheus-op-alertmanager.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -35838,14 +35838,14 @@ spec:
     - alert: AlertmanagerConfigInconsistent
       annotations:
         message: The configuration of the instances of the Alertmanager cluster `{{$labels.service}}` are out of sync.
-      expr: count_values("config_hash", alertmanager_config_hash{job="RELEASE-NAME-prometheus-op-alertmanager",namespace="default"}) BY (service) / ON(service) GROUP_LEFT() label_replace(max(prometheus_operator_spec_replicas{job="RELEASE-NAME-prometheus-op-operator",namespace="default",controller="alertmanager"}) by (name, job, namespace, controller), "service", "$1", "name", "(.*)") != 1
+      expr: count_values("config_hash", alertmanager_config_hash{job="v1-prometheus-op-alertmanager",namespace="default"}) BY (service) / ON(service) GROUP_LEFT() label_replace(max(prometheus_operator_spec_replicas{job="v1-prometheus-op-operator",namespace="default",controller="alertmanager"}) by (name, job, namespace, controller), "service", "$1", "name", "(.*)") != 1
       for: 5m
       labels:
         severity: critical
     - alert: AlertmanagerFailedReload
       annotations:
         message: Reloading Alertmanager's configuration has failed for {{ $labels.namespace }}/{{ $labels.pod}}.
-      expr: alertmanager_config_last_reload_successful{job="RELEASE-NAME-prometheus-op-alertmanager",namespace="default"} == 0
+      expr: alertmanager_config_last_reload_successful{job="v1-prometheus-op-alertmanager",namespace="default"} == 0
       for: 10m
       labels:
         severity: warning
@@ -35853,9 +35853,9 @@ spec:
       annotations:
         message: Alertmanager has not found all other members of the cluster.
       expr: |-
-        alertmanager_cluster_members{job="RELEASE-NAME-prometheus-op-alertmanager",namespace="default"}
+        alertmanager_cluster_members{job="v1-prometheus-op-alertmanager",namespace="default"}
           != on (service) GROUP_LEFT()
-        count by (service) (alertmanager_cluster_members{job="RELEASE-NAME-prometheus-op-alertmanager",namespace="default"})
+        count by (service) (alertmanager_cluster_members{job="v1-prometheus-op-alertmanager",namespace="default"})
       for: 5m
       labels:
         severity: critical
@@ -35867,12 +35867,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-etcd
+  name: v1-prometheus-op-etcd
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -35999,12 +35999,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-general.rules
+  name: v1-prometheus-op-general.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36041,12 +36041,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-k8s.rules
+  name: v1-prometheus-op-k8s.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36132,12 +36132,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-apiserver.rules
+  name: v1-prometheus-op-kube-apiserver.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36163,12 +36163,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-prometheus-node-recording.rules
+  name: v1-prometheus-op-kube-prometheus-node-recording.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36196,12 +36196,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-scheduler.rules
+  name: v1-prometheus-op-kube-scheduler.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36251,12 +36251,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-absent
+  name: v1-prometheus-op-kubernetes-absent
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36266,7 +36266,7 @@ spec:
       annotations:
         message: Alertmanager has disappeared from Prometheus target discovery.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-alertmanagerdown
-      expr: absent(up{job="RELEASE-NAME-prometheus-op-alertmanager",namespace="default"} == 1)
+      expr: absent(up{job="v1-prometheus-op-alertmanager",namespace="default"} == 1)
       for: 15m
       labels:
         severity: critical
@@ -36322,7 +36322,7 @@ spec:
       annotations:
         message: Prometheus has disappeared from Prometheus target discovery.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusdown
-      expr: absent(up{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"} == 1)
+      expr: absent(up{job="v1-prometheus-op-prometheus",namespace="default"} == 1)
       for: 15m
       labels:
         severity: critical
@@ -36330,7 +36330,7 @@ spec:
       annotations:
         message: PrometheusOperator has disappeared from Prometheus target discovery.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusoperatordown
-      expr: absent(up{job="RELEASE-NAME-prometheus-op-operator",namespace="default"} == 1)
+      expr: absent(up{job="v1-prometheus-op-operator",namespace="default"} == 1)
       for: 15m
       labels:
         severity: critical
@@ -36342,12 +36342,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-apps
+  name: v1-prometheus-op-kubernetes-apps
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36526,12 +36526,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-resources
+  name: v1-prometheus-op-kubernetes-resources
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36621,12 +36621,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-storage
+  name: v1-prometheus-op-kubernetes-storage
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36675,12 +36675,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-system-apiserver
+  name: v1-prometheus-op-kubernetes-system-apiserver
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36776,12 +36776,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-system-controller-manager
+  name: v1-prometheus-op-kubernetes-system-controller-manager
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36803,12 +36803,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-system-kubelet
+  name: v1-prometheus-op-kubernetes-system-kubelet
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36853,12 +36853,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-system-scheduler
+  name: v1-prometheus-op-kubernetes-system-scheduler
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36880,12 +36880,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubernetes-system
+  name: v1-prometheus-op-kubernetes-system
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36919,12 +36919,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-exporter.rules
+  name: v1-prometheus-op-node-exporter.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -36990,12 +36990,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-exporter
+  name: v1-prometheus-op-node-exporter
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -37147,12 +37147,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-network
+  name: v1-prometheus-op-node-network
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -37173,12 +37173,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-time
+  name: v1-prometheus-op-node-time
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -37199,12 +37199,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-node.rules
+  name: v1-prometheus-op-node.rules
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -37240,12 +37240,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus-operator
+  name: v1-prometheus-op-prometheus-operator
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -37254,14 +37254,14 @@ spec:
     - alert: PrometheusOperatorReconcileErrors
       annotations:
         message: Errors while reconciling {{ $labels.controller }} in {{ $labels.namespace }} Namespace.
-      expr: rate(prometheus_operator_reconcile_errors_total{job="RELEASE-NAME-prometheus-op-operator",namespace="default"}[5m]) > 0.1
+      expr: rate(prometheus_operator_reconcile_errors_total{job="v1-prometheus-op-operator",namespace="default"}[5m]) > 0.1
       for: 10m
       labels:
         severity: warning
     - alert: PrometheusOperatorNodeLookupErrors
       annotations:
         message: Errors while reconciling Prometheus in {{ $labels.namespace }} Namespace.
-      expr: rate(prometheus_operator_node_address_lookup_errors_total{job="RELEASE-NAME-prometheus-op-operator",namespace="default"}[5m]) > 0.1
+      expr: rate(prometheus_operator_node_address_lookup_errors_total{job="v1-prometheus-op-operator",namespace="default"}[5m]) > 0.1
       for: 10m
       labels:
         severity: warning
@@ -37273,12 +37273,12 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   labels:
     app: prometheus-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   groups:
@@ -37291,7 +37291,7 @@ spec:
       expr: |-
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
-        max_over_time(prometheus_config_last_reload_successful{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) == 0
+        max_over_time(prometheus_config_last_reload_successful{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) == 0
       for: 10m
       labels:
         severity: critical
@@ -37303,9 +37303,9 @@ spec:
         # Without min_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
         (
-          predict_linear(prometheus_notifications_queue_length{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m], 60 * 30)
+          predict_linear(prometheus_notifications_queue_length{job="v1-prometheus-op-prometheus",namespace="default"}[5m], 60 * 30)
         >
-          min_over_time(prometheus_notifications_queue_capacity{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          min_over_time(prometheus_notifications_queue_capacity{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         )
       for: 15m
       labels:
@@ -37316,9 +37316,9 @@ spec:
         summary: Prometheus has encountered more than 1% errors sending alerts to a specific Alertmanager.
       expr: |-
         (
-          rate(prometheus_notifications_errors_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          rate(prometheus_notifications_errors_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         /
-          rate(prometheus_notifications_sent_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          rate(prometheus_notifications_sent_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         )
         * 100
         > 1
@@ -37331,9 +37331,9 @@ spec:
         summary: Prometheus encounters more than 3% errors sending alerts to any Alertmanager.
       expr: |-
         min without(alertmanager) (
-          rate(prometheus_notifications_errors_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          rate(prometheus_notifications_errors_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         /
-          rate(prometheus_notifications_sent_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          rate(prometheus_notifications_sent_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         )
         * 100
         > 3
@@ -37347,7 +37347,7 @@ spec:
       expr: |-
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
-        max_over_time(prometheus_notifications_alertmanagers_discovered{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) < 1
+        max_over_time(prometheus_notifications_alertmanagers_discovered{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) < 1
       for: 10m
       labels:
         severity: warning
@@ -37355,7 +37355,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected {{$value | humanize}} reload failures over the last 3h.
         summary: Prometheus has issues reloading blocks from disk.
-      expr: increase(prometheus_tsdb_reloads_failures_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[3h]) > 0
+      expr: increase(prometheus_tsdb_reloads_failures_total{job="v1-prometheus-op-prometheus",namespace="default"}[3h]) > 0
       for: 4h
       labels:
         severity: warning
@@ -37363,7 +37363,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected {{$value | humanize}} compaction failures over the last 3h.
         summary: Prometheus has issues compacting blocks.
-      expr: increase(prometheus_tsdb_compactions_failed_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[3h]) > 0
+      expr: increase(prometheus_tsdb_compactions_failed_total{job="v1-prometheus-op-prometheus",namespace="default"}[3h]) > 0
       for: 4h
       labels:
         severity: warning
@@ -37371,7 +37371,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting samples.
         summary: Prometheus is not ingesting samples.
-      expr: rate(prometheus_tsdb_head_samples_appended_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) <= 0
+      expr: rate(prometheus_tsdb_head_samples_appended_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) <= 0
       for: 10m
       labels:
         severity: warning
@@ -37379,7 +37379,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping {{ printf "%.4g" $value  }} samples/s with different values but duplicated timestamp.
         summary: Prometheus is dropping samples with duplicate timestamps.
-      expr: rate(prometheus_target_scrapes_sample_duplicate_timestamp_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) > 0
+      expr: rate(prometheus_target_scrapes_sample_duplicate_timestamp_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) > 0
       for: 10m
       labels:
         severity: warning
@@ -37387,7 +37387,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping {{ printf "%.4g" $value  }} samples/s with timestamps arriving out of order.
         summary: Prometheus drops samples with out-of-order timestamps.
-      expr: rate(prometheus_target_scrapes_sample_out_of_order_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) > 0
+      expr: rate(prometheus_target_scrapes_sample_out_of_order_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) > 0
       for: 10m
       labels:
         severity: warning
@@ -37397,12 +37397,12 @@ spec:
         summary: Prometheus fails to send samples to remote storage.
       expr: |-
         (
-          rate(prometheus_remote_storage_failed_samples_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          rate(prometheus_remote_storage_failed_samples_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         /
           (
-            rate(prometheus_remote_storage_failed_samples_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+            rate(prometheus_remote_storage_failed_samples_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
           +
-            rate(prometheus_remote_storage_succeeded_samples_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+            rate(prometheus_remote_storage_succeeded_samples_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
           )
         )
         * 100
@@ -37418,9 +37418,9 @@ spec:
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
         (
-          max_over_time(prometheus_remote_storage_highest_timestamp_in_seconds{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          max_over_time(prometheus_remote_storage_highest_timestamp_in_seconds{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         - on(job, instance) group_right
-          max_over_time(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          max_over_time(prometheus_remote_storage_queue_highest_sent_timestamp_seconds{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         )
         > 120
       for: 15m
@@ -37434,9 +37434,9 @@ spec:
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
         (
-          max_over_time(prometheus_remote_storage_shards_desired{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          max_over_time(prometheus_remote_storage_shards_desired{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         >
-          max_over_time(prometheus_remote_storage_shards_max{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m])
+          max_over_time(prometheus_remote_storage_shards_max{job="v1-prometheus-op-prometheus",namespace="default"}[5m])
         )
       for: 15m
       labels:
@@ -37445,7 +37445,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to evaluate {{ printf "%.0f" $value }} rules in the last 5m.
         summary: Prometheus is failing rule evaluations.
-      expr: increase(prometheus_rule_evaluation_failures_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) > 0
+      expr: increase(prometheus_rule_evaluation_failures_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) > 0
       for: 15m
       labels:
         severity: critical
@@ -37453,7 +37453,7 @@ spec:
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has missed {{ printf "%.0f" $value }} rule group evaluations in the last 5m.
         summary: Prometheus is missing rule evaluations due to slow rule group evaluation.
-      expr: increase(prometheus_rule_group_iterations_missed_total{job="RELEASE-NAME-prometheus-op-prometheus",namespace="default"}[5m]) > 0
+      expr: increase(prometheus_rule_group_iterations_missed_total{job="v1-prometheus-op-prometheus",namespace="default"}[5m]) > 0
       for: 15m
       labels:
         severity: warning
@@ -37462,19 +37462,19 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-alertmanager
+  name: v1-prometheus-op-alertmanager
   namespace: default
   labels:
     app: prometheus-operator-alertmanager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   selector:
     matchLabels:
       app: prometheus-operator-alertmanager
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "default"
@@ -37486,20 +37486,20 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-coredns
+  name: v1-prometheus-op-coredns
   namespace: default
   labels:
     app: prometheus-operator-coredns
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
       app: prometheus-operator-coredns
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "kube-system"
@@ -37511,13 +37511,13 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-apiserver
+  name: v1-prometheus-op-apiserver
   namespace: default
   labels:
     app: prometheus-operator-apiserver
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   endpoints:
@@ -37541,20 +37541,20 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-controller-manager
+  name: v1-prometheus-op-kube-controller-manager
   namespace: default
   labels:
     app: prometheus-operator-kube-controller-manager
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
       app: prometheus-operator-kube-controller-manager
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "kube-system"
@@ -37566,20 +37566,20 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-etcd
+  name: v1-prometheus-op-kube-etcd
   namespace: default
   labels:
     app: prometheus-operator-kube-etcd
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
       app: prometheus-operator-kube-etcd
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "kube-system"
@@ -37591,20 +37591,20 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-proxy
+  name: v1-prometheus-op-kube-proxy
   namespace: default
   labels:
     app: prometheus-operator-kube-proxy
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
       app: prometheus-operator-kube-proxy
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "kube-system"
@@ -37616,20 +37616,20 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-scheduler
+  name: v1-prometheus-op-kube-scheduler
   namespace: default
   labels:
     app: prometheus-operator-kube-scheduler
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
       app: prometheus-operator-kube-scheduler
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "kube-system"
@@ -37641,13 +37641,13 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-kube-state-metrics
+  name: v1-prometheus-op-kube-state-metrics
   namespace: default
   labels:
     app: prometheus-operator-kube-state-metrics
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: app.kubernetes.io/name
@@ -37657,19 +37657,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: kube-state-metrics
-      app.kubernetes.io/instance: "RELEASE-NAME"
+      app.kubernetes.io/instance: "v1"
 ---
 # Source: prometheus-operator/templates/exporters/kubelet/servicemonitor.yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-kubelet
+  name: v1-prometheus-op-kubelet
   namespace: default
   labels:
     app: prometheus-operator-kubelet
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   endpoints:
@@ -37700,20 +37700,20 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-node-exporter
+  name: v1-prometheus-op-node-exporter
   namespace: default
   labels:
     app: prometheus-operator-node-exporter
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   jobLabel: jobLabel
   selector:
     matchLabels:
       app: prometheus-node-exporter
-      release: RELEASE-NAME
+      release: v1
   endpoints:
   - port: metrics
 ---
@@ -37721,19 +37721,19 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-grafana
+  name: v1-prometheus-op-grafana
   namespace: default
   labels:
     app: prometheus-operator-grafana
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   selector:
     matchLabels:
       app: grafana
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "default"
@@ -37745,13 +37745,13 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-operator
+  name: v1-prometheus-op-operator
   namespace: default
   labels:
     app: prometheus-operator-operator
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   endpoints:
@@ -37760,7 +37760,7 @@ spec:
   selector:
     matchLabels:
       app: prometheus-operator-operator
-      release: "RELEASE-NAME"
+      release: "v1"
   namespaceSelector:
     matchNames:
       - "default"
@@ -37769,19 +37769,19 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: RELEASE-NAME-prometheus-op-prometheus
+  name: v1-prometheus-op-prometheus
   namespace: default
   labels:
     app: prometheus-operator-prometheus
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   selector:
     matchLabels:
       app: prometheus-operator-prometheus
-      release: "RELEASE-NAME"
+      release: "v1"
       self-monitor: "true"
   namespaceSelector:
     matchNames:
@@ -37794,12 +37794,12 @@ spec:
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
+  name:  v1-prometheus-op-admission
   namespace: default
   labels:
     app: prometheus-operator-admission    
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 webhooks:
   - name: prometheusrulemutate.monitoring.coreos.com
@@ -37817,148 +37817,14 @@ webhooks:
     clientConfig:
       service:
         namespace: default
-        name: RELEASE-NAME-prometheus-op-operator
+        name: v1-prometheus-op-operator
         path: /admission-prometheusrules/validate
----
-# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/rolebinding.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
-  namespace: default
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-  labels:
-    app: prometheus-operator-admission    
-    chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
-    heritage: "Helm"
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: RELEASE-NAME-prometheus-op-admission
-subjects:
-  - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-op-admission
-    namespace: default
----
-# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/job-patchWebhook.yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name:  RELEASE-NAME-prometheus-op-admission-patch
-  namespace: default
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-  labels:
-    app: prometheus-operator-admission-patch    
-    chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
-    heritage: "Helm"
-spec:
-  template:
-    metadata:
-      name:  RELEASE-NAME-prometheus-op-admission-patch
-      labels:
-        app: prometheus-operator-admission-patch        
-        chart: prometheus-operator-8.2.4
-        release: "RELEASE-NAME"
-        heritage: "Helm"
-    spec:
-      containers:
-        - name: patch
-          image: jettech/kube-webhook-certgen:v1.0.0
-          imagePullPolicy: 
-          args:
-            - patch
-            - --webhook-name=RELEASE-NAME-prometheus-op-admission
-            - --namespace=default
-            - --secret-name=RELEASE-NAME-prometheus-op-admission
-            - --patch-failure-policy=Fail
-          resources:
-            {}
-      restartPolicy: OnFailure
-      serviceAccountName: RELEASE-NAME-prometheus-op-admission
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 2000
----
-# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/clusterrole.yaml
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-  labels:
-    app: prometheus-operator-admission    
-    chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
-    heritage: "Helm"
-rules:
-  - apiGroups:
-      - admissionregistration.k8s.io
-    resources:
-      - validatingwebhookconfigurations
-      - mutatingwebhookconfigurations
-    verbs:
-      - get
-      - update
-  - apiGroups: ['extensions']
-    resources: ['podsecuritypolicies']
-    verbs:     ['use']
-    resourceNames:
-    - RELEASE-NAME-prometheus-op-admission
----
-# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/job-createSecret.yaml
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name:  RELEASE-NAME-prometheus-op-admission-create
-  namespace: default
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-  labels:
-    app: prometheus-operator-admission-create    
-    chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
-    heritage: "Helm"
-spec:
-  template:
-    metadata:
-      name:  RELEASE-NAME-prometheus-op-admission-create
-      labels:
-        app: prometheus-operator-admission-create        
-        chart: prometheus-operator-8.2.4
-        release: "RELEASE-NAME"
-        heritage: "Helm"
-    spec:
-      containers:
-        - name: create
-          image: jettech/kube-webhook-certgen:v1.0.0
-          imagePullPolicy: 
-          args:
-            - create
-            - --host=RELEASE-NAME-prometheus-op-operator,RELEASE-NAME-prometheus-op-operator.default.svc
-            - --namespace=default
-            - --secret-name=RELEASE-NAME-prometheus-op-admission
-          resources:
-            {}
-      restartPolicy: OnFailure
-      serviceAccountName: RELEASE-NAME-prometheus-op-admission
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 2000
 ---
 # Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
+  name:  v1-prometheus-op-admission
   namespace: default
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
@@ -37966,7 +37832,7 @@ metadata:
   labels:
     app: prometheus-operator-admission    
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 rules:
   - apiGroups:
@@ -37981,7 +37847,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
+  name:  v1-prometheus-op-admission
   namespace: default
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
@@ -37989,22 +37855,22 @@ metadata:
   labels:
     app: prometheus-operator-admission    
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: RELEASE-NAME-prometheus-op-admission
+  name: v1-prometheus-op-admission
 subjects:
   - kind: ServiceAccount
-    name: RELEASE-NAME-prometheus-op-admission
+    name: v1-prometheus-op-admission
     namespace: default
 ---
-# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
+# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
 metadata:
-  name:  RELEASE-NAME-prometheus-op-admission
+  name:  v1-prometheus-op-admission
   namespace: default
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
@@ -38012,14 +37878,63 @@ metadata:
   labels:
     app: prometheus-operator-admission    
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: v1-prometheus-op-admission
+subjects:
+  - kind: ServiceAccount
+    name: v1-prometheus-op-admission
+    namespace: default
+---
+# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/job-createSecret.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name:  v1-prometheus-op-admission-create
+  namespace: default
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    app: prometheus-operator-admission-create    
+    chart: prometheus-operator-8.2.4
+    release: "v1"
+    heritage: "Helm"
+spec:
+  template:
+    metadata:
+      name:  v1-prometheus-op-admission-create
+      labels:
+        app: prometheus-operator-admission-create        
+        chart: prometheus-operator-8.2.4
+        release: "v1"
+        heritage: "Helm"
+    spec:
+      containers:
+        - name: create
+          image: jettech/kube-webhook-certgen:v1.0.0
+          imagePullPolicy: 
+          args:
+            - create
+            - --host=v1-prometheus-op-operator,v1-prometheus-op-operator.default.svc
+            - --namespace=default
+            - --secret-name=v1-prometheus-op-admission
+          resources:
+            {}
+      restartPolicy: OnFailure
+      serviceAccountName: v1-prometheus-op-admission
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
 ---
 # Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/psp.yaml
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: RELEASE-NAME-prometheus-op-admission
+  name: v1-prometheus-op-admission
   namespace: default
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
@@ -38028,7 +37943,7 @@ metadata:
     app: prometheus-operator-admission
     
     chart: prometheus-operator-8.2.4
-    release: "RELEASE-NAME"
+    release: "v1"
     heritage: "Helm"
 spec:
   privileged: false
@@ -38073,17 +37988,17 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: RELEASE-NAME-grafana-test
+  name: v1-grafana-test
   labels:
-    app: RELEASE-NAME-grafana
+    app: v1-grafana
     chart: "grafana-4.0.2"
     heritage: "Helm"
-    release: "RELEASE-NAME"
+    release: "v1"
   annotations:
     "helm.sh/hook": test-success
   namespace: default
 spec:
-  serviceAccountName: RELEASE-NAME-grafana-test
+  serviceAccountName: v1-grafana-test
   initContainers:
     - name: test-framework
       image: "dduportal/bats:0.4.0"
@@ -38098,7 +38013,7 @@ spec:
       - mountPath: /tools
         name: tools
   containers:
-    - name: RELEASE-NAME-test
+    - name: v1-test
       image: "dduportal/bats:0.4.0"
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
       volumeMounts:
@@ -38110,7 +38025,92 @@ spec:
   volumes:
   - name: tests
     configMap:
-      name: RELEASE-NAME-grafana-test
+      name: v1-grafana-test
   - name: tools
     emptyDir: {}
   restartPolicy: Never
+---
+# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name:  v1-prometheus-op-admission
+  namespace: default
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    app: prometheus-operator-admission    
+    chart: prometheus-operator-8.2.4
+    release: "v1"
+    heritage: "Helm"
+---
+# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/job-patchWebhook.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name:  v1-prometheus-op-admission-patch
+  namespace: default
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    app: prometheus-operator-admission-patch    
+    chart: prometheus-operator-8.2.4
+    release: "v1"
+    heritage: "Helm"
+spec:
+  template:
+    metadata:
+      name:  v1-prometheus-op-admission-patch
+      labels:
+        app: prometheus-operator-admission-patch        
+        chart: prometheus-operator-8.2.4
+        release: "v1"
+        heritage: "Helm"
+    spec:
+      containers:
+        - name: patch
+          image: jettech/kube-webhook-certgen:v1.0.0
+          imagePullPolicy: 
+          args:
+            - patch
+            - --webhook-name=v1-prometheus-op-admission
+            - --namespace=default
+            - --secret-name=v1-prometheus-op-admission
+            - --patch-failure-policy=Fail
+          resources:
+            {}
+      restartPolicy: OnFailure
+      serviceAccountName: v1-prometheus-op-admission
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+---
+# Source: prometheus-operator/templates/prometheus-operator/admission-webhooks/job-patch/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name:  v1-prometheus-op-admission
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    app: prometheus-operator-admission    
+    chart: prometheus-operator-8.2.4
+    release: "v1"
+    heritage: "Helm"
+rules:
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - validatingwebhookconfigurations
+      - mutatingwebhookconfigurations
+    verbs:
+      - get
+      - update
+  - apiGroups: ['extensions']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+    - v1-prometheus-op-admission
