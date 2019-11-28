@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"os/exec"
 
+	"os"
+	"time"
+
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
 	"github.com/kyokomi/emoji"
-	"os"
-	"time"
 )
 
 //CreateDisk will create a disk
@@ -81,7 +83,7 @@ func UpdateDisk(diskName string, diskResourceGroup string, diskSize string) {
 }
 
 //GetDisk will list the available disks
-func GetDisk(diskResourceGroup string) {
+func GetDisk(diskResourceGroup string, diskFilter string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching disks")
 	a.Start()
 	time.Sleep(2 * time.Second)
@@ -99,5 +101,9 @@ func GetDisk(diskResourceGroup string) {
 		return
 	}
 	a.PersistWith(spin.Spinner{}, "....")
-	fmt.Println("Result: " + out.String())
+	if diskFilter == "all" {
+		fmt.Println("Result: " + out.String())
+	} else {
+		fmt.Println("Result:", utils.FilterStringMap(out.String(), diskFilter))
+	}
 }

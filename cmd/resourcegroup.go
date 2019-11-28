@@ -128,8 +128,8 @@ var getResourceGroupCmd = &cobra.Command{
 		if err != nil {                     // Handle errors reading the config file
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
-
-		resourcegroup.GetResourceGroup()
+		rGroupFilter, _ := cmd.Flags().GetString("flag")
+		resourcegroup.GetResourceGroup(rGroupFilter)
 	},
 }
 
@@ -166,7 +166,8 @@ func init() {
 
 	getCmd.AddCommand(getResourceGroupCmd)
 
-	getRGViper.BindPFlags(getCmd.PersistentFlags())
+	getResourceGroupCmd.PersistentFlags().StringP("flag", "l", "all", "filtr flag")
+	getRGViper.BindPFlags(getResourceGroupCmd.PersistentFlags())
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

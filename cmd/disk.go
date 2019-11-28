@@ -160,10 +160,11 @@ var getDiskCmd = &cobra.Command{
 		//getDiskViper.SetDefault("diskResourceGroup", "DiskRGDefault") // for setting a default value
 
 		diskResourceGroup := getDiskViper.GetString("managedDisk.resource-group")
+		diskFilter, _ := cmd.Flags().GetString("flag")
 
 		color.Cyan("diskResourceGroup : " + diskResourceGroup)
 
-		disk.GetDisk(diskResourceGroup)
+		disk.GetDisk(diskResourceGroup, diskFilter)
 	},
 }
 
@@ -206,6 +207,7 @@ func init() {
 
 	getCmd.AddCommand(getDiskCmd)
 	getDiskCmd.PersistentFlags().StringP("rgroupname", "g", "opsFlagDefaultG", "disk resource group")
+	getDiskCmd.PersistentFlags().StringP("flag", "l", "all", "filtr flag")
 
 	getDiskViper.BindPFlag("managedDisk.resource-group", getDiskCmd.PersistentFlags().Lookup("rgroupname"))
 

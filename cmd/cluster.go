@@ -201,10 +201,11 @@ var getClusterCmd = &cobra.Command{
 		}
 
 		rgroupName := getViper.GetString("metadata.resource-group") // getting values through viper
+		clusterFilter, _ := cmd.Flags().GetString("flag")
 
 		color.Cyan("rgroupName : " + rgroupName)
 
-		cluster.GetCluster(rgroupName)
+		cluster.GetCluster(rgroupName, clusterFilter)
 	},
 }
 

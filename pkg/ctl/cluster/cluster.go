@@ -3,14 +3,15 @@ package cluster
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"os/exec"
+	"time"
+
 	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
 	"github.com/kyokomi/emoji"
-	"os"
-	"os/exec"
-	"time"
 )
 
 //CreateCluster creates a cluster
@@ -111,7 +112,7 @@ func UpdateCluster(clusterName string, resourceGroupName string) {
 }
 
 //GetCluster will list the available clusters
-func GetCluster(resourceGroupName string) {
+func GetCluster(resourceGroupName string, clusterFilter string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Collecting your k8s Cluster informations")
 	a.Start()
 	time.Sleep(2 * time.Second)
@@ -129,8 +130,11 @@ func GetCluster(resourceGroupName string) {
 		return
 	}
 	a.PersistWith(spin.Spinner{}, "....")
-	fmt.Println("Result: " + out.String())
-	fmt.Println("Type:", utils.FilterStringMap(out.String(), "name"))
+	if clusterFilter == "all" {
+		fmt.Println("Result: " + out.String())
+	} else {
+		fmt.Println("Result:", utils.FilterStringMap(out.String(), clusterFilter))
+	}
 
 }
 

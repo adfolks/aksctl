@@ -3,13 +3,15 @@ package resourcegroup
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"os/exec"
+	"time"
+
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
 	"github.com/kyokomi/emoji"
-	"os"
-	"os/exec"
-	"time"
 )
 
 //CreateResourceGroup will create a resource group
@@ -100,7 +102,7 @@ func UpdateResourceGroup(rgroupName string) {
 }
 
 //GetResourceGroup will list the resource groups
-func GetResourceGroup() {
+func GetResourceGroup(filterRgroup string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching resource groups")
 	a.Start()
 	time.Sleep(2 * time.Second)
@@ -117,5 +119,9 @@ func GetResourceGroup() {
 		return
 	}
 	a.PersistWith(spin.Spinner{}, "....")
-	fmt.Println("Result: " + out.String())
+	if filterRgroup == "all" {
+		fmt.Println("Result: " + out.String())
+	} else {
+		fmt.Println("Result:", utils.FilterStringMap(out.String(), filterRgroup))
+	}
 }

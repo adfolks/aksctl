@@ -3,13 +3,15 @@ package nodepool
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"os/exec"
+	"time"
+
+	"github.com/adfolks/aksctl/pkg/ctl/utils"
 	"github.com/fatih/color"
 	"github.com/gernest/wow"
 	"github.com/gernest/wow/spin"
 	"github.com/kyokomi/emoji"
-	"os"
-	"os/exec"
-	"time"
 )
 
 //CreateNodePool will create a nodepool
@@ -98,7 +100,7 @@ func UpdateNodePool(clusterName string, nodePoolName string, rgroupName string) 
 }
 
 //GetNodePool will list the nodepools
-func GetNodePool(clusterName string, rgroupName string) {
+func GetNodePool(clusterName string, rgroupName string, nodepoolFilter string) {
 	a := wow.New(os.Stdout, spin.Get(spin.Dots), "Fetching nodepools")
 	a.Start()
 	time.Sleep(2 * time.Second)
@@ -114,5 +116,9 @@ func GetNodePool(clusterName string, rgroupName string) {
 		return
 	}
 	a.PersistWith(spin.Spinner{}, "....")
-	fmt.Println("Result: " + out.String())
+	if nodepoolFilter == "all" {
+		fmt.Println("Result: " + out.String())
+	} else {
+		fmt.Println("Result:", utils.FilterStringMap(out.String(), nodepoolFilter))
+	}
 }
