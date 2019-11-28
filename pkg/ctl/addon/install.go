@@ -35,20 +35,3 @@ func InstallAddon(chartName string, repoName string) {
 	color.Green("Addon installed")
 	emoji.Println(":beer: Cheers!!!")
 }
-
-//CheckHelm checks whether the latest Helm version is installed or not
-func CheckHelm() bool {
-	cmd := exec.Command("helm", "version")
-	var out bytes.Buffer
-	var versioncheck = false
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	if err == nil {
-		fmt.Println(stderr.String())
-	} else {
-		versioncheck = strings.Contains(out.String(), "Version:\"v3.")
-	}
-	return versioncheck
-}
