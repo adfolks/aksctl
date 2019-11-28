@@ -106,8 +106,7 @@ var clusterCmd = &cobra.Command{
 			}
 		}
 		status := resourcegroup.CheckResourceGroup(rgroupName)
-		if status {
-			color.Red("Resource group doesn't exist")
+		if !status {
 			fmt.Println("Do you want to create a new resource group? (yes/no)")
 			okayResponses := []string{"y", "Y", "yes", "Yes", "YES"}
 			nokayResponses := []string{"n", "N", "no", "No", "NO"}
@@ -148,9 +147,8 @@ var deleteClusterCmd = &cobra.Command{
 		deleteViper.AddConfigPath(".")       // optionally look for config in the working directory
 		err := deleteViper.ReadInConfig()    // Find and read the config file
 		if err != nil {                      // Handle errors reading the config file
-			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+			fmt.Println("Cannot find default config file")
 		}
-
 		clusterName := deleteViper.GetString("metadata.name")
 		rgroupName := deleteViper.GetString("metadata.resource-group") // getting values through viper
 
