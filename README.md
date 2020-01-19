@@ -31,6 +31,13 @@ curl --silent --location "https://github.com/adfolks/aksctl/releases/download/$r
 sudo mv /tmp/aksctl /usr/local/bin
 ```
 
+#### Option 3:
+To install aksctl on windows using chocolatey, run:
+```bash
+choco install aksctl
+```
+
+
 ## Basic usage
  A default cluster can be created by running:
   ```bash
