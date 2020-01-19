@@ -35,7 +35,11 @@ release=v0.1.0 ## choose the available release version
 curl --silent --location "https://github.com/adfolks/aksctl/releases/download/$release/aksctl-$(uname -s)-amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/aksctl /usr/local/bin
 ```
-
+#### Option 3:
+To install aksctl on windows using chocolatey, run:
+```bash
+choco install aksctl
+```
 ### Basic usage
 
 #### Cluster
